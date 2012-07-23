@@ -19,4 +19,5 @@ local.properties
 .classpath
 .settings/
 .loadpath
+.springBeans
 target/
