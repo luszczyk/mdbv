@@ -5,6 +5,18 @@
 *.war
 *.ear
 # Eclipse project & settings file #
-.project*
-.settings/*
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
 
