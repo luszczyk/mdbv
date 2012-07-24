@@ -50,7 +50,7 @@ public class QueryController {
 
 	}
 	
-	@RequestMapping(value = "/domain", method = RequestMethod.POST)
+	@RequestMapping(value = "/${path}/domain", method = RequestMethod.POST)
 	public void getDocumentFileContentPost(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 

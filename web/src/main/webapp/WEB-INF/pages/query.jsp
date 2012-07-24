@@ -8,6 +8,10 @@
 <meta name="robots" content="index, follow" />
 <link rel="stylesheet" type="text/css" media="screen"
 	href="/web/resources/css/style.css" />
+<link rel="stylesheet" type="text/css" media="screen"
+	href="/web/resources/css/pixDisplay.css" />
+<script type="text/javascript" src="/web/resources/js/jquery.min.js" ></script>
+<script type="text/javascript" src="/web/resources/js/pixDisplay.js" ></script>
 <title>Multimedia Database Viewer</title>
 </head>
 <body>
@@ -28,46 +32,47 @@
 
 		<div class="clear"></div>
 
-	<div id="content">
-		<div class="resultBox">
+		<div id="content">
+			<div class="resultBox">
 
-			<h3>Result</h3>
+				<h3>Result</h3>
 
-			<table id="gradient-style">
-				<thead>
-					<tr>
-						<c:forEach var="c" items="${tabele.columns}">
-							<th scope="col">${c.name} ${c.type}</th>
-						</c:forEach>
-					</tr>
-				</thead>
-				<tbody>
-
-					<c:forEach var="e" items="${tabele.entities}">
+				<table id="gradient-style">
+					<thead>
 						<tr>
-							<c:forEach var="o" items="${e.values}">
-								<td><c:if test="${o.viewable}">
-										<form action="domain.htm" method="post">
-											<input type="hidden" name="path" value="${o.value}" />
-											<input type="submit" name="view" />
-										</form>
-									</c:if> <c:if test="${!o.viewable}">
-									${o.type} ${o.value}
-								</c:if></td>
+							<c:forEach var="c" items="${tabele.columns}">
+								<th scope="col">${c.name} ${c.type}</th>
 							</c:forEach>
 						</tr>
-					</c:forEach>
+					</thead>
+					<tbody>
+
+						<c:forEach var="e" items="${tabele.entities}">
+							<tr>
+								<c:forEach var="o" items="${e.values}">
+									<td><c:if test="${o.viewable}">
+											<a rel="pixDisplay" href="domain/${o.value}/fileContent">view</a>
+											<%-- <form action="domain.htm" method="post">
+												<input type="hidden" name="path" value="${o.value}" />
+												<input type="submit" name="view" />
+											</form> --%>
+										</c:if> <c:if test="${!o.viewable}">
+									${o.type} ${o.value}
+								</c:if></td>
+								</c:forEach>
+							</tr>
+						</c:forEach>
 
 
-				</tbody>
+					</tbody>
 
-			</table>
-
-
+				</table>
 
 
 
-			<%-- <table>
+
+
+				<%-- <table>
 			<tr>
 				<span class="item"> <c:forEach var="c"
 						items="${tabele.columns}">
@@ -105,28 +110,24 @@
 
 		</table> --%>
 
-		</div>
-	</div>
-	<div class="boxbottom"></div>
-
-	<div id="promo">
-		<div class="wrap">
-			<div class="col">
-				
 			</div>
-			<div class="col">
-				<h2>Description</h2>
+		</div>
+		<div class="boxbottom"></div>
+
+		<div id="promo">
+			<div class="wrap">
+				<div class="col"></div>
+				<div class="col">
+					<h2>Description</h2>
+					<p></p>
+				</div>
+			</div>
+			<div id="footer">
 				<p>
-					
+					Copyright &copy; 2012 &minus; Multimedia Database Viewer &minus;
+					Design: Lukasz Luszczynski , <a href="http://luszczyk.net">luszczyk</a>
 				</p>
 			</div>
 		</div>
-		<div id="footer">
-			<p>
-				Copyright &copy; 2012 &minus; Multimedia Database Viewer &minus;
-				Design: Lukasz Luszczynski , <a href="http://luszczyk.net">luszczyk</a>
-			</p>
-		</div>
-	</div>
 </body>
 </html>
