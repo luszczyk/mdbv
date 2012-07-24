@@ -26,7 +26,7 @@ public class QueryController {
 	@Autowired
 	private FileService fileService;
 
-	@RequestMapping(value = "/index.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
@@ -37,7 +37,7 @@ public class QueryController {
 
 	}
 
-	@RequestMapping(value = "/run.htm", method = RequestMethod.POST)
+	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	public ModelAndView run(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
@@ -50,7 +50,7 @@ public class QueryController {
 
 	}
 	
-	@RequestMapping(value = "/domain.htm", method = RequestMethod.POST)
+	@RequestMapping(value = "/domain", method = RequestMethod.POST)
 	public void getDocumentFileContentPost(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
@@ -67,7 +67,7 @@ public class QueryController {
 		response.getOutputStream().flush();
 	}
 
-	@RequestMapping(value = "/domain/{fileName}/fileContent.htm", method = RequestMethod.GET)
+	@RequestMapping(value = "/domain/{fileName}/fileContent", method = RequestMethod.GET)
 	public void getDocumentFileContent(final HttpServletResponse response,
 			@PathVariable("fileName") final String fileName) throws IOException {
 

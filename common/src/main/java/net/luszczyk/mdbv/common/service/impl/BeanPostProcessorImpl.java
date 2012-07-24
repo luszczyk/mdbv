@@ -35,8 +35,8 @@ public class BeanPostProcessorImpl implements BeanPostProcessor {
 		return arg0;
 	}
 
-	public static Boolean implementsInterface(Object object, Class interf) {
-		for (Class c : object.getClass().getInterfaces()) {
+	public static Boolean implementsInterface(Object object, Class<ViewerService> interf) {
+		for (Class<?> c : object.getClass().getInterfaces()) {
 			if (c.equals(interf)) {
 				return true;
 			}

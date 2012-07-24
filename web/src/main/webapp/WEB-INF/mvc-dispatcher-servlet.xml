@@ -12,7 +12,9 @@
 	<import resource="classpath*:META-INF/common-context.xml" />
 
 	<context:component-scan base-package="net.luszczyk.mdbv.web.controller" />
-
+	<!-- the mvc resources tag does the magic -->
+	<mvc:resources mapping="/resources/**" location="/WEB-INF/res/" />
+	<mvc:annotation-driven />
 
 	<bean
 		class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
@@ -31,12 +33,11 @@
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
 			<props>
-				<prop key="/index.htm">indexController</prop>
+				<prop key="/index">indexController</prop>
 			</props>
 		</property>
 	</bean>
 
-	<!-- the mvc resources tag does the magic -->
- 	<mvc:resources mapping="/resources/**" location="/WEB-INF/res/" />
+	
 
 </beans>

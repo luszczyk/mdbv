@@ -5,7 +5,7 @@
 
 	<display-name>Multimedia Databases Viewer</display-name>
 	<welcome-file-list>
-		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index</welcome-file>
 	</welcome-file-list>
 
 	<servlet>
@@ -16,13 +16,8 @@
 
 	<servlet-mapping>
 		<servlet-name>mvc-dispatcher</servlet-name>
-		<url-pattern>*.htm</url-pattern>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
-<!-- 	<servlet-mapping>
-		<servlet-name>mvc-dispatcher</servlet-name>
-		<url-pattern>/resources*</url-pattern>
-	</servlet-mapping> -->
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
