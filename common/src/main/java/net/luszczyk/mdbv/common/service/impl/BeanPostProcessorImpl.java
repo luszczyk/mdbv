@@ -24,6 +24,7 @@ public class BeanPostProcessorImpl implements BeanPostProcessor {
 			ViewerService viewer = (ViewerService) arg0;
 			for (String s : viewer.getTypeList()) {
 				registerService.addTypeAndViewer(s, viewer);
+				logger.info("Add viewer for type: " + s);
 			}
 		}
 		return arg0;

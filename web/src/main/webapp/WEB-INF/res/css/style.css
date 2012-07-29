@@ -415,7 +415,7 @@ input.button {
 	font-size: 13px;
 	font-weight: normal;
 	padding: 8px;
-	background: #b9c9fe url('/resources/images/gradhead.png') repeat-x;
+	background: #b9c9fe url('/web/resources/images/gradhead.png') repeat-x;
 	border-top: 2px solid #d3ddff;
 	border-bottom: 1px solid #fff;
 	color: #039;
@@ -426,7 +426,7 @@ input.button {
 	border-bottom: 1px solid #fff;
 	color: #669;
 	border-top: 1px solid #fff;
-	background: #e8edff url('/resources/images/gradback.png') repeat-x;
+	background: #e8edff url('/web/resources/images/gradback.png') repeat-x;
 }
 
 #gradient-style tfoot tr td {
@@ -436,6 +436,6 @@ input.button {
 }
 
 #gradient-style tbody tr:hover td {
-	background: #d0dafd url('/resources/images/gradhover.png') repeat-x;
+	background: #d0dafd url('/web/resources/images/gradhover.png') repeat-x;
 	color: #339;
 }

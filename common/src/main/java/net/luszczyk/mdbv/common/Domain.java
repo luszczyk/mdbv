@@ -1,23 +1,25 @@
 package net.luszczyk.mdbv.common;
 
+import net.luszczyk.mdbv.common.service.ViewerService;
+
 public class Domain implements Viewable {
 
 	private Object value;
 	private String type;
-	private boolean viewable;
+	private ViewerService viewerService;
 
-	public Domain(Object value, String type) {
+	public Domain(final Object value, final String type) {
 		super();
 		this.value = value;
 		this.type = type;
-		this.viewable = false;
 	}
-	
-	public Domain(Object value, String type, boolean viewable) {
+
+	public Domain(final Object value, final String type,
+			final ViewerService viewerService) {
 		super();
 		this.value = value;
 		this.type = type;
-		this.viewable = viewable;
+		this.viewerService = viewerService;
 	}
 
 	public Object getValue() {
@@ -38,7 +40,20 @@ public class Domain implements Viewable {
 
 	@Override
 	public boolean isViewable() {
-		return viewable;
+		if (viewerService == null) {
+			return Boolean.FALSE;
+		} else {
+			return Boolean.TRUE;
+		}
 	}
 
+	@Override
+	public ViewerService getViewerService() {
+		return viewerService;
+	}
+
+	@Override
+	public String getLink() {
+		return viewerService.getLink(value.toString());
+	}
 }

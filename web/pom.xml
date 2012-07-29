@@ -12,7 +12,7 @@
 	<artifactId>web</artifactId>
 	<name>web</name>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.4-SNAPSHOT</version>
 
 
 	<dependencies>
@@ -27,8 +27,8 @@
 		</dependency>
 		<dependency>
 			<groupId>net.luszczyk.mdbv.modules</groupId>
-			<artifactId>png</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<artifactId>image</artifactId>
+			<version>0.0.3-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 

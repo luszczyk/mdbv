@@ -114,10 +114,11 @@ public class QueryServiceImpl implements QueryService {
 
 				if (registerService.getTypeList().contains(type)) {
 
-					result = new Domain(filePath, type, true);
+					result = new Domain(filePath, type,
+							registerService.getViewerService(type));
 				} else {
 
-					result = new Domain(filePath, type, false);
+					result = new Domain(filePath, type);
 				}
 			}
 		}

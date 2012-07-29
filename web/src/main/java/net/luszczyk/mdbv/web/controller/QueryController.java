@@ -1,6 +1,8 @@
 package net.luszczyk.mdbv.web.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -44,12 +46,21 @@ public class QueryController {
 		String query = request.getParameter("query");
 		ModelAndView moView = new ModelAndView("query");
 		Table table = queryService.runQuery(query).getTable();
+
+		moView.addObject("h", generateHeaderMap("Query result"));
 		moView.addObject("tabele", table);
+
+		/*
+		 * moView.addObject("script",
+		 * "\\<script type=\\\"text/javascript\\\"> jQuery(document).ready(" +
+		 * "function() { "+ "pixDisplay.initialize();" +
+		 * "pixDisplay.assignLinks();" + "} ); \\</script\\>");
+		 */
 
 		return moView;
 
 	}
-	
+
 	@RequestMapping(value = "/${path}/domain", method = RequestMethod.POST)
 	public void getDocumentFileContentPost(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -81,6 +92,20 @@ public class QueryController {
 
 		response.getOutputStream().write(content);
 		response.getOutputStream().flush();
+	}
+
+	private Map<String, Object> generateHeaderMap(String title) {
+		Map<String, Object> map = generateHeaderMap();
+		map.put("title", title);
+		return map;
+	}
+
+	private Map<String, Object> generateHeaderMap() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("title", "Home");
+		map.put("js", new String[] { "jquery.min.js", "pixDisplay.js" });
+
+		return map;
 	}
 
 }
