@@ -8,15 +8,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.luszczyk.mdbv.common.Column;
-import net.luszczyk.mdbv.common.Domain;
-import net.luszczyk.mdbv.common.Entity;
-import net.luszczyk.mdbv.common.Result;
-import net.luszczyk.mdbv.common.Table;
+import net.luszczyk.mdbv.common.exception.GettingLargeObjectException;
 import net.luszczyk.mdbv.common.service.DatabaseConnectionService;
 import net.luszczyk.mdbv.common.service.FileService;
 import net.luszczyk.mdbv.common.service.QueryService;
 import net.luszczyk.mdbv.common.service.RegisterService;
+import net.luszczyk.mdbv.common.table.Column;
+import net.luszczyk.mdbv.common.table.Domain;
+import net.luszczyk.mdbv.common.table.DomainDetails;
+import net.luszczyk.mdbv.common.table.DomainProxy;
+import net.luszczyk.mdbv.common.table.Entity;
+import net.luszczyk.mdbv.common.table.Result;
+import net.luszczyk.mdbv.common.table.Table;
 
 import org.apache.log4j.Logger;
 import org.postgresql.largeobject.LargeObject;
@@ -30,6 +33,8 @@ public class QueryServiceImpl implements QueryService {
 	private static final Logger logger = Logger
 			.getLogger(QueryServiceImpl.class);
 
+	private LargeObjectManager lobj;
+
 	@Autowired
 	private FileService fileService;
 
@@ -38,6 +43,21 @@ public class QueryServiceImpl implements QueryService {
 
 	@Autowired
 	private DatabaseConnectionService databaseConnectionService;
+
+	private LargeObjectManager getLargeObjectManager() {
+
+		try {
+
+			Connection conn = databaseConnectionService.getConnection();
+
+			if (lobj == null) {
+				lobj = ((org.postgresql.PGConnection) conn).getLargeObjectAPI();
+			}
+		} catch (Exception e) {
+			logger.error("Error getting LargeObjectManager", e);
+		}
+		return lobj;
+	}
 
 	public Result runQuery(String query) {
 
@@ -55,6 +75,7 @@ public class QueryServiceImpl implements QueryService {
 
 			List<Column> columns = new ArrayList<Column>();
 			List<Entity> entities = new ArrayList<Entity>();
+			Table table = new Table(rs.getCursorName(), columns, entities);
 
 			for (int i = 1; i < numberOfColumns; ++i) {
 				columns.add(new Column(i, rsmd.getColumnName(i), rsmd
@@ -67,22 +88,18 @@ public class QueryServiceImpl implements QueryService {
 				for (Column c : columns) {
 					Domain d = null;
 					if ("oid".equals(c.getType())) {
-						d = saveFileInTemp(rs, conn, c.getId());
+						d = new DomainProxy(this, table, c, rs.getObject(c.getId())
+								.toString(), rs.getLong(c.getId()));
 					} else {
-						d = new Domain(rs.getObject(c.getId()), "");
+						d = new DomainProxy(this, table, c, rs.getObject(c.getId())
+								.toString());
 					}
 
-					if (d != null) {
-						objects.add(d);
-					} else {
-						logger.warn("Try to save null as domain class for column: "
-								+ c.getName());
-					}
+					objects.add(d);
 				}
 				entities.add(new Entity(objects));
 			}
 
-			Table table = new Table(columns, entities);
 			result = new Result(table);
 
 		} catch (SQLException e) {
@@ -91,37 +108,44 @@ public class QueryServiceImpl implements QueryService {
 		return result;
 	}
 
-	private Domain saveFileInTemp(ResultSet rs, Connection conn, int columnId)
-			throws SQLException {
+	public DomainDetails getDomainDetails(final Domain domain)
+			throws GettingLargeObjectException {
 
-		LargeObjectManager lobj = null;
-		Domain result = null;
-		lobj = ((org.postgresql.PGConnection) conn).getLargeObjectAPI();
-		long oid = rs.getInt(columnId);
-		LargeObject obj = lobj.open(oid, LargeObjectManager.READ);
+		DomainDetails result = null;
 
-		byte buf[] = new byte[obj.size()];
-		obj.read(buf, 0, obj.size());
-		obj.close();
+		long oid = domain.getOid();
+		LargeObject obj = null;
 
-		String filePath = fileService.saveFile(buf);
+		try {
+			obj = getLargeObjectManager().open(oid, LargeObjectManager.READ);
 
-		if (filePath != null) {
+			byte buf[] = new byte[obj.size()];
+			obj.read(buf, 0, obj.size());
+			obj.close();
 
-			String type = fileService.getFileType(filePath);
+			String filePath = fileService.saveFile(buf);
 
-			if (type != null) {
+			if (filePath != null) {
 
-				if (registerService.getTypeList().contains(type)) {
+				String type = fileService.getFileType(filePath);
 
-					result = new Domain(filePath, type,
-							registerService.getViewerService(type));
-				} else {
+				if (type != null) {
 
-					result = new Domain(filePath, type);
+					if (registerService.getTypeList().contains(type)) {
+
+						result = new DomainDetails(filePath, type,
+								registerService.getViewerService(type));
+					} else {
+
+						result = new DomainDetails(filePath, type);
+					}
 				}
 			}
+		} catch (SQLException e) {
+			logger.error("Error getting largeobject oid: " + oid, e);
+			throw new GettingLargeObjectException();
 		}
+
 		return result;
 	}
 }

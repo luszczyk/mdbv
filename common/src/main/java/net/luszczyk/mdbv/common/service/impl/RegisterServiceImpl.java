@@ -11,18 +11,13 @@ import org.apache.log4j.Logger;
 
 public class RegisterServiceImpl implements RegisterService {
 	
-	private static final Logger logger = Logger.getLogger(RegisterServiceImpl.class);
+	private static final Logger LOGGER = Logger.getLogger(RegisterServiceImpl.class);
 	
 	public RegisterServiceImpl() {
-		logger.debug("RegisterService const");
+		LOGGER.debug("RegisterService const");
 	}
 
 	Map<String, ViewerService> viewerMap = new HashMap<String, ViewerService>();
-
-	@Override
-	public void registerTypes() {
-
-	}
 
 	@Override
 	public Set<String> getTypeList() {

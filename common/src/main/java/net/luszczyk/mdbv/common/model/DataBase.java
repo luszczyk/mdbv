@@ -2,7 +2,7 @@ package net.luszczyk.mdbv.common.model;
 
 import java.util.List;
 
-import net.luszczyk.mdbv.common.Table;
+import net.luszczyk.mdbv.common.table.Table;
 
 public interface DataBase {
 	

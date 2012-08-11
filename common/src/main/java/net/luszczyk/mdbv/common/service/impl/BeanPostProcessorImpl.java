@@ -9,22 +9,26 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 
 public class BeanPostProcessorImpl implements BeanPostProcessor {
 
-	private static final Logger logger = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(BeanPostProcessorImpl.class);
 
 	private RegisterService registerService;
+	
+	public BeanPostProcessorImpl() {
+		LOGGER.debug("BeanPostProcessorImpl construct ");
+	}
 
 	@Override
 	public Object postProcessAfterInitialization(Object arg0, String arg1)
 			throws BeansException {
 
-		logger.debug("Process bean: " + arg0);
+		//logger.debug("Process bean: " + arg0+ " \n is Viewer: " + (arg0 instanceof ViewerService));
 
-		if (implementsInterface(arg0, ViewerService.class)) {
+		if (arg0 instanceof ViewerService) {
 			ViewerService viewer = (ViewerService) arg0;
 			for (String s : viewer.getTypeList()) {
 				registerService.addTypeAndViewer(s, viewer);
-				logger.info("Add viewer for type: " + s);
+				LOGGER.info("Add viewer for type: " + s);
 			}
 		}
 		return arg0;
@@ -34,15 +38,6 @@ public class BeanPostProcessorImpl implements BeanPostProcessor {
 	public Object postProcessBeforeInitialization(Object arg0, String arg1)
 			throws BeansException {
 		return arg0;
-	}
-
-	public static Boolean implementsInterface(Object object, Class<ViewerService> interf) {
-		for (Class<?> c : object.getClass().getInterfaces()) {
-			if (c.equals(interf)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public RegisterService getRegisterService() {

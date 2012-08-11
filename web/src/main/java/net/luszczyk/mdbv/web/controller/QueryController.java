@@ -7,9 +7,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.luszczyk.mdbv.common.Table;
 import net.luszczyk.mdbv.common.service.FileService;
 import net.luszczyk.mdbv.common.service.QueryService;
+import net.luszczyk.mdbv.common.table.Table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,7 @@ public class QueryController {
 			HttpServletResponse response) throws Exception {
 
 		ModelAndView moView = new ModelAndView("query");
-		moView.addObject("tabele", new Table(null, null));
+		moView.addObject("tabele", new Table(null, null, null));
 
 		return moView;
 

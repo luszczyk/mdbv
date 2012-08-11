@@ -2,8 +2,8 @@ package net.luszczyk.mdbv.common.model.impl;
 
 import java.util.List;
 
-import net.luszczyk.mdbv.common.Table;
 import net.luszczyk.mdbv.common.model.DataBase;
+import net.luszczyk.mdbv.common.table.Table;
 
 public class DataBasePostgres implements DataBase {
 

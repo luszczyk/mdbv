@@ -7,9 +7,9 @@
 		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	<groupId>net.luszczyk.mdbv.modules</groupId>
-	<artifactId>image</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
-	<name>image</name>
+	<artifactId>video</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>video</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

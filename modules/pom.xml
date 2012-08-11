@@ -18,6 +18,7 @@
 
 	<modules>
 		<module>image</module>
+		<module>video</module>
 	</modules>
 
 

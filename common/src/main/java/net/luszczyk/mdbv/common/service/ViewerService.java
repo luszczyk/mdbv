@@ -1,10 +1,16 @@
 package net.luszczyk.mdbv.common.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface ViewerService {
+public abstract class ViewerService {
 	
-	public List<String> getTypeList();
-	public String getLink(final String fileName);
+	protected static final List<String> typeList = new ArrayList<String>();
+
+	public List<String> getTypeList() {
+		return typeList;
+	}
+	
+	public abstract String getLink(final String fileName);
 
 }
