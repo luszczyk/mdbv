@@ -14,7 +14,7 @@ public class ViewerVideoService extends ViewerService {
 	@Override
 	public String getLink(final String fileName) {
 		
-		return "<a href=\"domain/" + fileName +
+		return "<a href=\"/web/res/domain/" + fileName +
 				 "/fileContent\" rel=\"pixDisplayVideo\">view</a>";
 
 /*		return "<video id=\"vid1\" width=\"480\" height=\"267\" "

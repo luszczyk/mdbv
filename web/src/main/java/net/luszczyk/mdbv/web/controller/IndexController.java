@@ -1,10 +1,9 @@
 package net.luszczyk.mdbv.web.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.luszczyk.mdbv.web.utill.WebUtills;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +20,7 @@ public class IndexController {
 
 		ModelAndView model = new ModelAndView("query");
 
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("title", "Home");
-		map.put("js", new String[] { "jquery.min.js", "pixDisplay.js" });
-
-		model.addObject("h", map);
+		model.addObject("h", WebUtills.generateHeaderMap("Index"));
 
 		model.addObject("msg", "Index");
 

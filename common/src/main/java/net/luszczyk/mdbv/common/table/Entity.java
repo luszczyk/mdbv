@@ -4,11 +4,20 @@ import java.util.List;
 
 public class Entity {
 
+	private Integer id;
 	private List<Domain> values;
-	private Column column;
 
-	public Entity(List<Domain> values) {
+	public Entity(final Integer id, final List<Domain> values) {
+		this.setId(id);
 		this.values = values;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public List<Domain> getValues() {
@@ -18,13 +27,4 @@ public class Entity {
 	public void setValues(List<Domain> values) {
 		this.values = values;
 	}
-
-	public Column getColumn() {
-		return column;
-	}
-
-	public void setColumn(Column column) {
-		this.column = column;
-	}
-
 }

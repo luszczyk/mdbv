@@ -23,8 +23,15 @@
 		pixDisplay.initialize();
 		pixDisplay.assignLinks();
 	}
-
 	);
+	
+	$(document).ready(function(){
+		  var $inp = $('input');
+		  $inp.bind('click', function(e){
+		    if(/Enter SQL query here/.test($inp.val()))
+		      $inp.val('');
+		  });
+		});
 </script>
 <title>Multimedia Database Viewer - ${h.title}</title>
 </head>
@@ -33,8 +40,8 @@
 		<div id="search">
 			<form action="/web/query/run" method="post">
 				<fieldset>
-					<input type="text" name="query" class="searchField"
-						value="Search Keywords" /> <input type="submit" class="button"
+					<input type="text" name="query" class="searchField" id="searchBox"
+						value="Enter SQL query here" /> <input type="submit" class="button"
 						value="" />
 				</fieldset>
 			</form>

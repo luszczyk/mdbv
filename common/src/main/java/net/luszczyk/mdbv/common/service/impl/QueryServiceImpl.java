@@ -30,8 +30,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class QueryServiceImpl implements QueryService {
 
-	private static final Logger logger = Logger
-			.getLogger(QueryServiceImpl.class);
+	private static final Logger LOGGER = Logger.getLogger(QueryServiceImpl.class);
 
 	private LargeObjectManager lobj;
 
@@ -54,7 +53,7 @@ public class QueryServiceImpl implements QueryService {
 				lobj = ((org.postgresql.PGConnection) conn).getLargeObjectAPI();
 			}
 		} catch (Exception e) {
-			logger.error("Error getting LargeObjectManager", e);
+			LOGGER.error("Error getting LargeObjectManager", e);
 		}
 		return lobj;
 	}
@@ -82,6 +81,7 @@ public class QueryServiceImpl implements QueryService {
 						.getColumnTypeName(i)));
 			}
 
+			Integer id = 0;
 			while (rs.next()) {
 
 				List<Domain> objects = new ArrayList<Domain>();
@@ -97,7 +97,7 @@ public class QueryServiceImpl implements QueryService {
 
 					objects.add(d);
 				}
-				entities.add(new Entity(objects));
+				entities.add(new Entity(++id, objects));
 			}
 
 			result = new Result(table);
@@ -142,7 +142,7 @@ public class QueryServiceImpl implements QueryService {
 				}
 			}
 		} catch (SQLException e) {
-			logger.error("Error getting largeobject oid: " + oid, e);
+			LOGGER.error("Error getting largeobject oid: " + oid, e);
 			throw new GettingLargeObjectException();
 		}
 
