@@ -288,7 +288,7 @@ input.button {
 }
 
 #side {
-	float: right;
+	float: left;
 	width: 300px;
 	margin: 0 0 30px;
 	font-size: .9em;
@@ -301,7 +301,7 @@ input.button {
 }
 
 .boxtop {
-	background: url(/web/resources/images/box2.gif) no-repeat top;
+	background: url(/web/resources/images/box.gif) no-repeat top;
 	padding: 2px 0;
 }
 
@@ -310,12 +310,16 @@ input.button {
 	background: #363636;
 }
 
+.box h2 {
+	color: #fff;
+}
+
 .resultBox {
 	padding: 3px 6px;
 }
 
 .boxbottom {
-	background: url(/web/resources/images/box2.gif) no-repeat bottom;
+	background: url(/web/resources/images/box.gif) no-repeat bottom;
 	padding: 2px 0;
 }
 
@@ -401,6 +405,14 @@ input.button {
 	font-size: .84em;
 	color: #808080;
 	border-top: 1px dotted #666;
+}
+
+.formContainer {
+	padding: 3px;
+}
+
+.formContainer form label {
+	font-size: 0.9em;
 }
 
 /* Table style */

@@ -10,28 +10,43 @@
 	href="/web/resources/css/style.css" />
 <link rel="stylesheet" type="text/css" media="screen"
 	href="/web/resources/css/pixDisplay.css" />
+<link rel="stylesheet" type="text/css" media="screen"
+	href="/web/resources/css/jquery.toastmessage.css" />
+	<link rel="stylesheet" type="text/css" media="screen"
+	href="/web/resources/css/jquery-ui-1.8.22.custom.css" />
+
+<script type="text/javascript" src="/web/resources/js/jquery.min.js"></script>
+
+<script type="text/javascript"
+	src="/web/resources/js/jquery.toastmessage.js"></script>
+<script type="text/javascript"
+	src="/web/resources/js/jquery-ui-1.8.22.custom.min.js"></script>
 
 <c:forEach var="j" items="${h.js}">
 	<script type="text/javascript" src="/web/resources/js/${j}"></script>
 </c:forEach>
-
-<!-- <script type="text/javascript" src="/web/resources/js/pixDisplay.js"></script> -->
 <script type="text/javascript">
 	jQuery(document).ready(
 
 	function() {
 		pixDisplay.initialize();
 		pixDisplay.assignLinks();
-	}
-	);
-	
-	$(document).ready(function(){
-		  var $inp = $('input');
-		  $inp.bind('click', function(e){
-		    if($inp.is('.clear'))
-		      $inp.val('');
-		  });
+	});
+
+	$(document).ready(function() {
+		var $inp = $('input');
+		$inp.bind('click', function(e) {
+			if ($inp.is('.clear'))
+				$inp.val('');
 		});
+	});
+
+	$(function() {
+		$("input:submit, a, button", ".but").button();
+		$("a", ".but").click(function() {
+			return false;
+		});
+	});
 </script>
 <title>Multimedia Database Viewer - ${h.title}</title>
 </head>
@@ -40,9 +55,9 @@
 		<div id="search">
 			<form action="/web/query/run" method="post">
 				<fieldset>
-					<input type="text" name="query" class="searchField clear" id="searchBox"
-						value="Enter SQL query here" /> <input type="submit" class="button"
-						value="" />
+					<input type="text" name="query" class="searchField clear"
+						id="searchBox" value="Enter SQL query here" /> <input
+						type="submit" class="button" value="" />
 				</fieldset>
 			</form>
 		</div>

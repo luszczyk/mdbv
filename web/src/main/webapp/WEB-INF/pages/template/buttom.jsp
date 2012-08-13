@@ -1,5 +1,5 @@
 </div>
-<div class="boxbottom"></div>
+<div class="clear"></div>
 
 <div id="promo">
 	<div class="wrap">

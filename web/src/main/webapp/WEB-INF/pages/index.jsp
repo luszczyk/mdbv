@@ -2,20 +2,26 @@
 <%@ include file="/WEB-INF/pages/template/header.jsp"%>
 <div class="formBox">
 	<br>
-	<h2>
-		Type data base credentials
-	</h2>
-	<br>
-	<form action="/web/db/index" method="post">
-		<fieldset>
-			<label>Host:</label>
-			<input type="text" name="host" class="clear" value="host"/><br>
-			<label>User:</label>
-			<input type="text" name="user" class="clear" value="user"/><br>
-			<label>Pass:</label>
-			<input type="password" name="pass" class="clear" value="password"/><br>
-			<button id="test" value="connect" onclick=""/> 
-		</fieldset>
-	</form>
+	<div id="side">
+		<div class="boxtop"></div>
+		<div class="box">
+			<div class="formContainer">
+			<h2>Type data base credentials</h2>
+			<form action="#" method="post">
+				<fieldset>
+					<span><label>Host:</label></span> <input type="text" name="host" class="clear"
+						value="host" /> <span><label>User:</label></span> <input type="text"
+						name="user" class="clear" value="user" /> <span><label>Pass:</label></span>
+					<input type="password" name="pass" class="clear" value="password" /><br>
+					<br>
+					<div class='but'>
+						<a href="#" onclick="$().toastmessage({text     : 'Data base conneted !', sticky : true, position : 'top-center', type : 'success', close    : function () {console.log('toast is closed ...');}});">Connect</a>
+					</div>
+				</fieldset>
+			</form>
+			</div>
+		</div>
+		<div class="boxbottom"></div>
+	</div>
 </div>
 <%@ include file="/WEB-INF/pages/template/buttom.jsp"%>
