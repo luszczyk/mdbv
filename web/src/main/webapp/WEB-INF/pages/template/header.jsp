@@ -28,7 +28,7 @@
 	$(document).ready(function(){
 		  var $inp = $('input');
 		  $inp.bind('click', function(e){
-		    if(/Enter SQL query here/.test($inp.val()))
+		    if($inp.is('.clear'))
 		      $inp.val('');
 		  });
 		});
@@ -40,7 +40,7 @@
 		<div id="search">
 			<form action="/web/query/run" method="post">
 				<fieldset>
-					<input type="text" name="query" class="searchField" id="searchBox"
+					<input type="text" name="query" class="searchField clear" id="searchBox"
 						value="Enter SQL query here" /> <input type="submit" class="button"
 						value="" />
 				</fieldset>
