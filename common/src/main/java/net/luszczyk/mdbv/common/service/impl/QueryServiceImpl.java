@@ -102,8 +102,8 @@ public class QueryServiceImpl implements QueryService {
 
 			result = new Result(table);
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOGGER.error("Error execution query: " + query, e);
 		}
 		return result;
 	}

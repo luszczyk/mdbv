@@ -4,21 +4,33 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import org.springframework.stereotype.Service;
-
 import net.luszczyk.mdbv.common.model.DataBase;
-import net.luszczyk.mdbv.common.model.impl.DataBasePostgres;
 import net.luszczyk.mdbv.common.service.DatabaseConnectionService;
+
+import org.springframework.stereotype.Service;
 
 @Service("DatabaseConnectionService")
 public class DatabaseConnectionServiceImpl implements DatabaseConnectionService {
 
-	private DataBase dataBase = new DataBasePostgres("kapitanlamp", "mdbv",
-			"mdbvdupa", 3307, "mdbvdb");
+	/*
+	 * private DataBase dataBase = new DataBasePostgres("kapitanlamp", "mdbv",
+	 * "mdbvdupa", 3307, "mdbvdb");
+	 */
 
 	private Connection conn;
 
-	public void connect() throws SQLException, ClassNotFoundException {
+	public void test(DataBase testDataBase) throws ClassNotFoundException,
+			SQLException {
+
+		Class.forName(testDataBase.getDriverPackage());
+		String url = "jdbc:" + testDataBase.getDriverName() + "://"
+				+ testDataBase.getHost() + "/" + testDataBase.getDbName();
+		DriverManager.getConnection(url, testDataBase.getUser(),
+				testDataBase.getPass());
+	}
+
+	public void connect(DataBase dataBase) throws SQLException,
+			ClassNotFoundException {
 
 		Class.forName(dataBase.getDriverPackage());
 		String url = "jdbc:" + dataBase.getDriverName() + "://"
@@ -27,26 +39,13 @@ public class DatabaseConnectionServiceImpl implements DatabaseConnectionService 
 				dataBase.getPass());
 	}
 
-	public Connection getConnection() {
+	public Connection getConnection() throws Exception {
 
 		if (conn == null) {
-			try {
-				connect();
-			} catch (SQLException e) {
-				// TODO logger
-				e.printStackTrace();
-				return null;
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				return null;
-			}
+			throw new Exception("No connected database");
+		} else {
+
+			return conn;
 		}
-
-		return conn;
 	}
-	
-	public DataBase getDataBase() {
-		return dataBase;
-	}
-
 }
