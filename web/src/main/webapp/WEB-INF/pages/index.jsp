@@ -9,13 +9,18 @@
 			<h2>Type data base credentials</h2>
 			<form action="#" method="post">
 				<fieldset>
-					<span><label>Host:</label></span> <input type="text" name="host" class="clear"
-						value="host" /> <span><label>User:</label></span> <input type="text"
-						name="user" class="clear" value="user" /> <span><label>Pass:</label></span>
-					<input type="password" name="pass" class="clear" value="password" /><br>
+					<span><label>Host:</label></span> <input type="text" id="dbhost" name="host" class="clear"
+						value="host" /> 
+						
+						<span><label>Port:</label></span>
+					<input type="text" id ="dbport" name="port" class="clear" value="port" /><br>
+						
+						<span><label>User:</label></span> <input type="text"
+						id="dbuser" name="user" class="clear" value="user" /> <span><label>Pass:</label></span>
+					<input type="password" id ="dbpass" name="pass" class="clear" value="password" /><br>
 					<br>
 					<div class='but'>
-						<a href="#" onclick="$().toastmessage({text     : 'Data base conneted !', sticky : true, position : 'top-center', type : 'success', close    : function () {console.log('toast is closed ...');}});">Connect</a>
+						<a href="#" onclick="dbConnTest();">Connect</a>
 					</div>
 				</fieldset>
 			</form>

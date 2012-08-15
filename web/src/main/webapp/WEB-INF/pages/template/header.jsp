@@ -12,7 +12,7 @@
 	href="/web/resources/css/pixDisplay.css" />
 <link rel="stylesheet" type="text/css" media="screen"
 	href="/web/resources/css/jquery.toastmessage.css" />
-	<link rel="stylesheet" type="text/css" media="screen"
+<link rel="stylesheet" type="text/css" media="screen"
 	href="/web/resources/css/jquery-ui-1.8.22.custom.css" />
 
 <script type="text/javascript" src="/web/resources/js/jquery.min.js"></script>
@@ -47,6 +47,32 @@
 			return false;
 		});
 	});
+
+	function dbConnTest() {
+		// get the form values
+		var host = $('#dbhost').val();
+		var user = $('#dbuser').val();
+		var port = $('#dbport').val();
+		var pass = $('#dbpass').val();
+
+		$.ajax({
+			type : "POST",
+			url : "/web/index/dbtest",
+			data : "host=" + host + "&user=" + user + "&port=" + port
+					+ "&pass=" + pass,
+			success : function(response) {
+				// we have the response
+				$().toastmessage('showSuccessToast', response);
+				$('#dbhost').val('');
+				$('#dbuser').val('');
+				$('#dbport').val('');
+				$('#dbpass').val('');
+			},
+			error : function(e) {
+				$().toastmessage('showErrorToast', e.responseText);
+			}
+		});
+	}
 </script>
 <title>Multimedia Database Viewer - ${h.title}</title>
 </head>
