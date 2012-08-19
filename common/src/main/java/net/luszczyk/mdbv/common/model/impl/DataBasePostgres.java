@@ -13,6 +13,18 @@ public class DataBasePostgres implements DataBase {
 	private Integer port;
 	private String name;
 	
+	public DataBasePostgres() {};
+
+	public DataBasePostgres(String host, String user, String pass, Integer port) {
+		super();
+		this.host = host;
+		this.user = user;
+		this.pass = pass;
+		this.port = port;
+		this.name = "mdbvdb";
+	}
+
+
 	public DataBasePostgres(String host, String user, String pass, Integer port, String name) {
 		super();
 		this.host = host;
@@ -20,6 +32,31 @@ public class DataBasePostgres implements DataBase {
 		this.pass = pass;
 		this.port = port;
 		this.name = name;
+	}
+	
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+
+	public void setPort(Integer port) {
+		this.port = port;
 	}
 	
 	@Override

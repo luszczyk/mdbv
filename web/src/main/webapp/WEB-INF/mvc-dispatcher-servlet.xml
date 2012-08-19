@@ -11,6 +11,18 @@
 	<import resource="classpath*:META-INF/*-module-context.xml" />
 	<import resource="classpath*:META-INF/common-context.xml" />
 
+	<bean id="jacksonMessageConverter"
+		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"></bean>
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="jacksonMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+
 	<context:component-scan base-package="net.luszczyk.mdbv.web.controller" />
 	<!-- the mvc resources tag does the magic -->
 	<mvc:resources mapping="/resources/**" location="/WEB-INF/res/, classpath:/res/" />
@@ -19,13 +31,39 @@
 	<bean
 		class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
 
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix">
-			<value>/WEB-INF/pages/</value>
+	<!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+		<property name="prefix"> <value>/WEB-INF/pages/</value> </property> <property 
+		name="suffix"> <value>.jsp</value> </property> </bean> -->
+
+	<bean
+		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="mediaTypes">
+			<map>
+				<entry key="html" value="text/html" />
+				<entry key="json" value="application/json" />
+			</map>
 		</property>
-		<property name="suffix">
-			<value>.jsp</value>
+		<property name="viewResolvers">
+			<list>
+				<bean id="viewResolver"
+					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="viewClass">
+						<value>org.springframework.web.servlet.view.JstlView </value>
+					</property>
+					<property name="prefix">
+						<value>/WEB-INF/pages/</value>
+					</property>
+					<property name="suffix">
+						<value>.jsp</value>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<property name="defaultViews">
+			<list>
+				<bean
+					class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+			</list>
 		</property>
 	</bean>
 
@@ -38,6 +76,6 @@
 		</property>
 	</bean>
 
-	
+
 
 </beans>

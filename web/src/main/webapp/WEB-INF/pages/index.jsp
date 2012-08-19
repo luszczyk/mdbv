@@ -20,7 +20,7 @@
 					<input type="password" id ="dbpass" name="pass" class="clear" value="password" /><br>
 					<br>
 					<div class='but'>
-						<a href="#" onclick="dbConnTest();">Connect</a>
+						<a href="#" onclick="connTest();">Connect</a>
 					</div>
 				</fieldset>
 			</form>

@@ -10,8 +10,11 @@ import net.luszczyk.mdbv.web.utill.WebUtills;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -33,22 +36,19 @@ public class IndexController {
 	}
 
 	@RequestMapping(value = "/index/dbtest", method = RequestMethod.POST)
-	public @ResponseBody
-	String handleDBTest(HttpServletRequest request, HttpServletResponse response)
+	public @ResponseBody DataBasePostgres handleDBTest(@RequestBody DataBasePostgres dataBasePostgres)
 			throws Exception {
 
+		DataBasePostgres dataBasePostgres2 = new DataBasePostgres();
 		try {
-			DataBase dataBase = new DataBasePostgres(
-					request.getParameter("host"), request.getParameter("user"),
-					request.getParameter("pass"), Integer.parseInt(request
-							.getParameter("port")), "mdbvdb");
-
-			databaseConnectionService.test(dataBase);
+			
+			databaseConnectionService.test(dataBasePostgres);
 		} catch (Exception e) {
-			throw new Exception("Database connection error !" + e.getMessage());
+			dataBasePostgres2.setName("ok");
 		}
-
-		return "Database connection success !";
+		
+		 
+		return dataBasePostgres2;
 	}
 
 }

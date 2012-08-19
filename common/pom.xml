@@ -29,7 +29,16 @@
 	</repositories>
 
 	<dependencies>
-	
+
+
+		<!-- JSON mapper -->
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.8</version>
+		</dependency>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

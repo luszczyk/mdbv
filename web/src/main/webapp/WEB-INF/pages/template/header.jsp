@@ -57,11 +57,14 @@
 
 		$.ajax({
 			type : "POST",
-			url : "/web/index/dbtest",
+			url : "/web/index/dbtest.json",
 			data : "host=" + host + "&user=" + user + "&port=" + port
 					+ "&pass=" + pass,
 			success : function(response) {
 				// we have the response
+				if (response) {
+					
+				}
 				$().toastmessage('showSuccessToast', response);
 				$('#dbhost').val('');
 				$('#dbuser').val('');
@@ -69,10 +72,61 @@
 				$('#dbpass').val('');
 			},
 			error : function(e) {
-				$().toastmessage('showErrorToast', e.responseText);
+				log.('Error test ' + e);
 			}
 		});
 	}
+	function connTestJ(){
+		if ($('#dbhost').val == "") {
+			$().toastmessage('showNoticeToast', 'Fill all fields in formular !');
+		}else{
+			var dbhost = $('#dbhost').val
+			$.getJSON("/web/index/dbtest.json",     // url
+				{ host: dbhost },   // request params
+				function(json){           // callback
+					if (json.status) {
+						$().toastmessage('showSuccessToast', json.response);
+					} else {
+						$().toastmessage('showErrorToast', json.response);
+					}
+				}
+			);
+		}
+	}
+	
+	function connTest(){
+		if ($('#dbhost').val == "" && $('#dbuser').val == "" && $('#dbport').val == "" && $('#dbpass').val == "") {
+			$().toastmessage('showNoticeToast', 'Fill all fields in formular !');
+		} else {
+			var dataBase = new Object();
+			dataBase.host = $('#dbhost').val();
+			dataBase.user = $('#dbuser').val();
+			dataBase.port = $('#dbport').val();
+			dataBase.pass = $('#dbpass').val();
+			dataBase.name = 'mdbvdb';
+			
+			$.ajax( {
+				url: "/web/index/dbtest.json",
+				type: "POST",
+				headers: { 
+			        'Accept': 'application/json',
+			        'Content-Type': 'application/json' 
+			    },
+				data: JSON.stringify(dataBase),
+				success: function(res) {
+				  if (res.name) {
+						$().toastmessage('showSuccessToast', res.name);
+					} else {
+						$().toastmessage('showErrorToast', 'nono');
+					}
+				},
+				error : function(e) {
+					$().toastmessage('showErrorToast', 'Error');
+				}
+			});
+		}
+	}
+	
 </script>
 <title>Multimedia Database Viewer - ${h.title}</title>
 </head>
