@@ -51,7 +51,7 @@ h1 {
 
 h2 {
 	font: normal 1.6em Arial;
-	color: #3D3C3B;
+	text-align: center;
 	margin: 0 0 15px;
 }
 
@@ -76,6 +76,12 @@ p {
 
 .background {
 	background: url(/web/resources/images/bg.jpg) no-repeat left 42px;
+}
+
+#db-info {
+	float: right;
+	margin: 9px 0 0;
+	width: 650px;
 }
 
 #search {
@@ -220,12 +226,6 @@ input.button {
 	margin: 0 0 10px;
 	text-align: justify;
 	width: 900px;
-}
-
-#content h3 {
-	color: #ccc;
-	margin: 0 0 6px 5px;
-	height: 16px;
 }
 
 .resultData {
@@ -412,7 +412,10 @@ input.button {
 }
 
 .formContainer form label {
-	font-size: 0.9em;
+	font-size: 1.2em;
+	float: left; padding-bottom : 2px;
+	padding-top: 2px;
+	padding-bottom: 2px;
 }
 
 /* Table style */
@@ -453,5 +456,81 @@ input.button {
 }
 
 #gradient-style td a {
-	text-decoration:none; display:block; padding:0px; height:100%;
+	text-decoration: none;
+	display: block;
+	padding: 0px;
+	height: 100%;
+}
+
+/* form db */
+#form2 {
+	margin: 1em 0;
+	color: #fff;
+	width: 325px;
+}
+
+#form2 h3 {
+	margin: 0;
+	padding: 4px;
+	background: #57a700 url(/web/resources/images/form_heading.gif) repeat-x;
+	color: #fff;
+	font-size: 20px;
+	border: 1px solid #57a700;
+	border-bottom: none;
+}
+
+#form2 h3 span {
+	display: block;
+	padding: 10px 20px;
+	background: url(/web/resources/images/form_ico.gif) no-repeat 93% 50%;
+}
+
+#form2 fieldset {
+	margin: 0;
+	padding: 0;
+	border: none;
+	border-top: 3px solid #000;
+	background: #000 url(/web/resources/images/form_top.gif) repeat-x;
+	padding-bottom: 1em;
+}
+
+#form2 legend {
+	display: none;
+}
+
+#form2 p {
+	margin: .5em 20px;
+}
+
+#form2 label {
+	display: block;
+}
+
+#form2 input,#form2 textarea {
+	width: 272px;
+	border: 1px solid #111;
+	background: #282828 url(/web/resources/images/form_input.gif) repeat-x;
+	padding: 5px 3px;
+	color: #fff;
+}
+
+#form2 textarea {
+	height: 125px;
+	overflow: auto;
+}
+
+#form2 div.submit {
+	text-align: right;
+	margin: .5em 20px;
+}
+
+#form2 button {
+	padding: 0 20px;
+	height: 32px;
+	line-height: 32px;
+	border: 1px solid #70ad2e;
+	background: #5aae00 url(/web/resources/images/form_button.gif) repeat-x;
+	color: #fff;
+	cursor: pointer;
+	text-align: center;
 }

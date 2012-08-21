@@ -12,4 +12,5 @@ public interface DatabaseConnectionService {
 	public void test(DataBase dataBase) throws ClassNotFoundException,
 	SQLException ;
 	
+	
 }
