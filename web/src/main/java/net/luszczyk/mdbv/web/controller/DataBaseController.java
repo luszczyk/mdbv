@@ -46,17 +46,23 @@ public class DataBaseController {
 	}
 
 	@RequestMapping(value = "/connect", method = RequestMethod.POST)
-	public ModelAndView handleDBConnect(@ModelAttribute(value="db") DataBase dataBase, HttpSession session) throws Exception {
+	public @ResponseBody
+	Message handleDBConnect(@RequestBody DataBasePostgres dataBasePostgres, HttpSession session)
+			throws Exception {
 
-	ModelAndView model = new ModelAndView("query");
+		Message message = new Message();
 		try {
-			databaseConnectionService.connect(dataBase);
-			session.setAttribute("db", dataBase);
+			databaseConnectionService.connect(dataBasePostgres);
+			session.setAttribute("db", dataBasePostgres);
+			message.setStatus(0);
+			message.setMsg("Connected to " + dataBasePostgres.getDbName());
 		} catch (Exception e) {
+			message.setStatus(1);
+			message.setMsg("Error connetion database: " + e.getMessage());
 			LOG.error("Error connecting db" ,e);
 		}
 
-		return model;
+		return message;
 	}
 	
 	@ModelAttribute(value="db")

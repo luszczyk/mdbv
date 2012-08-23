@@ -1,11 +1,20 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="/WEB-INF/pages/template/header.jsp"%>
+<div id="query">
+	<form action="/web/query/run" id="qform" method="post">
+		<fieldset>
+			<p class="first submit">
+			<input type="text" name="query"
+					class="searchField clear" id="searchBox"
+					value="Enter SQL query here" />
+				<button type="submit">Query</button>
+			</p>
+		</fieldset>
+	</form>
+</div>
 <div class="resultBox">
 	<br>
-	<h2>
-		Query:
-		<code>${select}</code>
-	</h2>
+	<code>${select}</code>
 	<br>
 	<table id="gradient-style">
 		<thead>

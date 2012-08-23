@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@page contentType="text/html" pageEncoding="UTF-8" import="net.luszczyk.mdbv.common.model.DataBase" %>
-<%@ page session="true" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"
+	import="net.luszczyk.mdbv.common.model.DataBase"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -11,43 +11,43 @@
 <link rel="stylesheet" type="text/css" media="screen"
 	href="/web/resources/css/style.css" />
 <link rel="stylesheet" type="text/css" media="screen"
-	href="/web/resources/css/pixDisplay.css" />
-<link rel="stylesheet" type="text/css" media="screen"
 	href="/web/resources/css/jquery.toastmessage.css" />
 <link rel="stylesheet" type="text/css" media="screen"
 	href="/web/resources/css/jquery-ui-1.8.22.custom.css" />
-
 <script type="text/javascript" src="/web/resources/js/jquery.min.js"></script>
-
 <script type="text/javascript"
 	src="/web/resources/js/jquery.toastmessage.js"></script>
 <script type="text/javascript"
 	src="/web/resources/js/jquery-ui-1.8.22.custom.min.js"></script>
+<!-- <script type="text/javascript" src="/web/resources/js/right.js"></script>
+<script type="text/javascript" src="/web/resources/js/right-lightbox.js"></script> -->
 
-<c:forEach var="j" items="${h.js}">
-	<script type="text/javascript" src="/web/resources/js/${j}"></script>
-</c:forEach>
+<%-- <c:if test="${h != null && h.css != null}">
+	<c:forEach var="c" items="${h.css}">
+		<link rel="stylesheet" type="text/css" media="screen"
+			href="/web/resources/css/${c}" />
+	</c:forEach>
+</c:if>
+
+<c:if test="${h != null && h.js != null}">
+	<c:forEach var="j" items="${h.js}">
+		<script type="text/javascript" src="/web/resources/js/${j}"></script>
+	</c:forEach>
+</c:if> --%>
 <script type="text/javascript">
-	$(function() {
-		$("input:submit, a, button", ".but").button();
-		$("a", ".but").click(function() {
-			return false;
-		});
-	});
-
-	function connTest() {
-		if ($('#host').val == "" && $('#user').val == ""
-				&& $('#port').val == "" && $('#pass').val == "") {
+	function connTest(dbform) {
+		if ($('#dbhost').val() == "" && $('#dbuser').val() == ""
+				&& $('#dbport').val() == "" && $('#dbpass').val() == "") {
 			$()
 					.toastmessage('showNoticeToast',
 							'Fill all fields in formular !');
 		} else {
 			var dataBase = new Object();
-			dataBase.host = $('#host').val();
-			dataBase.user = $('#user').val();
-			dataBase.port = $('#port').val();
-			dataBase.pass = $('#pass').val();
-			dataBase.name = $('#name').val();
+			dataBase.host = $('#dbhost').val();
+			dataBase.user = $('#dbuser').val();
+			dataBase.port = $('#dbport').val();
+			dataBase.pass = $('#dbpass').val();
+			dataBase.name = $('#dbname').val();
 
 			$.ajax({
 				url : "/web/db/test.json",
@@ -60,30 +60,35 @@
 				success : function(res) {
 					if (res.status == 0) {
 						$().toastmessage('showSuccessToast', res.msg);
+						dbform.submit();
+						return true;
 					} else {
 						$().toastmessage('showErrorToast', res.msg);
+						return false;
 					}
 				},
 				error : function(e) {
 					$().toastmessage('showErrorToast', e);
+					return false;
 				}
 			});
 		}
 	}
 
-	function dbConnect() {
-		if ($('#host').val == "" && $('#user').val == ""
-				&& $('#port').val == "" && $('#pass').val == "") {
+	function dbConnect(dbform) {
+		if ($('#dbhost').val == "" && $('#dbuser').val == ""
+				&& $('#dbname').val == "" && $('#dbport').val == ""
+				&& $('#dbpass').val == "") {
 			$()
 					.toastmessage('showNoticeToast',
 							'Fill all fields in formular !');
 		} else {
 			var dataBase = new Object();
-			dataBase.host = $('#host').val();
-			dataBase.user = $('#user').val();
-			dataBase.port = $('#port').val();
-			dataBase.pass = $('#pass').val();
-			dataBase.name = $('#name').val();
+			dataBase.host = $('#dbhost').val();
+			dataBase.user = $('#dbuser').val();
+			dataBase.port = $('#dbport').val();
+			dataBase.pass = $('#dbpass').val();
+			dataBase.name = $('#dbname').val();
 
 			$.ajax({
 				url : "/web/db/connect.json",
@@ -114,16 +119,28 @@
 	<div class="wrap background">
 		<div id="db-info">
 
-				<c:if test='<%=request.getSession().getAttribute("db") != null%>'> 
-				<c:out value='<%=((DataBase) request.getSession().getAttribute("db")).getHost() %>'/>
-				<span>Host: <c:out value='<%=((DataBase) request.getSession().getAttribute("db")).getHost() %>'/></span>
-				<span>Database: <c:out value='<%=((DataBase) request.getSession().getAttribute("db")).getDbName() %>'/></span>
-				<span>User: <c:out value='<%=((DataBase) request.getSession().getAttribute("db")).getUser() %>'/></span>
-				</c:if>
+			<%
+				if (session.getAttribute("db") != null) {
+			%>
+			<div class="db_details">
+				<div>Host: <span><c:out
+						value='<%=((DataBase) session.getAttribute("db")).getHost()%>' /></span></div>
+				<div>Database: <span><c:out
+						value='<%=((DataBase) session.getAttribute("db")).getDbName()%>' /></span></div>
+				<div>User: <span><c:out
+						value='<%=((DataBase) session.getAttribute("db")).getUser()%>' /></span></div>
+			</div>
+			<%
+				} else {
+			%>
+			<div class="db_details">
+				<div>No connection database</div>
+			</div>
+			<% } %>
 		</div>
 		<ul id="menu">
-			<li><a class="current" href="/web/index">Home</a></li>
-			<li><a href="#">Settings</a></li>
+			<li><a class="current" href="/web/query/index">Query</a></li>
+			<li><a href="/web/index">Settings</a></li>
 		</ul>
 
 		<div class="clear"></div>

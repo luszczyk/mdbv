@@ -9,7 +9,7 @@
 	<groupId>net.luszczyk.mdbv</groupId>
 	<artifactId>modules</artifactId>
 	<name>modules</name>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<properties>
 		<spring.version>3.0.5.RELEASE</spring.version>

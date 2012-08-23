@@ -7,35 +7,28 @@
 			<h3>Type data base credentials</h3>
 			<fieldset>
 				<p class="first">
-					<label>Host:</label> <br> <input type="text" id="host"
+					<label>Host:</label> <br> <input type="text" id="dbhost"
 						name="db.host" class="field" value="host" />
 				</p>
 				<p>
-					<label>Port:</label> <input type="text" id="port" name="db.port"
+					<label>Port:</label> <input type="text" id="dbport" name="db.port"
 						class="field" value="port" />
 				</p>
 				<p>
-					<label>Database:</label> <input type="text" id="name" name="db.name"
-						class="field" value="database" />
+					<label>Database:</label> <input type="text" id="dbname"
+						name="db.name" class="field" value="database" />
 				</p>
 				<p>
-					<label>User:</label> <input type="text" id="user" name="db.user"
+					<label>User:</label> <input type="text" id="dbuser" name="db.user"
 						class="field" value="user" />
 				</p>
 				<p class="last">
-					<label>Pass:</label> <input type="password" id="pass" name="db.pass"
-						class="field" value="password" />
+					<label>Pass:</label> <input type="password" id="dbpass"
+						name="db.pass" class="field" value="password" />
 				</p>
-				<br>
-				<div class="submit">
-				<div class='but' style="padding: 2px; display: inline; width: 250px;">
-					<a href="#" onclick="connTest();">Test</a>
-				</div>
-				<div class='but' style="padding: 2px; display: inline; width: 250px;">
-					<input type="submit" id="submit" name="Connect" value="Connect"/>
-				</div>
-
-				</div>
+				<p class="submit">
+					<button type="button" onclick="return dbConnect(this.form);">Connect</button>
+				</p>
 			</fieldset>
 		</form>
 	</div>

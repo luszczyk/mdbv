@@ -14,8 +14,6 @@ public class WebUtills {
 	public static Map<String, Object> generateHeaderMap() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("title", "Home");
-		map.put("js", new String[] { "pixDisplay.js" });
-
 		return map;
 	}
 

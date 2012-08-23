@@ -15,8 +15,13 @@ public class ViewerImageService extends ViewerService {
 
 	@Override
 	public String getLink(final String fileName) {
-		return "<a href=\"/web/res/domain/" + fileName
-				+ "/fileContent\" rel=\"pixDisplay\">view</a>";
-	}
 
+		return "<a onclick='Lightbox.load(\"/web/res/domain/" + fileName +
+		 "/fileContent\"); return false;' href=''>view</a>";
+
+		/*
+		 * return "<a href=\"/web/res/domain/" + fileName +
+		 * "/fileContent\" rel=\"pixDisplay\">view</a>";
+		 */
+	}
 }

@@ -12,7 +12,7 @@
 	<artifactId>web</artifactId>
 	<name>web</name>
 	<packaging>war</packaging>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 
 
 	<dependencies>
@@ -23,19 +23,16 @@
 			<groupId>net.luszczyk.mdbv</groupId>
 			<artifactId>common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.luszczyk.mdbv.modules</groupId>
 			<artifactId>image</artifactId>
-			<version>0.0.3-SNAPSHOT</version>
-			<scope>compile</scope>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.luszczyk.mdbv.modules</groupId>
 			<artifactId>video</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<scope>compile</scope>
 		</dependency>
 
 		<!-- <dependency> <groupId>junit</groupId> <artifactId>junit</artifactId> 

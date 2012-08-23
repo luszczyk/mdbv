@@ -4,11 +4,11 @@
 	<parent>
 		<artifactId>modules</artifactId>
 		<groupId>net.luszczyk.mdbv</groupId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>net.luszczyk.mdbv.modules</groupId>
 	<artifactId>image</artifactId>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>image</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>net.luszczyk.mdbv</groupId>
 			<artifactId>common</artifactId>
-			<scope>compile</scope>
+			<scope>provided</scope>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

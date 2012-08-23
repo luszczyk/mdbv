@@ -90,6 +90,10 @@ p {
 	width: 650px;
 }
 
+#query {
+	margin: 9px 0 0;
+}
+
 input.field {
 	float: left;
 	background: #808080;
@@ -413,7 +417,8 @@ input.button {
 
 .formContainer form label {
 	font-size: 1.2em;
-	float: left; padding-bottom : 2px;
+	float: left;
+	padding-bottom: 2px;
 	padding-top: 2px;
 	padding-bottom: 2px;
 }
@@ -519,9 +524,8 @@ input.button {
 	overflow: auto;
 }
 
-#form2 div.submit {
+#form2 p.submit {
 	text-align: right;
-	margin: .5em 20px;
 }
 
 #form2 button {
@@ -533,4 +537,65 @@ input.button {
 	color: #fff;
 	cursor: pointer;
 	text-align: center;
+}
+
+/* form query */
+#qform {
+	margin: 1em 0;
+	color: #fff;
+	width: 900px;
+}
+
+#qform fieldset {
+	margin: 0;
+	padding: 0;
+	border: none;
+	border-top: 3px solid #000;
+	background: #000 url(/web/resources/images/form_top.gif) repeat-x;
+	padding-bottom: 0.4em;
+}
+
+#qform p {
+	margin: .2em 10px;
+}
+
+#qform input,#qform textarea {
+	width: 770px;
+	border: 1px solid #111;
+	background: #282828 url(/web/resources/images/form_input.gif) repeat-x;
+	padding: 5px 3px;
+	color: #fff;
+	float: left;
+}
+
+#qform textarea {
+	height: 125px;
+	overflow: auto;
+}
+
+#qform button {
+	padding: 0 20px;
+	height: 28px;
+	line-height: 28px;
+	border: 1px solid #70ad2e;
+	background: #5aae00 url(/web/resources/images/form_button.gif) repeat-x;
+	color: #fff;
+	cursor: pointer;
+	text-align: center;
+	float: right;
+}
+
+.db_details div {
+	color: #CCCCCC;
+	float: left;
+	font-size: 1.1em;
+	font-weight: bold;
+	margin: 0 2px 0 0;
+	padding: 6px 20px 5px;
+	text-align: center;
+}
+
+.db_details div span {
+	color: #FFFFF;
+	padding-left: 5px;
 }
