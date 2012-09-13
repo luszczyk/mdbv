@@ -8,7 +8,7 @@
 		<thead>
 			<tr>
 				<c:forEach var="d" items="${e.values}">
-					<th scope="col">${d.column.name} ${d.column.type}</th>
+					<th scope="col"><strong>${d.column.name}</strong> [${d.column.type}]</th>
 				</c:forEach>
 			</tr>
 		</thead>
