@@ -8,21 +8,21 @@
 		<thead>
 			<tr>
 				<c:forEach var="d" items="${e.values}">
-					<th scope="col"><strong>${d.column.name}</strong> [${d.column.type}]</th>
+					<th scope="col"><strong>${d.column.name}</strong>
+						[${d.column.type}]</th>
 				</c:forEach>
 			</tr>
 		</thead>
 		<tbody>
-				<tr>
-					<c:forEach var="o" items="${e.values}">
-						<td><c:if test="${o.viewable}">
+			<tr>
+				<c:forEach var="o" items="${e.values}">
+					<td><c:if test="${o.viewable}">
 											${o.linkToView}
-										</c:if> 
-										<c:if test="${!o.viewable}">
-									${o.type} ${o.preView}
+										</c:if> <c:if test="${!o.viewable}">
+									${o.preView}
 								</c:if></td>
-					</c:forEach>
-				</tr>
+				</c:forEach>
+			</tr>
 		</tbody>
 
 	</table>
