@@ -11,9 +11,9 @@ public abstract class Domain {
 	private static final Logger LOGGER = Logger.getLogger(Domain.class);
 	private DomainDetails domainDetails;
 
-	protected QueryService queryService;
-	protected Table table;
-	protected Column column;
+	protected transient QueryService queryService;
+	protected transient Table table;
+	protected transient Column column;
 	protected String preView;
 	protected Long oid;
 
@@ -23,7 +23,7 @@ public abstract class Domain {
 
 	public abstract String getMediaType();
 
-	public DomainDetails getDomainDetails() {
+	protected DomainDetails getDomainDetails() {
 
 		if (domainDetails == null) {
 			try {
@@ -52,8 +52,17 @@ public abstract class Domain {
 		} else {
 			return null;
 		}
-
 	}
+
+    public String getResourceView() {
+        if (getDomainDetails() != null) {
+            return getDomainDetails().getViewerService().getResourceView(
+                    getContentPath());
+        } else {
+            return null;
+        }
+
+    }
 
 	public String getPreView() {
 		return preView;

@@ -2,6 +2,7 @@ package net.luszczyk.mdbv.web.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import net.luszczyk.mdbv.common.service.QueryService;
 import net.luszczyk.mdbv.common.table.Table;
@@ -32,11 +33,12 @@ public class QueryController {
 
 	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	public ModelAndView run(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+			HttpSession session) throws Exception {
 
 		String query = request.getParameter("query");
 		ModelAndView moView = new ModelAndView("query");
 		Table table = queryService.runQuery(query).getTable();
+        WebUtills.putFilesToSession(table, session);
 
 		moView.addObject("h", WebUtills.generateHeaderMap("Query result"));
 		moView.addObject("select", query);

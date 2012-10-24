@@ -14,26 +14,14 @@
 	href="/web/resources/css/jquery.toastmessage.css" />
 <link rel="stylesheet" type="text/css" media="screen"
 	href="/web/resources/css/jquery-ui-1.8.22.custom.css" />
+<link rel="stylesheet" type="text/css" media="screen"
+          href="/web/resources/css/prettyPhoto.css" />
 <script type="text/javascript" src="/web/resources/js/jquery.min.js"></script>
+<script type="text/javascript" src="/web/resources/js/jquery.prettyPhoto.js"></script>
 <script type="text/javascript"
 	src="/web/resources/js/jquery.toastmessage.js"></script>
 <script type="text/javascript"
 	src="/web/resources/js/jquery-ui-1.8.22.custom.min.js"></script>
-<!-- <script type="text/javascript" src="/web/resources/js/right.js"></script>
-<script type="text/javascript" src="/web/resources/js/right-lightbox.js"></script> -->
-
-<%-- <c:if test="${h != null && h.css != null}">
-	<c:forEach var="c" items="${h.css}">
-		<link rel="stylesheet" type="text/css" media="screen"
-			href="/web/resources/css/${c}" />
-	</c:forEach>
-</c:if>
-
-<c:if test="${h != null && h.js != null}">
-	<c:forEach var="j" items="${h.js}">
-		<script type="text/javascript" src="/web/resources/js/${j}"></script>
-	</c:forEach>
-</c:if> --%>
 <script type="text/javascript">
 	function connTest(dbform) {
 		if ($('#dbhost').val() == "" && $('#dbuser').val() == ""

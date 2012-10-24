@@ -31,7 +31,7 @@ address {
 body {
 	font: .8em "Trebuchet MS", Verdana, Helvetica, sans-serif;
 	color: #666;
-	background: #F7FCFF url(/web/resources/images/bg.gif) repeat-x;
+	background: #F7FCFF url(/web/resources/images/bg2.gif) repeat-x;
 }
 
 a {
@@ -320,6 +320,7 @@ input.button {
 
 .resultBox {
 	padding: 3px 6px;
+    min-height: 300px;
 }
 
 .boxbottom {
@@ -378,7 +379,7 @@ input.button {
 #promo {
 	clear: both;
 	border-top: 3px solid #6E6E6E;
-	background: #505050 url(/web/resources/images/footer.gif) no-repeat
+	background: #000000
 		right top;
 	color: #ccc;
 	padding: 30px 0 0 0;
@@ -537,6 +538,7 @@ input.button {
 	color: #fff;
 	cursor: pointer;
 	text-align: center;
+    margin: 10px 6px 0 0;
 }
 
 /* form query */

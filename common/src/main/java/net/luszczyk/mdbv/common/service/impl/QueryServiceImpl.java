@@ -30,122 +30,126 @@ import org.springframework.stereotype.Service;
 @Service
 public class QueryServiceImpl implements QueryService {
 
-	private static final Logger LOGGER = Logger.getLogger(QueryServiceImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(QueryServiceImpl.class);
 
-	private LargeObjectManager lobj;
+    private LargeObjectManager lobj;
 
-	@Autowired
-	private FileService fileService;
+    @Autowired
+    private FileService fileService;
 
-	@Autowired
-	private RegisterService registerService;
+    @Autowired
+    private RegisterService registerService;
 
-	@Autowired
-	private DatabaseConnectionService databaseConnectionService;
+    @Autowired
+    private DatabaseConnectionService databaseConnectionService;
 
-	private LargeObjectManager getLargeObjectManager() {
+    private LargeObjectManager getLargeObjectManager() {
 
-		try {
+        try {
 
-			Connection conn = databaseConnectionService.getConnection();
+            Connection conn = databaseConnectionService.getConnection();
 
-			if (lobj == null) {
-				lobj = ((org.postgresql.PGConnection) conn).getLargeObjectAPI();
-			}
-		} catch (Exception e) {
-			LOGGER.error("Error getting LargeObjectManager", e);
-		}
-		return lobj;
-	}
+            if (lobj == null) {
+                lobj = ((org.postgresql.PGConnection) conn).getLargeObjectAPI();
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error getting LargeObjectManager", e);
+        }
+        return lobj;
+    }
 
-	public Result runQuery(String query) {
+    public Result runQuery(String query) {
 
-		Result result = null;
-		try {
-			Connection conn = databaseConnectionService.getConnection();
-			conn.setAutoCommit(false);
+        Result result = null;
+        try {
+            Connection conn = databaseConnectionService.getConnection();
+            conn.setAutoCommit(false);
 
-			PreparedStatement ps = conn.prepareStatement(query);
+            PreparedStatement ps = conn.prepareStatement(query);
 
-			ResultSet rs = ps.executeQuery();
+            ResultSet rs = ps.executeQuery();
 
-			ResultSetMetaData rsmd = rs.getMetaData();
-			int numberOfColumns = rsmd.getColumnCount();
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int numberOfColumns = rsmd.getColumnCount();
 
-			List<Column> columns = new ArrayList<Column>();
-			List<Entity> entities = new ArrayList<Entity>();
-			Table table = new Table(rs.getCursorName(), columns, entities);
+            List<Column> columns = new ArrayList<Column>();
+            List<Entity> entities = new ArrayList<Entity>();
+            Table table = new Table(rs.getCursorName(), columns, entities);
 
-			for (int i = 1; i < numberOfColumns; ++i) {
-				columns.add(new Column(i, rsmd.getColumnName(i), rsmd
-						.getColumnTypeName(i)));
-			}
+            for (int i = 1; i < numberOfColumns; ++i) {
+                columns.add(new Column(i, rsmd.getColumnName(i), rsmd
+                        .getColumnTypeName(i)));
+            }
 
-			Integer id = 0;
-			while (rs.next()) {
+            Integer id = 0;
+            while (rs.next()) {
 
-				List<Domain> objects = new ArrayList<Domain>();
-				for (Column c : columns) {
-					Domain d = null;
-					if ("oid".equals(c.getType())) {
-						d = new DomainProxy(this, table, c, rs.getObject(c.getId())
-								.toString(), rs.getLong(c.getId()));
-					} else {
-						d = new DomainProxy(this, table, c, rs.getObject(c.getId())
-								.toString());
-					}
+                List<Domain> objects = new ArrayList<Domain>();
+                for (Column c : columns) {
+                    Domain d = null;
+                    if ("oid".equals(c.getType())) {
+                        d = new DomainProxy(this, table, c, rs.getObject(c.getId())
+                                .toString(), rs.getLong(c.getId()));
+                    } else {
+                        d = new DomainProxy(this, table, c, rs.getObject(c.getId())
+                                .toString());
+                    }
 
-					objects.add(d);
-				}
-				entities.add(new Entity(++id, objects));
-			}
+                    objects.add(d);
+                }
+                entities.add(new Entity(++id, objects));
+            }
 
-			result = new Result(table);
+            result = new Result(table);
 
-		} catch (Exception e) {
-			LOGGER.error("Error execution query: " + query, e);
-		}
-		return result;
-	}
+        } catch (Exception e) {
+            LOGGER.error("Error execution query: " + query, e);
+        }
+        return result;
+    }
 
-	public DomainDetails getDomainDetails(final Domain domain)
-			throws GettingLargeObjectException {
+    public DomainDetails getDomainDetails(final Domain domain)
+            throws GettingLargeObjectException {
 
-		DomainDetails result = null;
+        DomainDetails result = null;
 
-		long oid = domain.getOid();
-		LargeObject obj = null;
+        if (domain.getOid() != null) {
 
-		try {
-			obj = getLargeObjectManager().open(oid, LargeObjectManager.READ);
+            long oid = domain.getOid();
+            LargeObject obj = null;
 
-			byte buf[] = new byte[obj.size()];
-			obj.read(buf, 0, obj.size());
-			obj.close();
+            try {
+                obj = getLargeObjectManager().open(oid, LargeObjectManager.READ);
 
-			String filePath = fileService.saveFile(buf);
+                byte buf[] = new byte[obj.size()];
+                obj.read(buf, 0, obj.size());
+                obj.close();
 
-			if (filePath != null) {
+                String filePath = fileService.saveFile(buf);
 
-				String type = fileService.getFileType(filePath);
+                if (filePath != null) {
 
-				if (type != null) {
+                    String type = fileService.getFileType(filePath);
 
-					if (registerService.getTypeList().contains(type)) {
+                    if (type != null) {
 
-						result = new DomainDetails(filePath, type,
-								registerService.getViewerService(type));
-					} else {
+                        if (registerService.getTypeList().contains(type)) {
 
-						result = new DomainDetails(filePath, type);
-					}
-				}
-			}
-		} catch (SQLException e) {
-			LOGGER.error("Error getting largeobject oid: " + oid, e);
-			throw new GettingLargeObjectException();
-		}
+                            result = new DomainDetails(filePath, type,
+                                    registerService.getViewerService(type));
+                        } else {
 
-		return result;
-	}
+                            result = new DomainDetails(filePath, type);
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Error getting largeobject oid: " + oid, e);
+                throw new GettingLargeObjectException();
+            }
+        } else {
+            throw new GettingLargeObjectException();
+        }
+        return result;
+    }
 }

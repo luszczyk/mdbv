@@ -14,15 +14,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.postgresql.largeobject.LargeObject;
 import org.postgresql.largeobject.LargeObjectManager;
 
 public class SaveTest {
 
-	private static final String DB_URL = "jdbc:postgresql://kapitanlamp/mdbvdb";
+	private static final String DB_URL = "jdbc:postgresql://localhost/mdbvdb";
 	private static final String DB_USER = "mdbv";
-	private static final String DB_PASS = "mdbvdupa";
+	private static final String DB_PASS = "mdbv";
 	private static final String FILE_NAME = "008.jpg";
 
 	private Connection conn;
@@ -32,7 +33,7 @@ public class SaveTest {
 		
 	}
 
-	//@Before
+	@Before
 	public void connect() {
 
 		try {
@@ -48,7 +49,7 @@ public class SaveTest {
 
 	}
 
-	//@Test
+	@Test
 	public void saveImage() {
 
 		try {
@@ -97,7 +98,7 @@ public class SaveTest {
 
 	}
 
-	//@Test
+	@Test
 	public void getImage() {
 
 		LargeObjectManager lobj = null;

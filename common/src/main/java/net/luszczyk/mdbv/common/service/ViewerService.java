@@ -12,5 +12,6 @@ public abstract class ViewerService {
 	}
 	
 	public abstract String getLink(final String fileName);
+    public abstract String getResourceView(final String fileName);
 
 }
