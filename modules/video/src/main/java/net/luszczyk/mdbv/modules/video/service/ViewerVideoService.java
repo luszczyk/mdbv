@@ -29,4 +29,9 @@ public class ViewerVideoService extends ViewerService {
 		 * "/fileContent\" rel=\"pixDisplay\">view</a>";
 		 */
 	}
+
+    @Override
+    public String getResourceView(String fileName) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }
