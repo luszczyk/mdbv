@@ -32,6 +32,7 @@ public class ViewerVideoService extends ViewerService {
 
     @Override
     public String getResourceView(String fileName) {
+
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
