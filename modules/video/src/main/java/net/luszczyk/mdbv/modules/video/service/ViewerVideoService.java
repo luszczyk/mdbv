@@ -8,31 +8,19 @@ import org.springframework.stereotype.Service;
 public class ViewerVideoService extends ViewerService {
 
 	{
-		typeList.add("video/ogv");
-	}
-
-	@Override
-	public String getLink(final String fileName) {
-		
-		return "<a href=\"/web/res/domain/" + fileName +
-				 "/fileContent\" rel=\"pixDisplayVideo\">view</a>";
-
-/*		return "<video id=\"vid1\" width=\"480\" height=\"267\" "
-				+ " poster=\"http://cdn.kaltura.org/apis/html5lib/kplayer-examples/media/bbb480.jpg\""
-				+ "durationHint=\"33\"> "
-				+ "<source src=\"liwko.ogv\" type=\"video/ogg\" />" +
-
-				"</video>";*/
-
-		/*
-		 * return "<a href=\"domain/" + fileName +
-		 * "/fileContent\" rel=\"pixDisplay\">view</a>";
-		 */
+		typeList.add("video/mp4");
 	}
 
     @Override
-    public String getResourceView(String fileName) {
+    public String getLink(final String fileName) {
+        return "<a rel=\"prettyPhoto[iframe]\" href='/web/res/view/" + fileName + "?iframe=true&width=800&height=600'>view</a>";
+    }
 
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    @Override
+    public String getResourceView(final String fileName) {
+
+        return "<video  controls=\"controls\">" +
+                "<source src=\"/web/res/domain/\" + fileName + \"/fileContent\" type=\"video/mp4\">" +
+                "</video>";
     }
 }

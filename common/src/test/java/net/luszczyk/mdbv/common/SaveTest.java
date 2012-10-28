@@ -23,8 +23,8 @@ public class SaveTest {
 
 	private static final String DB_URL = "jdbc:postgresql://localhost/mdbvdb";
 	private static final String DB_USER = "mdbv";
-	private static final String DB_PASS = "mdbv";
-	private static final String FILE_NAME = "008.jpg";
+	private static final String DB_PASS = "mdbvdupa";
+	private static final String FILE_NAME = "demo.mp4";
 
 	private Connection conn;
 	
@@ -33,7 +33,7 @@ public class SaveTest {
 		
 	}
 
-	@Before
+	//@Before
 	public void connect() {
 
 		try {
@@ -49,7 +49,7 @@ public class SaveTest {
 
 	}
 
-	@Test
+	//@Test
 	public void saveImage() {
 
 		try {
@@ -98,7 +98,7 @@ public class SaveTest {
 
 	}
 
-	@Test
+	//@Test
 	public void getImage() {
 
 		LargeObjectManager lobj = null;

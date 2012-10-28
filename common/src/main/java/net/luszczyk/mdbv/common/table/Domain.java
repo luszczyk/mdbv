@@ -30,7 +30,7 @@ public abstract class Domain {
 				domainDetails = queryService.getDomainDetails(this);
 				LOGGER.debug("Found domainDetails for oid: " + oid);
 			} catch (GettingLargeObjectException e) {
-				LOGGER.warn("No content path for domain" + this, e);
+				LOGGER.warn("No content path for domain" + this);
 			}
 		}
 		return domainDetails;
@@ -55,7 +55,7 @@ public abstract class Domain {
 	}
 
     public String getResourceView() {
-        if (getDomainDetails() != null) {
+        if (getDomainDetails() != null && getDomainDetails().getViewerService() != null) {
             return getDomainDetails().getViewerService().getResourceView(
                     getContentPath());
         } else {
