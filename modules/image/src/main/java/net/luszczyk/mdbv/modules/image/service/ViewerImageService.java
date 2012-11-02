@@ -15,11 +15,11 @@ public class ViewerImageService extends ViewerService {
 
 	@Override
 	public String getLink(final String fileName) {
-		return "<a rel=\"prettyPhoto[iframe]\" href='/web/content/view/" + fileName + "?iframe=true&width=800&height=600'>view</a>";
+		return "<a rel=\"prettyPhoto[iframe]\" href='/web/content/" + fileName + "/view?iframe=true&width=1024&height=768'>view</a>";
 	}
 
     @Override
-    public String getResourceView(final String fileName) {
-        return "<img src=\"/web/content/domain/" + fileName + "/fileContent\"  alt=\"resource\"/>";
+    public String getResourceView(final String domainId) {
+        return "<img src=\"/web/content/domain/" + domainId + "/fileContent\"  alt=\"resource\"/>";
     }
 }

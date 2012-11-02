@@ -1,41 +1,29 @@
 package net.luszczyk.mdbv.common.service.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.*;
-
-import net.luszczyk.mdbv.common.exception.GettingLargeObjectException;
 import net.luszczyk.mdbv.common.service.DatabaseConnectionService;
-import net.luszczyk.mdbv.common.service.FileService;
 import net.luszczyk.mdbv.common.service.QueryService;
 import net.luszczyk.mdbv.common.service.RegisterService;
-import net.luszczyk.mdbv.common.table.Column;
-import net.luszczyk.mdbv.common.table.Domain;
-import net.luszczyk.mdbv.common.table.DomainDetails;
-import net.luszczyk.mdbv.common.table.DomainProxy;
-import net.luszczyk.mdbv.common.table.Entity;
-import net.luszczyk.mdbv.common.table.Result;
-import net.luszczyk.mdbv.common.table.Table;
-
-import net.sf.jmimemagic.*;
+import net.luszczyk.mdbv.common.service.ViewerService;
+import net.luszczyk.mdbv.common.table.*;
+import net.sf.jmimemagic.Magic;
+import net.sf.jmimemagic.MagicMatch;
 import org.apache.log4j.Logger;
 import org.postgresql.largeobject.LargeObject;
 import org.postgresql.largeobject.LargeObjectManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class QueryServiceImpl implements QueryService {
 
     private static final Logger LOGGER = Logger.getLogger(QueryServiceImpl.class);
-
-    private LargeObjectManager lobj;
-
-    @Autowired
-    private FileService fileService;
+    private static final int MAX_HEADER = 16;
+    private LargeObjectManager largeObjectManager;
 
     @Autowired
     private RegisterService registerService;
@@ -43,33 +31,19 @@ public class QueryServiceImpl implements QueryService {
     @Autowired
     private DatabaseConnectionService databaseConnectionService;
 
-
-    private static Map<String, byte[][]> MIMES = new HashMap<String, byte[][]>();
-
-    static {
-
-        MIMES.put("PDF", new byte[][]{{0x25, 0x50, 0x44, 0x46}});
-        MIMES.put("RAR", new byte[][]{{0x52, 0x61, 0x72, 0x21}});
-        MIMES.put("GIF", new byte[][]{{0x47, 0x49, 0x46, 0x38}});
-        MIMES.put("PNG", new byte[][]{{(byte) 0x89, 0x50, 0x4e, 0x47}});
-        MIMES.put("ZIP", new byte[][]{{0x50, 0x4b}});
-        MIMES.put("TIFF", new byte[][]{{0x49, 0x49}, {0x4D, 0x4D}});
-        MIMES.put("BMP", new byte[][]{{0x42, 0x4d}});
-    }
-
     private LargeObjectManager getLargeObjectManager() {
 
         try {
 
             Connection conn = databaseConnectionService.getConnection();
 
-            if (lobj == null) {
-                lobj = ((org.postgresql.PGConnection) conn).getLargeObjectAPI();
+            if (largeObjectManager == null) {
+                largeObjectManager = ((org.postgresql.PGConnection) conn).getLargeObjectAPI();
             }
         } catch (Exception e) {
             LOGGER.error("Error getting LargeObjectManager", e);
         }
-        return lobj;
+        return largeObjectManager;
     }
 
     public Result runQuery(String query) {
@@ -100,13 +74,13 @@ public class QueryServiceImpl implements QueryService {
 
                 List<Domain> objects = new ArrayList<Domain>();
                 for (Column c : columns) {
-                    Domain d = null;
+                    Domain d;
                     if ("oid".equals(c.getType())) {
-                        d = new DomainProxy(this, table, c, rs.getObject(c.getId())
-                                .toString(), rs.getLong(c.getId()));
+                        Long oid = rs.getLong(c.getId());
+                        d = new Domain(table, c, oid.toString(), oid);
+                        fillDetails(d);
                     } else {
-                        d = new DomainProxy(this, table, c, rs.getObject(c.getId())
-                                .toString());
+                        d = new Domain(table, c, rs.getObject(c.getId()).toString());
                     }
 
                     objects.add(d);
@@ -122,65 +96,58 @@ public class QueryServiceImpl implements QueryService {
         return result;
     }
 
-    public DomainDetails getDomainDetails(final Domain domain)
-            throws GettingLargeObjectException {
+    public byte[] getContentByte(final Domain domain, final Integer size) {
 
-        DomainDetails result = null;
+        Assert.notNull(domain);
+        Long domainOid = domain.getOid();
+        Assert.notNull(domainOid);
+        byte[] result = null;
 
-        if (domain.getOid() != null) {
+        try {
 
-            long oid = domain.getOid();
-            LargeObject obj = null;
+            LargeObject obj = getLargeObjectManager().open(domainOid, LargeObjectManager.READ);
 
-            try {
-                obj = getLargeObjectManager().open(oid, LargeObjectManager.READ);
+            int len;
 
-                byte buf[] = new byte[obj.size()];
-
-                obj.read(buf, 0, obj.size());
-                obj.close();
-
-
-                String type = null;
-                String extention = null;
-                try {
-                    MagicMatch magicMatch = Magic.getMagicMatch(buf);
-                    type = magicMatch.getMimeType();
-                    extention = magicMatch.getExtension();
-                } catch (MagicParseException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (MagicMatchNotFoundException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (MagicException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-
-                String filePath = fileService.saveFile(buf, extention);
-
-                if (filePath != null) {
-
-                    if (type == null)
-                        type = fileService.getFileType(filePath);
-
-                    if (type != null) {
-
-                        if (registerService.getTypeList().contains(type)) {
-
-                            result = new DomainDetails(filePath, type,
-                                    registerService.getViewerService(type));
-                        } else {
-
-                            result = new DomainDetails(filePath, type);
-                        }
-                    }
-                }
-            } catch (SQLException e) {
-                LOGGER.error("Error getting largeobject oid: " + oid, e);
-                throw new GettingLargeObjectException();
+            if (size == null || obj.size() < size) {
+                len = obj.size();
+            } else {
+                len = size;
             }
-        } else {
-            throw new GettingLargeObjectException();
+
+            result = new byte[len];
+            obj.read(result, 0, len);
+            obj.close();
+
+        } catch (SQLException e) {
+            LOGGER.error("Error getting largeobject oid: " + domain.getOid(), e);
         }
+
         return result;
+    }
+
+    private void fillDetails(Domain domain) {
+
+        byte buf[] = getContentByte(domain, MAX_HEADER);
+
+        String type = null;
+        try {
+            MagicMatch magicMatch = Magic.getMagicMatch(buf);
+            type = magicMatch.getMimeType();
+        } catch (Exception e1) {
+            LOGGER.debug("MegicMatch didn't match the type !", e1);
+        }
+
+        if (type != null) {
+
+            domain.setMimeType(type);
+            ViewerService viewerService = registerService.getViewerService(type);
+            if (viewerService != null) {
+                domain.setLinkToView(viewerService.getLink(domain.getId().toString()));
+            } else {
+                LOGGER.debug("Don't know type: " + type);
+            }
+        }
+
     }
 }

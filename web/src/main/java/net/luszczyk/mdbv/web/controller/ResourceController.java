@@ -1,13 +1,8 @@
 package net.luszczyk.mdbv.web.controller;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import net.luszczyk.mdbv.common.service.FileService;
-
+import net.luszczyk.mdbv.common.service.QueryService;
+import net.luszczyk.mdbv.common.service.RegisterService;
+import net.luszczyk.mdbv.common.table.Domain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,55 +10,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+
 @Controller
 @RequestMapping(value = "/content")
 public class ResourceController {
 
     @Autowired
-    private FileService fileService;
+    private QueryService queryService;
 
-    @RequestMapping(value = "/${path}/domain", method = RequestMethod.POST)
-    public void getDocumentFileContentPost(HttpServletRequest request,
-                                           HttpServletResponse response) throws Exception {
+    @Autowired
+    private RegisterService registerService;
 
-        String fileName = request.getParameter("path");
-        String mimeType = fileService.getFileType(fileName);
+    @RequestMapping(value = "/domain/{domainId}/fileContent", method = RequestMethod.GET)
+    public void getDocumentFileContent(final HttpServletResponse response, HttpSession session,
+                                       @PathVariable("domainId") final String domainId) throws IOException {
 
-        byte[] content = fileService.getFileContent(fileName);
-        response.setContentType(mimeType);
+        Domain domain = (Domain) session.getAttribute(domainId);
+
+        byte[] content = queryService.getContentByte(domain, null);
+        response.setContentType(domain.getMimeType());
         response.setContentLength(content.length);
         response.addHeader("Content-Disposition", "attachment; filename=\""
-                + fileName + '"');
+                + domain.getContent() + '"');
 
         response.getOutputStream().write(content);
         response.getOutputStream().flush();
     }
 
-    @RequestMapping(value = "/domain/{fileName}/fileContent", method = RequestMethod.GET)
-    public void getDocumentFileContent(final HttpServletResponse response,
-                                       @PathVariable("fileName") final String fileName) throws IOException {
-
-        String mimeType = fileService.getFileType(fileName);
-
-        byte[] content = fileService.getFileContent(fileName);
-        response.setContentType(mimeType);
-        response.setContentLength(content.length);
-        response.addHeader("Content-Disposition", "attachment; filename=\""
-                + fileName + '"');
-
-        response.getOutputStream().write(content);
-        response.getOutputStream().flush();
-    }
-
-    @RequestMapping(value = "/view/{fileName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{domainId}/view", method = RequestMethod.GET)
     public ModelAndView viewContent(final HttpSession session,
-                            @PathVariable("fileName") final String fileName) throws IOException {
+                            @PathVariable("domainId") final String domainId) throws IOException {
 
         ModelAndView model = new ModelAndView("content");
 
-        Object resourceView = session.getAttribute(fileName);
+        Domain domain = (Domain) session.getAttribute(domainId);
 
-        session.setAttribute("res", resourceView);
+        session.setAttribute("res", registerService.getViewerService(domain.getMimeType()).getResourceView(domain.getId().toString()) );
 
         return model;
     }

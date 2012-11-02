@@ -27,12 +27,7 @@ public class WebUtills {
         for (Entity e : table.getEntities()) {
 
             for (Domain d : e.getValues()) {
-                String path = d.getContentPath();
-                String res = d.getResourceView();
-
-                if (path != null && res != null) {
-                    session.setAttribute(path, res);
-                }
+                    session.setAttribute(d.getId().toString(), d);
             }
 
         }

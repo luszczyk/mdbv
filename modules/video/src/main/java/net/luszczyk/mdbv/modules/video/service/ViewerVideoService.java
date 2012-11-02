@@ -12,15 +12,15 @@ public class ViewerVideoService extends ViewerService {
 	}
 
     @Override
-    public String getLink(final String fileName) {
-        return "<a rel=\"prettyPhoto[iframe]\" href='/web/content/view/" + fileName + "?iframe=true&width=800&height=600'>view</a>";
+    public String getLink(final String domainId) {
+        return "<a rel=\"prettyPhoto[iframe]\" href='/web/content/" + domainId + "/view?iframe=true&width=1024&height=768'>view</a>";
     }
 
     @Override
-    public String getResourceView(final String fileName) {
+    public String getResourceView(final String domainId) {
 
         return "<video  controls='controls'>" +
-                "<source src='/web/content/domain/" + fileName + "/fileContent' type='video/ogg'>" +
+                "<source src='/web/content/domain/" + domainId + "/fileContent' type='video/ogg'>" +
                 "</video>";
     }
 }

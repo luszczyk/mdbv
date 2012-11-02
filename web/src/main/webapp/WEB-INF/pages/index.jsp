@@ -8,23 +8,23 @@
 			<fieldset>
 				<p class="first">
 					<label>Host:</label> <br> <input type="text" id="dbhost"
-						name="db.host" class="field" value="host" />
+						name="db.host" class="field" value="localhost" />
 				</p>
 				<p>
 					<label>Port:</label> <input type="text" id="dbport" name="db.port"
-						class="field" value="port" />
+						class="field" value="3307" />
 				</p>
 				<p>
 					<label>Database:</label> <input type="text" id="dbname"
-						name="db.name" class="field" value="database" />
+						name="db.name" class="field" value="mdbvdb" />
 				</p>
 				<p>
 					<label>User:</label> <input type="text" id="dbuser" name="db.user"
-						class="field" value="user" />
+						class="field" value="mdbv" />
 				</p>
 				<p class="last">
 					<label>Pass:</label> <input type="password" id="dbpass"
-						name="db.pass" class="field" value="password" />
+						name="db.pass" class="field" value="mdbvdupa" />
 				</p>
 				<p class="submit">
 					<button type="button" onclick="return dbConnect(this.form);">Connect</button>

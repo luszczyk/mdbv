@@ -11,7 +11,7 @@ public abstract class ViewerService {
 		return typeList;
 	}
 	
-	public abstract String getLink(final String fileName);
-    public abstract String getResourceView(final String fileName);
+	public abstract String getLink(final String domainId);
+    public abstract String getResourceView(final String domainId);
 
 }
