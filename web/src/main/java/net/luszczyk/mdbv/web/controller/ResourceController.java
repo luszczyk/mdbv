@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/res")
+@RequestMapping(value = "/content")
 public class ResourceController {
 
     @Autowired
@@ -59,7 +59,7 @@ public class ResourceController {
     public ModelAndView viewContent(final HttpSession session,
                             @PathVariable("fileName") final String fileName) throws IOException {
 
-        ModelAndView model = new ModelAndView("res");
+        ModelAndView model = new ModelAndView("content");
 
         Object resourceView = session.getAttribute(fileName);
 

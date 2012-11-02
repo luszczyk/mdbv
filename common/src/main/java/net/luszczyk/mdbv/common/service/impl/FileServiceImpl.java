@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Date;
 
+import com.sun.activation.registries.MimeTypeFile;
 import net.luszczyk.mdbv.common.service.FileService;
 
 import org.apache.commons.io.IOUtils;
@@ -35,28 +36,37 @@ public class FileServiceImpl implements FileService {
 		return new File(TEMP_DIR + path);
 	}
 
+    @Override
+    public String saveFile(byte[] buf, String extension) {
+
+        String fileName = "db_file" + new Date().getTime();
+        if (extension != null) {
+            fileName = fileName + "." + extension;
+        }
+        try {
+
+            File file = new File(TEMP_DIR + fileName);
+            FileOutputStream fos = new FileOutputStream(file);
+
+            try {
+                fos.write(buf);
+                fos.close();
+            } catch (IOException e) {
+                logger.warn("Problem to save file ", e);
+                return null;
+            }
+        } catch (FileNotFoundException e) {
+            logger.warn("Problem to save file ", e);
+            return null;
+        }
+
+        return fileName;
+    }
+
 	@Override
 	public String saveFile(byte[] buf) {
 
-		String fileName = "db_file" + new Date().getTime();
-		try {
-
-			File file = new File(TEMP_DIR + fileName);
-			FileOutputStream fos = new FileOutputStream(file);
-
-			try {
-				fos.write(buf);
-				fos.close();
-			} catch (IOException e) {
-				logger.warn("Problem to save file ", e);
-				return null;
-			}
-		} catch (FileNotFoundException e) {
-			logger.warn("Problem to save file ", e);
-			return null;
-		}
-
-		return fileName;
+		return saveFile(buf, null);
 	}
 
 	@Override
@@ -84,6 +94,7 @@ public class FileServiceImpl implements FileService {
 		try {
 
 			URL u = new URL("file://" + TEMP_DIR + path);
+
 			InputStream is = u.openStream();
 			bytes = IOUtils.toByteArray(is);
 			

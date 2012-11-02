@@ -5,8 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import net.luszczyk.mdbv.common.exception.GettingLargeObjectException;
 import net.luszczyk.mdbv.common.service.DatabaseConnectionService;
@@ -21,6 +20,7 @@ import net.luszczyk.mdbv.common.table.Entity;
 import net.luszczyk.mdbv.common.table.Result;
 import net.luszczyk.mdbv.common.table.Table;
 
+import net.sf.jmimemagic.*;
 import org.apache.log4j.Logger;
 import org.postgresql.largeobject.LargeObject;
 import org.postgresql.largeobject.LargeObjectManager;
@@ -42,6 +42,20 @@ public class QueryServiceImpl implements QueryService {
 
     @Autowired
     private DatabaseConnectionService databaseConnectionService;
+
+
+    private static Map<String, byte[][]> MIMES = new HashMap<String, byte[][]>();
+
+    static {
+
+        MIMES.put("PDF", new byte[][]{{0x25, 0x50, 0x44, 0x46}});
+        MIMES.put("RAR", new byte[][]{{0x52, 0x61, 0x72, 0x21}});
+        MIMES.put("GIF", new byte[][]{{0x47, 0x49, 0x46, 0x38}});
+        MIMES.put("PNG", new byte[][]{{(byte) 0x89, 0x50, 0x4e, 0x47}});
+        MIMES.put("ZIP", new byte[][]{{0x50, 0x4b}});
+        MIMES.put("TIFF", new byte[][]{{0x49, 0x49}, {0x4D, 0x4D}});
+        MIMES.put("BMP", new byte[][]{{0x42, 0x4d}});
+    }
 
     private LargeObjectManager getLargeObjectManager() {
 
@@ -122,14 +136,31 @@ public class QueryServiceImpl implements QueryService {
                 obj = getLargeObjectManager().open(oid, LargeObjectManager.READ);
 
                 byte buf[] = new byte[obj.size()];
+
                 obj.read(buf, 0, obj.size());
                 obj.close();
 
-                String filePath = fileService.saveFile(buf);
+
+                String type = null;
+                String extention = null;
+                try {
+                    MagicMatch magicMatch = Magic.getMagicMatch(buf);
+                    type = magicMatch.getMimeType();
+                    extention = magicMatch.getExtension();
+                } catch (MagicParseException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (MagicMatchNotFoundException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (MagicException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+
+                String filePath = fileService.saveFile(buf, extention);
 
                 if (filePath != null) {
 
-                    String type = fileService.getFileType(filePath);
+                    if (type == null)
+                        type = fileService.getFileType(filePath);
 
                     if (type != null) {
 
