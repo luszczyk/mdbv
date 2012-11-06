@@ -1,21 +1,24 @@
 package net.luszczyk.mdbv.common.service.impl;
 
+import net.luszczyk.mdbv.common.model.DataBase;
+import net.luszczyk.mdbv.common.service.DatabaseConnectionService;
+import net.luszczyk.mdbv.common.service.QueryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import net.luszczyk.mdbv.common.model.DataBase;
-import net.luszczyk.mdbv.common.service.DatabaseConnectionService;
-
-import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service("DatabaseConnectionService")
 public class DatabaseConnectionServiceImpl implements DatabaseConnectionService {
 
-	/*
-	 * private DataBase dataBase = new DataBasePostgres("kapitanlamp", "mdbv",
-	 * "mdbvdupa", 3307, "mdbvdb");
-	 */
+
+    private DataBase dataBase;
+
+    @Autowired
+    private QueryService queryService;
 
 	private Connection conn;
 
@@ -29,7 +32,27 @@ public class DatabaseConnectionServiceImpl implements DatabaseConnectionService 
 				testDataBase.getPass());
 	}
 
-	public void connect(DataBase dataBase) throws SQLException,
+    @Override
+    public List<String> getAllDbs() {
+        return queryService.getAllDbs();
+    }
+
+    @Override
+    public List<String> getAllSchemas() {
+        return queryService.getAllSchemas();
+    }
+
+    @Override
+    public List<String> getAllTablesForSchema(String schema) {
+        return queryService.getAllTablesForSchema(schema);
+    }
+
+    @Override
+    public DataBase getConnectionDetails() {
+        return dataBase;
+    }
+
+    public void connect(DataBase dataBase) throws SQLException,
 			ClassNotFoundException {
 
 		Class.forName(dataBase.getDriverPackage());
@@ -37,6 +60,7 @@ public class DatabaseConnectionServiceImpl implements DatabaseConnectionService 
 				+ dataBase.getHost() + "/" + dataBase.getDbName();
 		conn = DriverManager.getConnection(url, dataBase.getUser(),
 				dataBase.getPass());
+        this.dataBase = dataBase;
 	}
 
 	public Connection getConnection() throws Exception {

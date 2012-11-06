@@ -9,8 +9,11 @@
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-    <import resource="classpath:META-INF/common-context.xml"/>
-    <import resource="classpath*:META-INF/*-module-context.xml"/>
+
+    <context:component-scan base-package="net.luszczyk.mdbv.web.controller"/>
+    <!-- the mvc resources tag does the magic -->
+    <mvc:resources mapping="/resources/**" location="/WEB-INF/res/"/>
+    <mvc:annotation-driven/>
 
     <bean id="jacksonMessageConverter"
           class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"></bean>
@@ -23,18 +26,8 @@
         </property>
     </bean>
 
-
-    <context:component-scan base-package="net.luszczyk.mdbv.web.controller"/>
-    <!-- the mvc resources tag does the magic -->
-    <mvc:resources mapping="/resources/**" location="/WEB-INF/res/, classpath:/res/"/>
-    <mvc:annotation-driven/>
-
     <bean
             class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
-
-    <!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-         <property name="prefix"> <value>/WEB-INF/pages/</value> </property> <property
-         name="suffix"> <value>.jsp</value> </property> </bean> -->
 
     <bean
             class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
@@ -76,7 +69,5 @@
             </props>
         </property>
     </bean>
-
-    <bean id="basedFilterBean" class="net.luszczyk.mdbv.web.filter.BaseFilterBean"/>
 
 </beans>

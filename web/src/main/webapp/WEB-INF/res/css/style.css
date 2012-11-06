@@ -81,7 +81,7 @@ p {
 #db-info {
 	float: right;
 	margin: 9px 0 0;
-	width: 650px;
+	width: 550px;
 }
 
 #search {
@@ -230,6 +230,7 @@ input.button {
 	margin: 0 0 10px;
 	text-align: justify;
 	width: 900px;
+    min-height: 500px;
 }
 
 .resultData {

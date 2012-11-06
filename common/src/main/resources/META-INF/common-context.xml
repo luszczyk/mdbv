@@ -1,17 +1,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 	http://www.springframework.org/schema/context
 	http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="registerService"
-		class="net.luszczyk.mdbv.common.service.impl.RegisterServiceImpl" />
+    <context:component-scan base-package="net.luszczyk.mdbv.common.service"/>
 
-	<bean class="net.luszczyk.mdbv.common.service.impl.BeanPostProcessorImpl">
-		<property name="registerService" ref="registerService" />
-	</bean>
+    <!--<bean name="registerService"
+          class="net.luszczyk.mdbv.common.service.impl.RegisterServiceImpl" id="registerService"/>-->
 
-	<context:component-scan base-package="net.luszczyk.mdbv.common.service" />
+    <!--<bean id="beanPostProcessor" scope="singleton" class="net.luszczyk.mdbv.common.beans.BeanPostProcessorImpl"
+          depends-on="registerService"/>-->
 
 </beans>

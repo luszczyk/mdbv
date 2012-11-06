@@ -15,8 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class QueryServiceImpl implements QueryService {
@@ -121,6 +120,96 @@ public class QueryServiceImpl implements QueryService {
 
         } catch (SQLException e) {
             LOGGER.error("Error getting largeobject oid: " + domain.getOid(), e);
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<String> getAllDbs() {
+
+        String query = "SELECT datname FROM pg_database WHERE datistemplate = false";
+
+        Connection conn = null;
+        try {
+            conn = databaseConnectionService.getConnection();
+        } catch (Exception e) {
+            LOGGER.debug("Can't get db connection !", e);
+            return null;
+        }
+
+        List<String> result = new ArrayList<String>();
+
+        try {
+            conn.setAutoCommit(false);
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            LOGGER.debug("Error processing query: " + query, e);
+            return null;
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<String> getAllSchemas() {
+
+        String query = "SELECT table_schema FROM information_schema.tables ORDER BY table_schema;";
+
+        Connection conn = null;
+        try {
+            conn = databaseConnectionService.getConnection();
+        } catch (Exception e) {
+            LOGGER.debug("Can't get db connection !", e);
+            return null;
+        }
+
+        Set<String> result = new HashSet<String>();
+
+        try {
+            conn.setAutoCommit(false);
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            LOGGER.debug("Error processing query: " + query, e);
+            return null;
+        }
+
+        return new ArrayList<String>(result);
+    }
+
+    @Override
+    public List<String> getAllTablesForSchema(String schema) {
+
+        String query = "SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema = '"+ schema +"' ORDER BY table_name;";
+
+        Connection conn = null;
+        try {
+            conn = databaseConnectionService.getConnection();
+        } catch (Exception e) {
+            LOGGER.debug("Can't get db connection !", e);
+            return null;
+        }
+
+        List<String> result = new ArrayList<String>();
+
+        try {
+            conn.setAutoCommit(false);
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.add(rs.getString(2));
+            }
+        } catch (SQLException e) {
+            LOGGER.debug("Error processing query: " + query, e);
+            return null;
         }
 
         return result;

@@ -1,9 +1,6 @@
 package net.luszczyk.mdbv.common.model.impl;
 
-import java.util.List;
-
 import net.luszczyk.mdbv.common.model.DataBase;
-import net.luszczyk.mdbv.common.table.Table;
 
 public class DataBasePostgres implements DataBase {
 
@@ -14,16 +11,6 @@ public class DataBasePostgres implements DataBase {
 	private String name;
 	
 	public DataBasePostgres() {};
-
-	public DataBasePostgres(String host, String user, String pass, Integer port) {
-		super();
-		this.host = host;
-		this.user = user;
-		this.pass = pass;
-		this.port = port;
-		this.name = "mdbvdb";
-	}
-
 
 	public DataBasePostgres(String host, String user, String pass, Integer port, String name) {
 		super();
@@ -74,15 +61,14 @@ public class DataBasePostgres implements DataBase {
 		return pass;
 	}
 
-	@Override
+    @Override
+    public void setDbName(String name) {
+        this.name = name;
+    }
+
+    @Override
 	public Integer getPort() {
 		return port;
-	}
-
-	@Override
-	public List<Table> getTables() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

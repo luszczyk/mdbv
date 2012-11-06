@@ -23,6 +23,7 @@
 <script type="text/javascript"
 	src="/web/resources/js/jquery-ui-1.8.22.custom.min.js"></script>
 <script type="text/javascript">
+
 	function connTest(dbform) {
 		if ($('#dbhost').val() == "" && $('#dbuser').val() == ""
 				&& $('#dbport').val() == "" && $('#dbpass').val() == "") {
@@ -61,7 +62,7 @@
 				}
 			});
 		}
-	}
+	};
 
 	function dbConnect(dbform) {
 		if ($('#dbhost').val == "" && $('#dbuser').val == ""
@@ -99,7 +100,8 @@
 				}
 			});
 		}
-	}
+	};
+
 </script>
 <title>Multimedia Database Viewer - ${h.title}</title>
 </head>
@@ -127,8 +129,9 @@
 			<% } %>
 		</div>
 		<ul id="menu">
-			<li><a class="current" href="/web/query/index">Query</a></li>
-			<li><a href="/web/index">Settings</a></li>
+			<li><a class="menu_link" href="/web/query/index">Query</a></li>
+			<li><a class="menu_link" href="/web/index">DB Connection</a></li>
+            <li><a class="menu_link" href="/web/db/details">DB Details</a></li>
 		</ul>
 
 		<div class="clear"></div>

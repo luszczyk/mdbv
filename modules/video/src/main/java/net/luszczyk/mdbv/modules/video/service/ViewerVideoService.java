@@ -1,7 +1,6 @@
 package net.luszczyk.mdbv.modules.video.service;
 
 import net.luszczyk.mdbv.common.service.ViewerService;
-
 import org.springframework.stereotype.Service;
 
 @Service
