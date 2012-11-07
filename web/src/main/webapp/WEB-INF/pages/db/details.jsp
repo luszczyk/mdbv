@@ -54,7 +54,7 @@
                         var tableElement = $('#db-tables')
                         tableElement.empty()
                         $.each(res.data, function () {
-                            tableElement.append('<li><a href="#">' + this + '</a></li>')
+                            tableElement.append('<li><a href="/web/query/index/' + this + '">' + this + ' <img alt="search" src="/web/resources/images/search.png"></a></li>')
                         });
                         $('.tableElements').css('display', 'block');
                     } else {
@@ -73,14 +73,14 @@
 
         <tr>
 
-            <td><h3>Databases :</h3></td>
-            <td><h3 class="schemaElements" style="display: none;">Schemas :</h3></td>
-            <td><h3 class="tableElements" style="display: none;">Tables :</h3></td>
+            <td><h2>Databases :</h2></td>
+            <td><h2 class="schemaElements" style="display: none;">Schemas :</h2></td>
+            <td><h2 class="tableElements" style="display: none;">Tables :</h2></td>
         </tr>
 
-        <tr>
+        <tr style="font-size: 15px;">
             <td>
-                <div class=db-list style="padding: 15px;">
+                <div class=db-list style="padding-left: 15px; padding-right: 5px;">
                     <ul>
                         <c:forEach items="${dbs}" var="d">
                             <li>
@@ -94,14 +94,14 @@
             </td>
             <td>
                 <div style="display: none;" class="db-schema-panel schemaElements">
-                    <ul id="db-schemas">
+                    <ul id="db-schemas" class="db-schemas">
 
                     </ul>
                 </div>
             </td>
             <td>
                 <div style="display: none;" class="db-tables-panel tableElements">
-                    <ul id="db-tables">
+                    <ul id="db-tables" class="db-tables">
 
                     </ul>
                 </div>

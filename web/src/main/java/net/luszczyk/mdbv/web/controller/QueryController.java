@@ -5,6 +5,7 @@ import net.luszczyk.mdbv.common.table.Table;
 import net.luszczyk.mdbv.web.utill.WebUtills;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,9 +27,20 @@ public class QueryController {
 
 		ModelAndView moView = new ModelAndView("query");
 		moView.addObject("tabele", new Table(null, null, null));
+        moView.addObject("query", "SELECT * FROM ...");
 
 		return moView;
 	}
+
+    @RequestMapping(value = "/index/{tab}", method = RequestMethod.GET)
+    public ModelAndView indexWithQueryPrefix(@PathVariable String tab) throws Exception {
+
+        ModelAndView moView = new ModelAndView("query");
+        moView.addObject("query", "SELECT * FROM " + tab);
+        moView.addObject("tabele", new Table(null, null, null));
+
+        return moView;
+    }
 
 	@RequestMapping(value = "/run", method = RequestMethod.POST)
 	public ModelAndView run(HttpServletRequest request,

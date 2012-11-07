@@ -27,7 +27,7 @@ public class DatabaseConnectionServiceImpl implements DatabaseConnectionService 
 
 		Class.forName(testDataBase.getDriverPackage());
 		String url = "jdbc:" + testDataBase.getDriverName() + "://"
-				+ testDataBase.getHost() + "/" + testDataBase.getDbName();
+				+ testDataBase.getHost()+":"+testDataBase.getPort().toString() + "/" + testDataBase.getDbName();
 		DriverManager.getConnection(url, testDataBase.getUser(),
 				testDataBase.getPass());
 	}
@@ -57,7 +57,7 @@ public class DatabaseConnectionServiceImpl implements DatabaseConnectionService 
 
 		Class.forName(dataBase.getDriverPackage());
 		String url = "jdbc:" + dataBase.getDriverName() + "://"
-				+ dataBase.getHost() + "/" + dataBase.getDbName();
+				+ dataBase.getHost()+":"+dataBase.getPort().toString() + "/" + dataBase.getDbName();
 		conn = DriverManager.getConnection(url, dataBase.getUser(),
 				dataBase.getPass());
         this.dataBase = dataBase;

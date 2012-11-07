@@ -6,7 +6,7 @@
 			<p class="first submit">
 			<input type="text" name="query"
 					class="searchField clear" id="searchBox"
-					value="Enter SQL query here" />
+					value="${query}" />
 				<button type="submit">Query</button>
 			</p>
 		</fieldset>

@@ -1,6 +1,8 @@
 package net.luszczyk.mdbv.common.table;
 
-public class Column {
+import java.io.Serializable;
+
+public class Column implements Serializable {
 
 	private int id;
 	private String name;
