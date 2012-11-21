@@ -22,6 +22,8 @@
             src="/web/resources/js/jquery.toastmessage.js"></script>
     <script type="text/javascript"
             src="/web/resources/js/jquery-ui-1.8.22.custom.min.js"></script>
+    <script type="text/javascript"
+            src="/web/resources/js/jquery.autosize-min.js"></script>
     <script type="text/javascript">
 
         function connTest(dbform) {

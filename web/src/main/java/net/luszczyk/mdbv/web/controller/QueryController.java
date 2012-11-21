@@ -1,62 +1,90 @@
 package net.luszczyk.mdbv.web.controller;
 
+import net.luszczyk.mdbv.common.exception.DatabaseConnectionException;
 import net.luszczyk.mdbv.common.service.QueryService;
 import net.luszczyk.mdbv.common.table.Table;
+import net.luszczyk.mdbv.common.util.Message;
 import net.luszczyk.mdbv.web.utill.WebUtills;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/query")
 public class QueryController {
 
-	@Autowired
-	private QueryService queryService;
+    private static final Logger LOG = Logger.getLogger(QueryController.class);
 
-	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public ModelAndView index(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+    @Autowired
+    private QueryService queryService;
 
-		ModelAndView moView = new ModelAndView("query");
-		moView.addObject("tabele", new Table(null, null, null));
-        moView.addObject("query", "SELECT * FROM ...");
-
-		return moView;
-	}
-
-    @RequestMapping(value = "/index/{tab}", method = RequestMethod.GET)
-    public ModelAndView indexWithQueryPrefix(@PathVariable String tab) throws Exception {
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public ModelAndView index() {
 
         ModelAndView moView = new ModelAndView("query");
-        moView.addObject("query", "SELECT * FROM " + tab);
-        moView.addObject("tabele", new Table(null, null, null));
+        moView.addObject("table", new Table(null, null, null));
+        moView.addObject("select", "SELECT * FROM ...");
 
         return moView;
     }
 
-	@RequestMapping(value = "/run", method = RequestMethod.POST)
-	public ModelAndView run(HttpServletRequest request,
-			HttpSession session) throws Exception {
+    @RequestMapping(value = "/index/{tab}", method = RequestMethod.GET)
+    public ModelAndView indexWithQueryPrefix(@PathVariable String tab) {
 
-		String query = request.getParameter("query");
-		ModelAndView moView = new ModelAndView("query");
-		Table table = queryService.runQuery(query).getTable();
+        ModelAndView moView = new ModelAndView("query");
+        moView.addObject("select", "SELECT * FROM " + tab);
+        moView.addObject("table", new Table(null, null, null));
+
+        return moView;
+    }
+
+    @RequestMapping(value = "/run", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Message run(HttpServletRequest request, HttpServletResponse response,
+                HttpSession session, @RequestBody Map<String, String> queryMap) throws IOException {
+
+        String query = queryMap.get("query");
+        Table table = null;
+
+        try {
+            table = queryService.runQuery(query).getTable();
+        } catch (DatabaseConnectionException e) {
+            LOG.error("Error connecting with database");
+            session.setAttribute("db", null);
+            String contextPath = request.getContextPath();
+            response.sendRedirect(response.encodeRedirectURL(contextPath + "/index") );
+        } catch (SQLException e) {
+            return new Message(500, "Error running query: " + e.getMessage());
+        }
         WebUtills.putFilesToSession(table, session);
 
-		moView.addObject("h", WebUtills.generateHeaderMap("Query result"));
-		moView.addObject("select", query);
-		request.getSession().setAttribute("table", table);
-		moView.addObject("tabele", table);
 
-		return moView;
-	}
+        request.getSession().setAttribute("select", query);
+        request.getSession().setAttribute("table", table);
+
+        return new Message(200, "Query run success");
+    }
+
+    @RequestMapping(value = "/show/result", method = RequestMethod.GET)
+    public ModelAndView showResult(HttpServletRequest request) {
+
+        ModelAndView moView = new ModelAndView("query");
+
+        moView.addObject("h", WebUtills.generateHeaderMap("Query result"));
+        moView.addObject("select", request.getSession().getAttribute("select"));
+        moView.addObject("table", request.getSession().getAttribute("table"));
+
+        return moView;
+    }
 
 }

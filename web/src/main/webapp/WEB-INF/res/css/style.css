@@ -93,7 +93,7 @@ p {
     margin: 9px 0 0;
 }
 
-input.field {
+textarea.field {
     float: left;
     background: #808080;
     color: #ccc;
@@ -104,7 +104,7 @@ input.field {
     font: .8em "Trebuchet MS", Arial, Sans-Serif;
 }
 
-input.searchField {
+textarea.searchField {
     float: left;
     background: #808080;
     color: #ccc;
@@ -115,12 +115,12 @@ input.searchField {
     font: 1.2em "Trebuchet MS", Arial, Sans-Serif;
 }
 
-input.field:focus {
+textarea.field:focus {
     border-bottom: 1px dotted #ccc;
     color: #fff;
 }
 
-input.button {
+textarea.button {
     float: right;
     background: url(/web/resources/images/search.gif) no-repeat;
     width: 20px;
@@ -538,13 +538,13 @@ input.button {
 }
 
 /* form query */
-#qform {
+#query {
     margin: 1em 0;
     color: #fff;
     width: 900px;
 }
 
-#qform fieldset {
+#query fieldset {
     margin: 0;
     padding: 0;
     border: none;
@@ -553,11 +553,11 @@ input.button {
     padding-bottom: 0.4em;
 }
 
-#qform p {
+#query p {
     margin: .2em 10px;
 }
 
-#qform input, #qform textarea {
+#query textarea {
     width: 770px;
     border: 1px solid #111;
     background: #282828 url(/web/resources/images/form_input.gif) repeat-x;
@@ -566,12 +566,12 @@ input.button {
     float: left;
 }
 
-#qform textarea {
-    height: 125px;
+#query textarea {
+    height: 20px;
     overflow: auto;
 }
 
-#qform button {
+#query button {
     padding: 0 20px;
     height: 28px;
     line-height: 28px;

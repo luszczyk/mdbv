@@ -1,5 +1,6 @@
 package net.luszczyk.mdbv.common.service.impl;
 
+import net.luszczyk.mdbv.common.exception.DatabaseConnectionException;
 import net.luszczyk.mdbv.common.model.DataBase;
 import net.luszczyk.mdbv.common.service.DatabaseConnectionService;
 import net.luszczyk.mdbv.common.service.QueryService;
@@ -33,17 +34,17 @@ public class DatabaseConnectionServiceImpl implements DatabaseConnectionService 
 	}
 
     @Override
-    public List<String> getAllDbs() {
+    public List<String> getAllDbs() throws DatabaseConnectionException {
         return queryService.getAllDbs();
     }
 
     @Override
-    public List<String> getAllSchemas() {
+    public List<String> getAllSchemas() throws DatabaseConnectionException {
         return queryService.getAllSchemas();
     }
 
     @Override
-    public List<String> getAllTablesForSchema(String schema) {
+    public List<String> getAllTablesForSchema(String schema) throws DatabaseConnectionException {
         return queryService.getAllTablesForSchema(schema);
     }
 
@@ -63,11 +64,19 @@ public class DatabaseConnectionServiceImpl implements DatabaseConnectionService 
         this.dataBase = dataBase;
 	}
 
-	public Connection getConnection() throws Exception {
+	public Connection getConnection() throws DatabaseConnectionException {
 
 		if (conn == null) {
-			throw new Exception("No connected database");
+			throw new DatabaseConnectionException("No connected database");
 		} else {
+
+            try {
+                if(conn.isClosed()) {
+                    throw new DatabaseConnectionException("Connection closed");
+                }
+            }  catch (Exception e) {
+                throw new DatabaseConnectionException("Connection error can't check if is closed !");
+            }
 
 			return conn;
 		}

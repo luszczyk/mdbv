@@ -1,5 +1,6 @@
 package net.luszczyk.mdbv.common.service.impl;
 
+import net.luszczyk.mdbv.common.exception.DatabaseConnectionException;
 import net.luszczyk.mdbv.common.service.DatabaseConnectionService;
 import net.luszczyk.mdbv.common.service.QueryService;
 import net.luszczyk.mdbv.common.service.RegisterService;
@@ -15,7 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class QueryServiceImpl implements QueryService {
@@ -30,113 +34,91 @@ public class QueryServiceImpl implements QueryService {
     @Autowired
     private DatabaseConnectionService databaseConnectionService;
 
-    private LargeObjectManager getLargeObjectManager() {
+    private LargeObjectManager getLargeObjectManager() throws DatabaseConnectionException, SQLException {
 
-        try {
+        Connection conn = databaseConnectionService.getConnection();
 
-            Connection conn = databaseConnectionService.getConnection();
-
-            if (largeObjectManager == null) {
-                largeObjectManager = ((org.postgresql.PGConnection) conn).getLargeObjectAPI();
-            }
-        } catch (Exception e) {
-            LOGGER.error("Error getting LargeObjectManager", e);
+        if (largeObjectManager == null) {
+            largeObjectManager = ((org.postgresql.PGConnection) conn).getLargeObjectAPI();
         }
         return largeObjectManager;
     }
 
-    public Result runQuery(String query) {
+    public Result runQuery(String query) throws DatabaseConnectionException, SQLException {
 
-        Result result = null;
-        try {
-            Connection conn = databaseConnectionService.getConnection();
-            conn.setAutoCommit(false);
+        Connection conn = databaseConnectionService.getConnection();
+        conn.setAutoCommit(false);
+        conn.rollback();
 
-            PreparedStatement ps = conn.prepareStatement(query);
+        PreparedStatement ps = conn.prepareStatement(query);
 
-            ResultSet rs = ps.executeQuery();
+        ResultSet rs = ps.executeQuery();
 
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int numberOfColumns = rsmd.getColumnCount();
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int numberOfColumns = rsmd.getColumnCount();
 
-            List<Column> columns = new ArrayList<Column>();
-            List<Entity> entities = new ArrayList<Entity>();
-            Table table = new Table(rs.getCursorName(), columns, entities);
+        List<Column> columns = new ArrayList<Column>();
+        List<Entity> entities = new ArrayList<Entity>();
+        Table table = new Table(rs.getCursorName(), columns, entities);
 
-            for (int i = 1; i < numberOfColumns; ++i) {
-                columns.add(new Column(i, rsmd.getColumnName(i), rsmd
-                        .getColumnTypeName(i)));
-            }
-
-            Integer id = 0;
-            while (rs.next()) {
-
-                List<Domain> objects = new ArrayList<Domain>();
-                for (Column c : columns) {
-                    Domain d;
-                    if ("oid".equals(c.getType())) {
-                        Long oid = rs.getLong(c.getId());
-                        d = new Domain(table, c, oid.toString(), oid);
-                        fillDetails(d);
-                    } else {
-                        d = new Domain(table, c, rs.getObject(c.getId()).toString());
-                    }
-
-                    objects.add(d);
-                }
-                entities.add(new Entity(++id, objects));
-            }
-
-            result = new Result(table);
-
-        } catch (Exception e) {
-            LOGGER.error("Error execution query: " + query, e);
+        for (int i = 1; i <= numberOfColumns; ++i) {
+            columns.add(new Column(i, rsmd.getColumnName(i), rsmd
+                    .getColumnTypeName(i)));
         }
+
+        Integer id = 0;
+        while (rs.next()) {
+
+            List<Domain> objects = new ArrayList<Domain>();
+            for (Column c : columns) {
+                Domain d;
+                if ("oid".equals(c.getType())) {
+                    Long oid = rs.getLong(c.getId());
+                    d = new Domain(table, c, oid.toString(), oid);
+                    fillDetails(d);
+                } else {
+                    d = new Domain(table, c, rs.getObject(c.getId()).toString());
+                }
+
+                objects.add(d);
+            }
+            entities.add(new Entity(++id, objects));
+        }
+
+        Result result = new Result(table);
         return result;
     }
 
-    public byte[] getContentByte(final Domain domain, final Integer size) {
+    public byte[] getContentByte(final Domain domain, final Integer size) throws SQLException, DatabaseConnectionException {
 
         Assert.notNull(domain);
         Long domainOid = domain.getOid();
         Assert.notNull(domainOid);
         byte[] result = null;
 
-        try {
+        LargeObject obj = getLargeObjectManager().open(domainOid, LargeObjectManager.READ);
 
-            LargeObject obj = getLargeObjectManager().open(domainOid, LargeObjectManager.READ);
+        int len;
 
-            int len;
-
-            if (size == null || obj.size() < size) {
-                len = obj.size();
-            } else {
-                len = size;
-            }
-
-            result = new byte[len];
-            obj.read(result, 0, len);
-            obj.close();
-
-        } catch (SQLException e) {
-            LOGGER.error("Error getting largeobject oid: " + domain.getOid(), e);
+        if (size == null || obj.size() < size) {
+            len = obj.size();
+        } else {
+            len = size;
         }
+
+        result = new byte[len];
+        obj.read(result, 0, len);
+        obj.close();
 
         return result;
     }
 
     @Override
-    public List<String> getAllDbs() {
+    public List<String> getAllDbs() throws DatabaseConnectionException {
 
         String query = "SELECT datname FROM pg_database WHERE datistemplate = false";
 
-        Connection conn = null;
-        try {
-            conn = databaseConnectionService.getConnection();
-        } catch (Exception e) {
-            LOGGER.debug("Can't get db connection !", e);
-            return null;
-        }
+        Connection conn = databaseConnectionService.getConnection();
 
         List<String> result = new ArrayList<String>();
 
@@ -156,17 +138,11 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
-    public List<String> getAllSchemas() {
+    public List<String> getAllSchemas() throws DatabaseConnectionException {
 
         String query = "SELECT table_schema FROM information_schema.tables ORDER BY table_schema;";
 
-        Connection conn = null;
-        try {
-            conn = databaseConnectionService.getConnection();
-        } catch (Exception e) {
-            LOGGER.debug("Can't get db connection !", e);
-            return null;
-        }
+        Connection conn = databaseConnectionService.getConnection();
 
         Set<String> result = new HashSet<String>();
 
@@ -186,17 +162,11 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
-    public List<String> getAllTablesForSchema(String schema) {
+    public List<String> getAllTablesForSchema(String schema) throws DatabaseConnectionException {
 
-        String query = "SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema = '"+ schema +"' ORDER BY table_name;";
+        String query = "SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema = '" + schema + "' ORDER BY table_name;";
 
-        Connection conn = null;
-        try {
-            conn = databaseConnectionService.getConnection();
-        } catch (Exception e) {
-            LOGGER.debug("Can't get db connection !", e);
-            return null;
-        }
+        Connection conn = databaseConnectionService.getConnection();
 
         List<String> result = new ArrayList<String>();
 
@@ -215,7 +185,7 @@ public class QueryServiceImpl implements QueryService {
         return result;
     }
 
-    private void fillDetails(Domain domain) {
+    private void fillDetails(Domain domain) throws SQLException, DatabaseConnectionException {
 
         byte buf[] = getContentByte(domain, MAX_HEADER);
 
