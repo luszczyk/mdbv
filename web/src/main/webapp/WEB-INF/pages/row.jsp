@@ -27,6 +27,14 @@
                         </td>
                     </tr>
                     <tr class="p75">
+                        <td class="field-label">
+                            Type:
+                        </td>
+                        <td class="field-val">
+                                ${o.mimeType}
+                        </td>
+                    </tr>
+                    <tr class="p75">
                         <td class="field-label">Value:</td>
                         <td class="field-val">
                             <c:if test="${o.viewable}">

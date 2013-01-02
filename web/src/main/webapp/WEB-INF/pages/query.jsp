@@ -48,7 +48,6 @@
                     position:'top-right',
                     type:'error'
                 });
-                window.location.replace("/web/index");
             }
         });
     }
@@ -86,5 +85,12 @@
 		</tbody>
 
 	</table>
+
+
+
 </div>
+
+
+
+
 <%@ include file="/WEB-INF/pages/template/buttom.jsp"%>

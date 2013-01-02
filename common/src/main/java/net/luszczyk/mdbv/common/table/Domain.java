@@ -57,7 +57,6 @@ public class Domain implements Serializable {
         return column.getType();
     }
 
-
     public String getMimeType() {
         return mimeType;
     }
@@ -75,7 +74,11 @@ public class Domain implements Serializable {
     }
 
     public String getPreView() {
-        return content;
+        if (content != null && content.length() > 10 ) {
+            return content.substring(0, 10) + " ...";
+        }   else {
+            return content;
+        }
     }
 
     public String getLinkToView() {

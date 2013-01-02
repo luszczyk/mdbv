@@ -19,6 +19,7 @@
 	<modules>
 		<module>image</module>
 		<module>video</module>
+		<module>wkt</module>
 	</modules>
 
 

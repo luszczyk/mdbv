@@ -1,5 +1,8 @@
 package net.luszczyk.mdbv.common.service.impl;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKBReader;
 import net.luszczyk.mdbv.common.exception.DatabaseConnectionException;
 import net.luszczyk.mdbv.common.service.DatabaseConnectionService;
 import net.luszczyk.mdbv.common.service.QueryService;
@@ -76,8 +79,19 @@ public class QueryServiceImpl implements QueryService {
                     Long oid = rs.getLong(c.getId());
                     d = new Domain(table, c, oid.toString(), oid);
                     fillDetails(d);
+                } else if ("geometry".equals(c.getType())) {
+                    WKBReader wkbReader = new WKBReader();
+                    try {
+                        Geometry geo = wkbReader.read(WKBReader.hexToBytes(rs.getString(c.getId())));
+                        String geoText = geo.toText();
+                        d = new Domain(table, c, geoText);
+                        fillDetailsByWktParams(d);
+                    } catch (ParseException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        d = null;
+                    }
                 } else {
-                    d = new Domain(table, c, rs.getObject(c.getId()).toString());
+                    d = new Domain(table, c, rs.getObject(c.getId()) == null ? "" : rs.getObject(c.getId()).toString());
                 }
 
                 objects.add(d);
@@ -185,6 +199,13 @@ public class QueryServiceImpl implements QueryService {
         return result;
     }
 
+
+    private void fillDetailsByWktParams(Domain d) {
+
+        String type = "map/wkt";
+        fillDetailsByType(type, d);
+    }
+
     private void fillDetails(Domain domain) throws SQLException, DatabaseConnectionException {
 
         byte buf[] = getContentByte(domain, MAX_HEADER);
@@ -196,6 +217,11 @@ public class QueryServiceImpl implements QueryService {
         } catch (Exception e1) {
             LOGGER.debug("MegicMatch didn't match the type !", e1);
         }
+
+        fillDetailsByType(type, domain);
+    }
+
+    private void fillDetailsByType(String type, Domain domain) {
 
         if (type != null) {
 

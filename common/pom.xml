@@ -30,6 +30,13 @@
 
 	<dependencies>
 
+        <!-- WKT Reader -->
+
+        <dependency>
+            <groupId>com.vividsolutions</groupId>
+            <artifactId>jts</artifactId>
+            <version>1.12</version>
+        </dependency>
 
         <!-- JMime -->
 

@@ -58,6 +58,19 @@ public class ResourceController {
         response.getOutputStream().flush();
     }
 
+    @RequestMapping(value = "/{domainId}/map", method = RequestMethod.GET)
+    public ModelAndView viewMap(final HttpSession session,
+                                    @PathVariable("domainId") final String domainId) throws IOException {
+
+        ModelAndView model = new ModelAndView("map");
+
+        Domain domain = (Domain) session.getAttribute(domainId);
+
+        session.setAttribute("res", domain.getContent());
+
+        return model;
+    }
+
     @RequestMapping(value = "/{domainId}/view", method = RequestMethod.GET)
     public ModelAndView viewContent(final HttpSession session,
                                     @PathVariable("domainId") final String domainId) throws IOException {
