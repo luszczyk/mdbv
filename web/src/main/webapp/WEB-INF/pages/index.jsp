@@ -6,7 +6,15 @@
 		<form action="db/connect" method="post" id="form2">
 			<h3>Type data base credentials</h3>
 			<fieldset>
-				<p class="first">
+                <p class="first">
+                    <label>Type:</label>
+                    <br>
+                    <select id="dbtype" name="db.port">
+                        <option value="MYSQL">Mysql</option>
+                        <option value="POSTGRES">Postgres</option>
+                    </select>
+                </p>
+				<p>
 					<label>Host:</label> <br> <input type="text" id="dbhost"
 						name="db.host" class="field" value="localhost" />
 				</p>

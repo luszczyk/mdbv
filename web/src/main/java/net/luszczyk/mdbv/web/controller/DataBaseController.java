@@ -1,9 +1,11 @@
 package net.luszczyk.mdbv.web.controller;
 
+import net.luszczyk.mdbv.common.dto.DataBaseDTO;
 import net.luszczyk.mdbv.common.exception.DatabaseConnectionException;
+import net.luszczyk.mdbv.common.model.AvailableDataBase;
 import net.luszczyk.mdbv.common.model.DataBase;
 import net.luszczyk.mdbv.common.model.impl.DataBasePostgres;
-import net.luszczyk.mdbv.common.service.DatabaseConnectionService;
+import net.luszczyk.mdbv.common.service.DatabaseConnectionHolder;
 import net.luszczyk.mdbv.common.util.Message;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class DataBaseController {
     private static final Logger LOG = Logger.getLogger(IndexController.class);
 
     @Autowired
-    private DatabaseConnectionService databaseConnectionService;
+    private DatabaseConnectionHolder databaseConnectionHolder;
 
     @RequestMapping(value = "/test", method = RequestMethod.POST)
     public
@@ -35,7 +37,7 @@ public class DataBaseController {
 
         Message message = new Message();
         try {
-            databaseConnectionService.test(dataBasePostgres);
+            databaseConnectionHolder.test(dataBasePostgres);
             message.setStatus(0);
             message.setMsg("Database " + dataBasePostgres.getDbName()
                     + " available.");
@@ -50,14 +52,18 @@ public class DataBaseController {
     @RequestMapping(value = "/connect", method = RequestMethod.POST)
     public
     @ResponseBody
-    Message handleDBConnect(@RequestBody DataBasePostgres dataBasePostgres, HttpSession session) {
+    Message handleDBConnect(@RequestBody DataBaseDTO dataBase, HttpSession session) {
 
         Message message = new Message();
         try {
-            databaseConnectionService.connect(dataBasePostgres);
-            session.setAttribute("db", dataBasePostgres);
+
+            if (dataBase.getType() == null) {
+                dataBase.setType(AvailableDataBase.POSTGRES);
+            }
+            databaseConnectionHolder.connect(dataBase);
+            session.setAttribute("db", dataBase);
             message.setStatus(0);
-            message.setMsg("Connected to " + dataBasePostgres.getDbName());
+            message.setMsg("Connected to " + dataBase.getName());
         } catch (Exception e) {
             message.setStatus(1);
             message.setMsg("Error conneting database: " + e.getMessage());
@@ -73,7 +79,7 @@ public class DataBaseController {
 
         List<String> dbs = null;
         try {
-            dbs = databaseConnectionService.getAllDbs();
+            dbs = databaseConnectionHolder.getAllDbs();
         } catch (DatabaseConnectionException e) {
             LOG.error("Error connecting with database");
             session.setAttribute("db", null);
@@ -92,15 +98,16 @@ public class DataBaseController {
 
         Message message = new Message();
         try {
-            DataBase dataBase = databaseConnectionService.getConnectionDetails();
-            dataBase.setDbName(dbName);
+            DataBase dataBase = databaseConnectionHolder.getConnectionDetails();
+            DataBaseDTO dataBaseDTO = dataBase.getDataBaseDTO();
+            dataBaseDTO.setName(dbName);
             try {
-                databaseConnectionService.connect(dataBase);
+                databaseConnectionHolder.connect(dataBaseDTO);
             } catch (Exception e) {
                 LOG.error("Error connecting with database");
                 response.sendRedirect("/web/index");
             }
-            List<String> schemas = databaseConnectionService.getAllSchemas();
+            List<String> schemas = databaseConnectionHolder.getAllSchemas();
             message.setData(schemas);
             session.setAttribute("db", dataBase);
             message.setStatus(0);
@@ -123,7 +130,7 @@ public class DataBaseController {
         Message message = new Message();
         List<String> schemas = null;
         try {
-            schemas = databaseConnectionService.getAllTablesForSchema(schema);
+            schemas = databaseConnectionHolder.getAllTablesForSchema(schema);
         } catch (DatabaseConnectionException e) {
             LOG.error("Error connecting with database");
             session.setAttribute("db", null);
@@ -136,8 +143,8 @@ public class DataBaseController {
     }
 
     @ModelAttribute(value = "db")
-    DataBase createDataBase() {
-        return new DataBasePostgres();
+    DataBaseDTO createDataBase() {
+        return new DataBaseDTO();
     }
 
 }

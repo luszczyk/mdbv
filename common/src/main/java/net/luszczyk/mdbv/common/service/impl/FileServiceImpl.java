@@ -21,7 +21,7 @@ public class FileServiceImpl implements FileService {
 
 	private static final Logger logger = Logger
 			.getLogger(FileServiceImpl.class);
-	public static final String TEMP_DIR = "/tmp/mdbv/";
+	public static final String TEMP_DIR = "mdbv";
 
 	public FileServiceImpl() {
 

@@ -1,3 +1,4 @@
+<%@ page import="net.luszczyk.mdbv.common.dto.DataBaseDTO" %>
 <%@ include file="/WEB-INF/pages/template/head.jsp"%>
 </head>
 <body>
@@ -10,11 +11,11 @@
         %>
         <div class="db_details">
             <div>Host: <span><c:out
-                    value='<%=((DataBase) session.getAttribute("db")).getHost()%>'/></span></div>
+                    value='<%=((DataBaseDTO) session.getAttribute("db")).getHost()%>'/></span></div>
             <div>Database: <span><c:out
-                    value='<%=((DataBase) session.getAttribute("db")).getDbName()%>'/></span></div>
+                    value='<%=((DataBaseDTO) session.getAttribute("db")).getName()%>'/></span></div>
             <div>User: <span><c:out
-                    value='<%=((DataBase) session.getAttribute("db")).getUser()%>'/></span></div>
+                    value='<%=((DataBaseDTO) session.getAttribute("db")).getUser()%>'/></span></div>
         </div>
         <%
         } else {

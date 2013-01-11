@@ -4,7 +4,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKBReader;
 import net.luszczyk.mdbv.common.exception.DatabaseConnectionException;
-import net.luszczyk.mdbv.common.service.DatabaseConnectionService;
+import net.luszczyk.mdbv.common.service.DatabaseConnectionHolder;
 import net.luszczyk.mdbv.common.service.QueryService;
 import net.luszczyk.mdbv.common.service.RegisterService;
 import net.luszczyk.mdbv.common.service.ViewerService;
@@ -28,28 +28,16 @@ import java.util.Set;
 public class QueryServiceImpl implements QueryService {
 
     private static final Logger LOGGER = Logger.getLogger(QueryServiceImpl.class);
-    private static final int MAX_HEADER = 16;
-    private LargeObjectManager largeObjectManager;
 
     @Autowired
     private RegisterService registerService;
 
     @Autowired
-    private DatabaseConnectionService databaseConnectionService;
-
-    private LargeObjectManager getLargeObjectManager() throws DatabaseConnectionException, SQLException {
-
-        Connection conn = databaseConnectionService.getConnection();
-
-        if (largeObjectManager == null) {
-            largeObjectManager = ((org.postgresql.PGConnection) conn).getLargeObjectAPI();
-        }
-        return largeObjectManager;
-    }
+    private DatabaseConnectionHolder databaseConnectionHolder;
 
     public Result runQuery(String query) throws DatabaseConnectionException, SQLException {
 
-        Connection conn = databaseConnectionService.getConnection();
+        Connection conn = databaseConnectionHolder.getConnection();
         conn.setAutoCommit(false);
         conn.rollback();
 
@@ -74,26 +62,7 @@ public class QueryServiceImpl implements QueryService {
 
             List<Domain> objects = new ArrayList<Domain>();
             for (Column c : columns) {
-                Domain d;
-                if ("oid".equals(c.getType())) {
-                    Long oid = rs.getLong(c.getId());
-                    d = new Domain(table, c, oid.toString(), oid);
-                    fillDetails(d);
-                } else if ("geometry".equals(c.getType())) {
-                    WKBReader wkbReader = new WKBReader();
-                    try {
-                        Geometry geo = wkbReader.read(WKBReader.hexToBytes(rs.getString(c.getId())));
-                        String geoText = geo.toText();
-                        d = new Domain(table, c, geoText);
-                        fillDetailsByWktParams(d);
-                    } catch (ParseException e) {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                        d = null;
-                    }
-                } else {
-                    d = new Domain(table, c, rs.getObject(c.getId()) == null ? "" : rs.getObject(c.getId()).toString());
-                }
-
+                Domain d =  databaseConnectionHolder.getDomain(c, rs, table);
                 objects.add(d);
             }
             entities.add(new Entity(++id, objects));
@@ -108,131 +77,8 @@ public class QueryServiceImpl implements QueryService {
         Assert.notNull(domain);
         Long domainOid = domain.getOid();
         Assert.notNull(domainOid);
-        byte[] result = null;
-
-        LargeObject obj = getLargeObjectManager().open(domainOid, LargeObjectManager.READ);
-
-        int len;
-
-        if (size == null || obj.size() < size) {
-            len = obj.size();
-        } else {
-            len = size;
-        }
-
-        result = new byte[len];
-        obj.read(result, 0, len);
-        obj.close();
+        byte[] result = databaseConnectionHolder.getContentByte(domain, size);
 
         return result;
-    }
-
-    @Override
-    public List<String> getAllDbs() throws DatabaseConnectionException {
-
-        String query = "SELECT datname FROM pg_database WHERE datistemplate = false";
-
-        Connection conn = databaseConnectionService.getConnection();
-
-        List<String> result = new ArrayList<String>();
-
-        try {
-            conn.setAutoCommit(false);
-            PreparedStatement ps = conn.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                result.add(rs.getString(1));
-            }
-        } catch (SQLException e) {
-            LOGGER.debug("Error processing query: " + query, e);
-            return null;
-        }
-
-        return result;
-    }
-
-    @Override
-    public List<String> getAllSchemas() throws DatabaseConnectionException {
-
-        String query = "SELECT table_schema FROM information_schema.tables ORDER BY table_schema;";
-
-        Connection conn = databaseConnectionService.getConnection();
-
-        Set<String> result = new HashSet<String>();
-
-        try {
-            conn.setAutoCommit(false);
-            PreparedStatement ps = conn.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                result.add(rs.getString(1));
-            }
-        } catch (SQLException e) {
-            LOGGER.debug("Error processing query: " + query, e);
-            return null;
-        }
-
-        return new ArrayList<String>(result);
-    }
-
-    @Override
-    public List<String> getAllTablesForSchema(String schema) throws DatabaseConnectionException {
-
-        String query = "SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema = '" + schema + "' ORDER BY table_name;";
-
-        Connection conn = databaseConnectionService.getConnection();
-
-        List<String> result = new ArrayList<String>();
-
-        try {
-            conn.setAutoCommit(false);
-            PreparedStatement ps = conn.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                result.add(rs.getString(2));
-            }
-        } catch (SQLException e) {
-            LOGGER.debug("Error processing query: " + query, e);
-            return null;
-        }
-
-        return result;
-    }
-
-
-    private void fillDetailsByWktParams(Domain d) {
-
-        String type = "map/wkt";
-        fillDetailsByType(type, d);
-    }
-
-    private void fillDetails(Domain domain) throws SQLException, DatabaseConnectionException {
-
-        byte buf[] = getContentByte(domain, MAX_HEADER);
-
-        String type = null;
-        try {
-            MagicMatch magicMatch = Magic.getMagicMatch(buf);
-            type = magicMatch.getMimeType();
-        } catch (Exception e1) {
-            LOGGER.debug("MegicMatch didn't match the type !", e1);
-        }
-
-        fillDetailsByType(type, domain);
-    }
-
-    private void fillDetailsByType(String type, Domain domain) {
-
-        if (type != null) {
-
-            domain.setMimeType(type);
-            ViewerService viewerService = registerService.getViewerService(type);
-            if (viewerService != null) {
-                domain.setLinkToView(viewerService.getLink(domain.getId().toString()));
-            } else {
-                LOGGER.debug("Don't know type: " + type);
-            }
-        }
-
     }
 }

@@ -34,11 +34,11 @@
 			<artifactId>video</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-        <dependency>
-            <groupId>net.luszczyk.mdbv.modules</groupId>
-            <artifactId>wkt</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+        	<dependency>
+            		<groupId>net.luszczyk.mdbv.modules</groupId>
+            		<artifactId>wkt</artifactId>
+            		<version>0.0.1-SNAPSHOT</version>
+        	</dependency>
 		<!-- <dependency> <groupId>junit</groupId> <artifactId>junit</artifactId> 
 			<version>3.8.1</version> <scope>test</scope> </dependency> -->
 
@@ -73,8 +73,17 @@
 	</dependencies>
 
 	<build>
+
 		<finalName>web</finalName>
 		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.2</version>
+			</plugin>
+
+
 			<plugin>
 				<groupId>org.codehaus.cargo</groupId>
 				<artifactId>cargo-maven2-plugin</artifactId>

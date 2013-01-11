@@ -521,6 +521,14 @@ textarea.button {
     overflow: auto;
 }
 
+#form2 select {
+    background: url("/web/resources/images/form_input.gif") repeat-x scroll 0 0 #282828;
+    border: 1px solid #111111;
+    color: #FFFFFF;
+    padding: 5px 3px;
+    width: 279px;
+}
+
 #form2 p.submit {
     text-align: right;
 }

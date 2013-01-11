@@ -1,74 +1,14 @@
 package net.luszczyk.mdbv.common.model.impl;
 
+import net.luszczyk.mdbv.common.dto.DataBaseDTO;
+import net.luszczyk.mdbv.common.model.AbstractDataBase;
 import net.luszczyk.mdbv.common.model.DataBase;
 
-public class DataBasePostgres implements DataBase {
+public class DataBasePostgres extends AbstractDataBase implements DataBase {
 
-	private String host;
-	private String user;
-	private String pass;
-	private Integer port;
-	private String name;
-	
-	public DataBasePostgres() {};
-
-	public DataBasePostgres(String host, String user, String pass, Integer port, String name) {
-		super();
-		this.host = host;
-		this.user = user;
-		this.pass = pass;
-		this.port = port;
-		this.name = name;
-	}
-	
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setHost(String host) {
-		this.host = host;
-	}
-
-	public void setUser(String user) {
-		this.user = user;
-	}
-
-	public void setPass(String pass) {
-		this.pass = pass;
-	}
-
-	public void setPort(Integer port) {
-		this.port = port;
-	}
-	
-	@Override
-	public String getHost() {
-		return host;
-	}
-
-	@Override
-	public String getUser() {
-		return user;
-	}
-
-	@Override
-	public String getPass() {
-		return pass;
-	}
-
-    @Override
-    public void setDbName(String name) {
-        this.name = name;
-    }
-
-    @Override
-	public Integer getPort() {
-		return port;
+	public DataBasePostgres(DataBaseDTO dataBaseDTO) {
+		super(dataBaseDTO);
+        this.dataBaseQueryExecutor = new DataBasePostgresQueryExecutor();
 	}
 
 	@Override
@@ -80,10 +20,4 @@ public class DataBasePostgres implements DataBase {
 	public String getDriverPackage() {
 		return "org.postgresql.Driver";
 	}
-
-	@Override
-	public String getDbName() {
-		return name;
-	}
-	
 }

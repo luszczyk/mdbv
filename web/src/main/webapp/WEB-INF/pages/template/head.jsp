@@ -115,6 +115,7 @@
                     dataBase.port = $('#dbport').val();
                     dataBase.pass = $('#dbpass').val();
                     dataBase.name = $('#dbname').val();
+                    dataBase.type = $('#dbtype').val();
 
                     $.ajax({
                         url:"/web/db/connect.json",
