@@ -1,6 +1,7 @@
 package net.luszczyk.mdbv.common.table;
 
 import java.io.Serializable;
+import java.sql.Blob;
 
 public class Domain implements Serializable {
 
@@ -12,16 +13,26 @@ public class Domain implements Serializable {
 
     private int id;
     private Long oid;
+    private Blob blob;
 
     public Domain(Table table, Column column, String content) {
-        this(table, column, content, null);
+        this(table, column, content, null, null);
+    }
+
+    public Domain(Table table, Column column, String content, Blob blob) {
+        this(table, column, content, null, blob);
     }
 
     public Domain(Table table, Column column, String content, Long oid) {
+        this(table, column, content, oid, null);
+    }
+
+    public Domain(Table table, Column column, String content, Long oid, Blob blob) {
         this.table = table;
         this.column = column;
         this.content = content;
         this.oid = oid;
+        this.blob = blob;
         this.id = hashCode();
     }
 
@@ -87,6 +98,14 @@ public class Domain implements Serializable {
 
     public void setLinkToView(String linkToView) {
         this.linkToView = linkToView;
+    }
+
+    public Blob getBlob() {
+        return blob;
+    }
+
+    public void setBlob(Blob blob) {
+        this.blob = blob;
     }
 
     @Override

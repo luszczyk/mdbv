@@ -16,5 +16,6 @@ public interface DataBase {
 	String getDriverPackage();
     DataBaseQueryExecutor getDataBaseQueryExecutor();
     DataBaseDTO getDataBaseDTO();
+    Boolean isDbSchemaAvailable();
 
 }

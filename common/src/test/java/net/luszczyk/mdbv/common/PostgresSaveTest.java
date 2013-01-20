@@ -9,7 +9,7 @@ import org.postgresql.largeobject.LargeObjectManager;
 import java.io.*;
 import java.sql.*;
 
-public class SaveTest {
+public class PostgresSaveTest {
 
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/mdbvdb";
     private static final String DB_USER = "mdbv";

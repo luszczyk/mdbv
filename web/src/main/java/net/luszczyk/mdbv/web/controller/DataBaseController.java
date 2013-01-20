@@ -78,8 +78,10 @@ public class DataBaseController {
 
 
         List<String> dbs = null;
+        Boolean dbHasSchemas = null;
         try {
             dbs = databaseConnectionHolder.getAllDbs();
+            dbHasSchemas = databaseConnectionHolder.getConnectionDetails().isDbSchemaAvailable();
         } catch (DatabaseConnectionException e) {
             LOG.error("Error connecting with database");
             session.setAttribute("db", null);
@@ -88,6 +90,7 @@ public class DataBaseController {
         }
         ModelAndView modelAndView = new ModelAndView("db/details");
         modelAndView.addObject("dbs", dbs);
+        modelAndView.addObject("dbHasSchemas", dbHasSchemas);
 
         return modelAndView;
     }
@@ -109,7 +112,7 @@ public class DataBaseController {
             }
             List<String> schemas = databaseConnectionHolder.getAllSchemas();
             message.setData(schemas);
-            session.setAttribute("db", dataBase);
+            session.setAttribute("db", dataBaseDTO);
             message.setStatus(0);
             message.setMsg("Connected to " + dataBase.getDbName());
         } catch (DatabaseConnectionException e) {

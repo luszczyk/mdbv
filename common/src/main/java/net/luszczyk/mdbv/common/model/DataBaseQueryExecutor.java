@@ -23,6 +23,8 @@ import java.util.List;
  */
 public interface DataBaseQueryExecutor {
 
+    public static final int MAX_HEADER = 16;
+
     List<String> getAllDbs(Connection conn) throws DatabaseConnectionException;
     List<String> getAllSchemas(Connection conn) throws DatabaseConnectionException;
     List<String> getAllTablesForSchema(Connection conn, String schema) throws DatabaseConnectionException;

@@ -36,7 +36,6 @@ import java.util.Set;
 public class DataBasePostgresQueryExecutor implements DataBaseQueryExecutor {
 
     private static final Logger LOGGER = Logger.getLogger(DataBasePostgresQueryExecutor.class);
-    private static final int MAX_HEADER = 16;
     private LargeObjectManager largeObjectManager;
 
     @Override

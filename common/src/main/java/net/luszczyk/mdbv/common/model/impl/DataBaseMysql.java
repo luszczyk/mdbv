@@ -27,4 +27,9 @@ public class DataBaseMysql extends AbstractDataBase implements DataBase {
     public String getDriverPackage() {
         return "com.mysql.jdbc.Driver";
     }
+
+    @Override
+    public Boolean isDbSchemaAvailable() {
+        return Boolean.FALSE;
+    }
 }

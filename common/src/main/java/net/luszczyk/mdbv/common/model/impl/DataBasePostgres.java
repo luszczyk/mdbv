@@ -20,4 +20,9 @@ public class DataBasePostgres extends AbstractDataBase implements DataBase {
 	public String getDriverPackage() {
 		return "org.postgresql.Driver";
 	}
+
+    @Override
+    public Boolean isDbSchemaAvailable() {
+        return Boolean.TRUE;
+    }
 }

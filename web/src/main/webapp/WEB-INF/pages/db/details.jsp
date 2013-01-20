@@ -7,11 +7,13 @@
 
         function clearSchemaList() {
             $('.schemaElements').css('display', 'none');
-        };
+        }
+        ;
 
         function clearTableList() {
             $('.tableElements').css('display', 'none');
-        };
+        }
+        ;
 
         function showAllSchemas(dbName) {
             clearTableList();
@@ -28,7 +30,7 @@
                         var tableElement = $('#db-schemas')
                         tableElement.empty()
                         $.each(res.data, function () {
-                            tableElement.append('<li><a href="#" onclick="showAllTables(\''+this +'\')">' + this + ' >></a></li>')
+                            tableElement.append('<li><a href="#" onclick="showAllTables(\'' + this + '\')">' + this + ' >></a></li>')
                         });
                         $('.schemaElements').css('display', 'block');
                     } else {
@@ -39,7 +41,8 @@
                     $().toastmessage('showErrorToast', e);
                 }
             });
-        };
+        }
+        ;
 
         function showAllTables(schema) {
             $.ajax({
@@ -65,7 +68,8 @@
                     $().toastmessage('showErrorToast', e);
                 }
             });
-        };
+        }
+        ;
 
     </script>
 
@@ -74,7 +78,9 @@
         <tr>
 
             <td><h2>Databases :</h2></td>
-            <td><h2 class="schemaElements" style="display: none;">Schemas :</h2></td>
+            <c:if test="${dbHasSchemas}">
+                <td><h2 class="schemaElements" style="display: none;">Schemas :</h2></td>
+            </c:if>
             <td><h2 class="tableElements" style="display: none;">Tables :</h2></td>
         </tr>
 
@@ -85,20 +91,27 @@
                         <c:forEach items="${dbs}" var="d">
                             <li>
                                 <div class="db-details">
-                                    <a href="#" onclick="return showAllSchemas('${d}');">${d} >> </a>
+                                    <c:if test="${dbHasSchemas}">
+                                        <a href="#" onclick="return showAllSchemas('${d}');">${d} >> </a>
+                                    </c:if>
+                                    <c:if test="${!dbHasSchemas}">
+                                        <a href="#" onclick="return showAllTables('${d}');">${d} >> </a>
+                                    </c:if>
                                 </div>
                             </li>
                         </c:forEach>
                     </ul>
                 </div>
             </td>
-            <td>
-                <div style="display: none;" class="db-schema-panel schemaElements">
-                    <ul id="db-schemas" class="db-schemas">
+            <c:if test="${dbHasSchemas}">
+                <td>
+                    <div style="display: none;" class="db-schema-panel schemaElements">
+                        <ul id="db-schemas" class="db-schemas">
 
-                    </ul>
-                </div>
-            </td>
+                        </ul>
+                    </div>
+                </td>
+            </c:if>
             <td>
                 <div style="display: none;" class="db-tables-panel tableElements">
                     <ul id="db-tables" class="db-tables">
