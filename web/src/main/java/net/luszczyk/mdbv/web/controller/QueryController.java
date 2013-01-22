@@ -54,6 +54,12 @@ public class QueryController {
                 HttpSession session, @RequestBody Map<String, String> queryMap) throws IOException {
 
         String query = queryMap.get("query");
+        if (!query.toUpperCase().trim().startsWith("SELECT")) {
+             return new Message(500, "You can use only select query !");
+        } else if (query.contains(";")) {
+            String [] queryStrings = query.split(";");
+            query = queryStrings[0];
+        }
         Table table = null;
 
         try {

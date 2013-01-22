@@ -318,6 +318,8 @@ textarea.button {
 .resultBox {
     padding: 3px 6px;
     min-height: 300px;
+    width: 880px;
+    overflow-x: scroll;
 }
 
 .boxbottom {
