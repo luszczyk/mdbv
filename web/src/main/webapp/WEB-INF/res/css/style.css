@@ -79,7 +79,7 @@ p {
 
 #db-info {
     float: right;
-    margin: 9px 0 0;
+    margin: 1px 0 0;
     width: 550px;
 }
 
@@ -141,18 +141,31 @@ textarea.button {
 
 #menu li a {
     float: left;
-    width: 86px;
+    width: 88px;
     text-align: center;
     margin: 0 2px 0 0;
     font-weight: bold;
-    font-size: .8em;
-    padding: 16px 0 21px;
+    font-size: 1.0em;
+    padding: 16px 0 17px;
     color: #ccc;
+    background: url(/web/resources/images/menu.png) no-repeat center bottom;
 }
 
 #menu li a:hover, #menu li a.current {
     color: #AF1515;
-    background: url(/web/resources/images/menu.gif) no-repeat center bottom;
+    background: url(/web/resources/images/menu_hover.gif) no-repeat center bottom;
+}
+
+.btn {
+    background: url("/web/resources/images/red_button.gif") repeat-x scroll 0 0 #AF1515;
+    border: 1px solid #70AD2E;
+    color: #FFFFFF;
+    cursor: pointer;
+    float: right;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 20px;
+    text-align: center;
 }
 
 #logo {
@@ -319,7 +332,7 @@ textarea.button {
     padding: 3px 6px;
     min-height: 300px;
     width: 880px;
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 
 .boxbottom {
@@ -380,7 +393,7 @@ textarea.button {
     border-top: 3px solid #6E6E6E;
     background: #000000 right top;
     color: #ccc;
-    padding: 30px 0 0 0;
+    padding: 5px 0 0 0;
 }
 
 #promo h2 {
@@ -403,11 +416,9 @@ textarea.button {
 }
 
 #footer {
-    clear: both;
-    padding: 15px 0;
     font-size: .84em;
     color: #808080;
-    border-top: 1px dotted #666;
+    text-align: right;
 }
 
 .formContainer {
@@ -595,18 +606,25 @@ textarea.button {
 
 .db_details div {
     color: #CCCCCC;
-    float: left;
+    float: right;
     font-size: 1.1em;
-    font-weight: bold;
     margin: 0 2px 0 0;
     padding: 6px 5px 5px;
     text-align: center;
+    line-height: 28px;
 }
 
-.db_details div span {
+.db_details div span.label {
+    color: #FFFFF;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-right: 3px;
+}
+
+.db_details div span.info {
     color: #FFFFF;
     padding-top: 10px;
-    padding-left: 15px;
+    padding-right: 3px;
 }
 
 .db-schemas div span {

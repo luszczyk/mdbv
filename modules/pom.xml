@@ -20,6 +20,7 @@
 		<module>image</module>
 		<module>video</module>
 		<module>wkt</module>
+        <module>audio</module>
 	</modules>
 
 

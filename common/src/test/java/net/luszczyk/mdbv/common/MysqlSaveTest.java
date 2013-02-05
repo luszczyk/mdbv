@@ -26,7 +26,7 @@ public class MysqlSaveTest {
 
     }
 
-    @Before
+    //@Before
     public void connect() {
 
         try {
@@ -42,7 +42,7 @@ public class MysqlSaveTest {
 
     }
 
-    @Test
+    //@Test
     public void saveImage() {
 
 
@@ -80,7 +80,7 @@ public class MysqlSaveTest {
         }
     }
 
-    @Test
+    //@Test
     public void getImage() {
 
         try {

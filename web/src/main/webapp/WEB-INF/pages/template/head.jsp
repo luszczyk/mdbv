@@ -165,5 +165,58 @@
         }
         ;
 
+        function dbDisconnect() {
+
+            if (!request_in_process) {
+
+
+                    request_in_process = true;
+                    $('#spinner').show();
+
+                    $.ajax({
+                        url:"/web/db/disconnect.json",
+                        type:"POST",
+                        headers:{
+                            'Accept':'application/json',
+                            'Content-Type':'application/json'
+                        },
+                        success:function (res) {
+                            $('#spinner').hide();
+                            if (res.status == 0) {
+                                $().toastmessage('showToast', {
+                                    text:res.msg,
+                                    sticky:true,
+                                    stayTime:6000,
+                                    position:'top-right',
+                                    type:'success'
+                                });
+                                window.location.replace("/web/index");
+                            } else {
+                                $('#spinner').hide();
+                                $().toastmessage('showToast', {
+                                    text:res.msg,
+                                    sticky:true,
+                                    stayTime:6000,
+                                    position:'top-right',
+                                    type:'error'
+                                });
+                            }
+                            request_in_process = false;
+                        },
+                        error:function (e) {
+                            $('#spinner').hide();
+                            $().toastmessage('showToast', {
+                                text:e,
+                                sticky:true,
+                                stayTime:6000,
+                                position:'top-right',
+                                type:'error'
+                            });
+                            request_in_process = false;
+                        }
+                    });
+                }
+        };
+
     </script>
     <title>Multimedia Database Viewer - ${h.title}</title>

@@ -8,8 +8,8 @@
 </div>
 <div id="footer">
 	<p>
-		Copyright &copy; 2012 &minus; Multimedia Database Viewer &minus;
-		Design: Lukasz Luszczynski , <a href="http://luszczyk.net">luszczyk</a>
+		&copy; 2013 &minus; Multimedia Database Viewer &minus;
+		Design: Lukasz Luszczynski
 	</p>
 </div>
 </div>

@@ -15,6 +15,7 @@ import java.util.List;
 public interface DatabaseConnectionHolder {
 
 	public void connect(DataBaseDTO dataBase) throws Exception;
+    public void disconnect() throws Exception;
 	public Connection getConnection() throws DatabaseConnectionException;
 	public void test(DataBase dataBase) throws ClassNotFoundException, SQLException;
     public List<String> getAllDbs() throws DatabaseConnectionException;

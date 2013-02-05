@@ -73,6 +73,27 @@ public class DataBaseController {
         return message;
     }
 
+    @RequestMapping(value = "/disconnect", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Message handleDBDisconnect(HttpSession session) {
+
+        Message message = new Message();
+        try {
+
+            databaseConnectionHolder.disconnect();
+            session.removeAttribute("db");
+            message.setStatus(0);
+            message.setMsg("Disconnected");
+        } catch (Exception e) {
+            message.setStatus(1);
+            message.setMsg("Error disconneting database: " + e.getMessage());
+            LOG.error("Error disconnecting db", e);
+        }
+
+        return message;
+    }
+
     @RequestMapping(value = "/details", method = RequestMethod.GET)
     public ModelAndView dbDetails(HttpServletResponse response, HttpSession session, HttpServletRequest request) throws IOException {
 

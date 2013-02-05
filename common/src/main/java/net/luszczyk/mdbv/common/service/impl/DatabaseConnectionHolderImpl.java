@@ -75,7 +75,12 @@ public class DatabaseConnectionHolderImpl implements DatabaseConnectionHolder {
                 + dataBase.getHost() + ":" + dataBase.getPort().toString() + "/" + dataBase.getDbName();
         conn = DriverManager.getConnection(url, dataBase.getUser(),
                 dataBase.getPass());
-        this.dataBase = dataBase;
+    }
+
+    @Override
+    public void disconnect() throws Exception {
+        this.dataBase = null;
+        getConnection().close();
     }
 
     public Connection getConnection() throws DatabaseConnectionException {

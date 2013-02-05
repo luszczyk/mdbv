@@ -10,11 +10,12 @@
             if (session.getAttribute("db") != null) {
         %>
         <div class="db_details">
-            <div>Host: <span><c:out
+            <div style="float: right;"><a class="btn" onclick="dbDisconnect();">Disconnect</a></div>
+            <div><span class="label">Host:</span><span class="info"><c:out
                     value='<%=((DataBaseDTO) session.getAttribute("db")).getHost()%>'/></span></div>
-            <div>Database: <span><c:out
+            <div><span class="label">Database:</span><span class="info"><c:out
                     value='<%=((DataBaseDTO) session.getAttribute("db")).getName()%>'/></span></div>
-            <div>User: <span><c:out
+            <div><span class="label">User:</span><span class="info"><c:out
                     value='<%=((DataBaseDTO) session.getAttribute("db")).getUser()%>'/></span></div>
         </div>
         <%
@@ -27,7 +28,7 @@
     </div>
     <ul id="menu">
         <li><a class="menu_link" href="/web/query/index">Query</a></li>
-        <li><a class="menu_link" href="/web/index">DB Connection</a></li>
+        <li><a class="menu_link" href="/web/index">Connection</a></li>
         <li><a class="menu_link" href="/web/db/details">DB Details</a></li>
     </ul>
 
