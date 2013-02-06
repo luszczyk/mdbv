@@ -698,6 +698,8 @@ div.spinner {
 
     width: 250px;
     min-height: 20px;
+    background-color: #FFFFFF;
+    color: #000000;
 }
 
 .field-multimedia-panel {
@@ -713,7 +715,6 @@ div.spinner {
     white-space: nowrap;
 }
 
-
 .field-multimedia-panel .field-multimedia-value .wrap {
 
     line-height: 24px;
@@ -723,7 +724,6 @@ div.spinner {
     background-image: url('/web/resources/images/multi.png');
     background-repeat: repeat-y;
 }
-
 
 .field-label {
     min-width: 60px;

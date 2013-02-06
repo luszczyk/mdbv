@@ -1,13 +1,8 @@
 package net.luszczyk.mdbv.common;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.postgresql.largeobject.LargeObject;
-import org.postgresql.largeobject.LargeObjectManager;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.*;
 
@@ -16,7 +11,7 @@ public class MysqlSaveTest {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/mdbvdb";
     private static final String DB_USER = "mdbv";
     private static final String DB_PASS = "mdbvdupa";
-    private static final String FILE_NAME = "gizmo.ogv";
+    private static final String FILE_NAME = "nowak_movie.ogv";
 
     private Connection conn;
 
@@ -46,7 +41,7 @@ public class MysqlSaveTest {
     public void saveImage() {
 
 
-        String[] files = new String[]{"008.jpg", "Cobalt_Drafting.ogv", "demo.mp4", "gizmo.ogv",
+        String[] files = new String[]{"008.jpg", "kowalski_movie.ogv", "demo.mp4", "nowak_movie.ogv",
                 "Regular_Show_Trash_Boat.ogv", "SpaceX_Falcon_9.ogv"};
 
         for (String f : files) {

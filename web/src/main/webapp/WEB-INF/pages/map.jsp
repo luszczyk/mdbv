@@ -8,6 +8,16 @@
                 OpenLayers.ImgPath = "/web/resources/js/img/";
                 OpenLayers.LibPath = "/web/resources/js/lib/";
 
+
+                var lat            = 47.35387;
+                var lon            = 8.43609;
+                var zoom           = 18;
+
+                var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+                var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+                var position       = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+
+
                 var map = new OpenLayers.Map({
                     div:"map"
                 });

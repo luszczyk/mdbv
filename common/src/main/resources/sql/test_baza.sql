@@ -17,14 +17,19 @@ WITH (
 
 -- Table: image
 
-DROP TABLE image;
+DROP TABLE person;
 
-CREATE TABLE image
-(
-  name character varying(255) NOT NULL,
-  data oid NOT NULL,
-  day date
-)
-WITH (
-  OIDS=FALSE
+CREATE TABLE person(
+
+person_id serial NOT NULL,
+first_name character varying(255) NOT NULL,
+last_name character varying(255) NOT NULL,
+avatar oid NOT NULL,
+best_movie oid NOT NULL,
+anthem oid NOT NULL,
+place_birth geometry,
+CONSTRAINT pk_person PRIMARY KEY (person_id)
 );
+
+ALTER TABLE person OWNER TO mdbv;
+

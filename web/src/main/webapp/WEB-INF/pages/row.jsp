@@ -37,7 +37,7 @@
 
                 <c:if test="${!o.viewable}">
                     <div class="field-standard-value">
-                        <textarea rows="1" cols="1">${o.preView}</textarea>
+                        <textarea rows="1" cols="1" disabled="disabled">${o.preView}</textarea>
                     </div>
                 </c:if>
 
