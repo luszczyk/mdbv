@@ -9,43 +9,39 @@
         <c:forEach var="o" items="${e.values}">
             <div class="field-details">
 
-                <table style="padding-left: 14px;">
-                    <tr class="p75">
-                        <td class="field-label">
-                            Type:
-                        </td>
-                        <td class="field-val">
-                                ${o.column.type}
-                        </td>
-                    </tr>
-                    <tr class="p75">
-                        <td class="field-label">
-                            Name:
-                        </td>
-                        <td class="field-val">
-                                ${o.column.name}
-                        </td>
-                    </tr>
-                    <tr class="p75">
-                        <td class="field-label">
-                            Type:
-                        </td>
-                        <td class="field-val">
-                                ${o.mimeType}
-                        </td>
-                    </tr>
-                    <tr class="p75">
-                        <td class="field-label">Value:</td>
-                        <td class="field-val">
-                            <c:if test="${o.viewable}">
-                                ${o.linkToView}
-                            </c:if>
-                            <c:if test="${!o.viewable}">
-                                ${o.preView}
-                            </c:if>
-                        </td>
-                    </tr>
-                </table>
+                <div class="field-desc">
+                    <div class="desc-panel">
+                        <div class="field-label">Database Type:</div>
+                        <div class="field-val">${o.column.type}</div>
+                    </div>
+                    <div class="desc-panel">
+                        <div class="field-label">Database Column Name:</div>
+                        <div class="field-val">${o.column.name}</div>
+                    </div>
+                </div>
+
+                <c:if test="${o.viewable}">
+                    <div class="field-multimedia-panel">
+                        <div class="desc-panel">
+                            <div class="field-label">
+                                Multimedia Type:
+                            </div>
+                            <div class="field-val">
+                                    ${o.mimeType}
+                            </div>
+                        </div>
+                        <div class="field-multimedia-value"><div class="wrap">${o.linkToView}</div></div>
+                    </div>
+                </c:if>
+
+
+                <c:if test="${!o.viewable}">
+                    <div class="field-standard-value">
+                        <textarea rows="1" cols="1">${o.preView}</textarea>
+                    </div>
+                </c:if>
+
+                <div class="clear"></div>
             </div>
         </c:forEach>
     </div>

@@ -12,7 +12,7 @@ public class ViewerVideoService extends ViewerService {
 
     @Override
     public String getLink(final String domainId) {
-        return "<a rel=\"prettyPhoto[iframe]\" href='/web/content/" + domainId + "/view?iframe=true&width=1024&height=768'>view</a>";
+        return "<a rel=\"prettyPhoto[iframe]\" href='/web/content/" + domainId + "/view?iframe=true&width=1024&height=768'>" + LINK_VAL + "</a>";
     }
 
     @Override

@@ -8,6 +8,8 @@ import java.util.List;
 
 public abstract class ViewerService {
 
+    public static final String LINK_VAL = "Click here to see multimedia content";
+
     @Autowired
     private RegisterService registerService;
 	

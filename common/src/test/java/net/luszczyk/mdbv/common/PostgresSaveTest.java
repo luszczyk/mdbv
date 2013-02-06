@@ -45,7 +45,7 @@ public class PostgresSaveTest {
 
 
         String[] files = new String[]{"008.jpg", "Cobalt_Drafting.ogv", "demo.mp4", "gizmo.ogv",
-                "Regular_Show_Trash_Boat.ogv", "SpaceX_Falcon_9.ogv", "chorus.ogg"};
+                "Regular_Show_Trash_Boat.ogv", "SpaceX_Falcon_9.ogv", "chorus.ogg", "MazurekDabrowskiegoInstr.mp3"};
 
         for (String f : files) {
 

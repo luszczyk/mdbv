@@ -30,6 +30,9 @@ address {
 body {
     font: .8em "Trebuchet MS", Verdana, Helvetica, sans-serif;
     color: #666;
+}
+
+body.main {
     background: #F7FCFF url(/web/resources/images/bg2.gif) repeat-x;
 }
 
@@ -164,8 +167,9 @@ textarea.button {
     float: right;
     height: 28px;
     line-height: 28px;
-    padding: 0 20px;
+    padding: 0 10px;
     text-align: center;
+    margin: 1px 0px;
 }
 
 #logo {
@@ -662,19 +666,86 @@ div.spinner {
     padding-bottom: 10px;
     border: 1px solid #000000;
     background: #ffffff;
-    margin: 10px;
-    width: 30%;
+    margin-bottom: 10px;
+    padding-left: 5px;
+    width: 875px;
 }
 
+.field-details .field-desc {
+
+    display: table-row;
+    min-height: 20px;
+    line-height: 20px;
+    padding-left: 3px;
+    padding-bottom: 5px;
+}
+
+.field-desc .desc-panel {
+
+    line-height: 20px;
+    display: inline;
+    float: left;
+}
+
+.field-standard-value {
+
+    text-align: justify;
+    display: block;
+    padding: 3px;
+}
+
+.field-standard-value textarea {
+
+    width: 250px;
+    min-height: 20px;
+}
+
+.field-multimedia-panel {
+
+    padding-bottom: 5px;
+    display: table;
+    min-height: 20px;
+}
+
+.field-multimedia-panel .field-multimedia-value {
+
+    display: table;
+    white-space: nowrap;
+}
+
+
+.field-multimedia-panel .field-multimedia-value .wrap {
+
+    line-height: 24px;
+    padding-left: 24px;
+    display: block;
+    min-height: 24px;
+    background-image: url('/web/resources/images/multi.png');
+    background-repeat: repeat-y;
+}
+
+
 .field-label {
-    width: 100px;
+    min-width: 60px;
     padding-bottom: 1px;
     font-weight: bold;
+    float: left;
+    display: inline;
 }
 
 .field-val {
-    width: 100px;
     padding-bottom: 1px;
+    padding-right: 4px;
+    padding-left: 2px;
+    float: left;
+    display: inline;
+}
+
+.crop {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 100px;
 }
 
 .p50 {
@@ -683,4 +754,10 @@ div.spinner {
 
 .p75 {
     width: 75%;
+}
+
+.resContent {
+    width: 100%;
+    min-height: 200px;
+    text-align: center;
 }

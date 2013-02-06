@@ -76,7 +76,7 @@
 
 				<tr>
 					<c:forEach var="o" items="${e.values}">
-						<td><a href="/web/row/index/${e.id}">${o.preView}</a></td>
+						<td> <div class="crop"><a href="/web/row/index/${e.id}">${o.preView}</a></div></td>
 					</c:forEach>
 				</tr>
 			</c:forEach>

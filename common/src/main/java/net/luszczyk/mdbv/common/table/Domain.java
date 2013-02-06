@@ -85,11 +85,7 @@ public class Domain implements Serializable {
     }
 
     public String getPreView() {
-        if (content != null && content.length() > 10 ) {
-            return content.substring(0, 10) + " ...";
-        }   else {
-            return content;
-        }
+        return content;
     }
 
     public String getLinkToView() {

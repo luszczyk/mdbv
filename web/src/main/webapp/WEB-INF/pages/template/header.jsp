@@ -1,7 +1,7 @@
 <%@ page import="net.luszczyk.mdbv.common.dto.DataBaseDTO" %>
 <%@ include file="/WEB-INF/pages/template/head.jsp"%>
 </head>
-<body>
+<body class="main">
 <div class="wrap background">
     <div class="spinner" id="spinner"></div>
     <div id="db-info">
