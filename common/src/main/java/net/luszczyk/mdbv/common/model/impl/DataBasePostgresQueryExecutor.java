@@ -12,6 +12,7 @@ import net.luszczyk.mdbv.common.table.Domain;
 import net.luszczyk.mdbv.common.table.Table;
 import net.sf.jmimemagic.Magic;
 import net.sf.jmimemagic.MagicMatch;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
 import org.postgresql.largeobject.LargeObject;
 import org.postgresql.largeobject.LargeObjectManager;
@@ -129,7 +130,7 @@ public class DataBasePostgresQueryExecutor implements DataBaseQueryExecutor {
         return d;
     }
 
-    private LargeObjectManager getLargeObjectManager(Connection conn ) throws DatabaseConnectionException, SQLException {
+    private LargeObjectManager getLargeObjectManager(Connection conn) throws DatabaseConnectionException, SQLException {
 
         if (largeObjectManager == null) {
             largeObjectManager = ((org.postgresql.PGConnection) conn).getLargeObjectAPI();
@@ -137,7 +138,7 @@ public class DataBasePostgresQueryExecutor implements DataBaseQueryExecutor {
         return largeObjectManager;
     }
 
-    public byte[] getContentByte(Connection conn,  Domain domain, final Integer size) throws SQLException, DatabaseConnectionException {
+    public byte[] getContentByte(Connection conn, Domain domain, final Integer size) throws SQLException, DatabaseConnectionException {
 
         Assert.notNull(domain);
         Long domainOid = domain.getOid();
@@ -177,6 +178,14 @@ public class DataBasePostgresQueryExecutor implements DataBaseQueryExecutor {
             type = magicMatch.getMimeType();
         } catch (Exception e1) {
             LOGGER.debug("MegicMatch didn't match the type !", e1);
+        }
+
+        if (type == null) {
+            System.out.println(Hex.encodeHexString(buf));
+            for (Byte b : buf) {
+
+                System.out.println(Integer.toHexString(b & 0xFF));
+            }
         }
 
         fillDetailsByType(type, domain, registerService);

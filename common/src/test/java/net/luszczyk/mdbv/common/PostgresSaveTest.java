@@ -15,7 +15,7 @@ public class PostgresSaveTest {
 
     private static final String DB_URL = "jdbc:postgresql://kapitanlamp:5432/mdbvdb";
     private static final String DB_USER = "mdbv";
-    private static final String DB_PASS = "mdbvdupa";
+    private static final String DB_PASS = "mdbvhaslo";
     private static final String FILE_NAME = "nowak_movie.ogv";
 
     private Connection conn;
@@ -26,7 +26,7 @@ public class PostgresSaveTest {
 
     }
 
-    @Before
+    //@Before
     public void connect() {
 
         try {
@@ -87,8 +87,8 @@ public class PostgresSaveTest {
         result.add(new Person("Jan", "Kowalski", "kowalski_avatar.jpeg", "kowalski_movie.ogv", "MazurekDabrowskiegoInstr.mp3", "POINT(19.920278 50.063729)"));
         result.add(new Person("John", "Doe", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(-73.968887 40.771009)"));
         result.add(new Person("Piotr", "Nowak", "nowak_avatar.jpeg", "nowak_movie.ogv", "MazurekDabrowskiegoInstr.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Grzegorz", "Nowak", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Piotr", "Kowalski", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
+        result.add(new Person("Grzegorz", "Nowak", "avatar.gif", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
+        result.add(new Person("Piotr", "Kowalski", "avatar.png", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
         result.add(new Person("Arletta", "Szykuła", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
         result.add(new Person("Maria", "Kolasa", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
         result.add(new Person("Kazierz", "Wywrocki", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
@@ -109,7 +109,7 @@ public class PostgresSaveTest {
     }
 
 
-    @Test
+    //@Test
     public void saveTestPersons() {
 
 

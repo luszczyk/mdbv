@@ -11,11 +11,6 @@ public class ViewerImageService extends ViewerService {
         typeList.add("image/jpg");
 		typeList.add("image/png");
 		typeList.add("image/gif");
-        typeList.add("image/tif");
-        typeList.add("image/bmp");
-        typeList.add("image/eps");
-
-        //typeList.add("image/eps");
 	}
 
 	@Override
