@@ -8,5 +8,27 @@ package net.luszczyk.mdbv.common.model;
  * To change this template use File | Settings | File Templates.
  */
 public enum AvailableDataBase {
-   MYSQL, POSTGRES
+   MYSQL(3306, "MySQL", "mysql"), POSTGRES(5432, "PostgreSQL", "postgres");
+
+    private int port;
+    private String name;
+    private String defaultDb;
+
+    private AvailableDataBase(int port, String name, String defaultDb) {
+        this.port = port;
+        this.name = name;
+        this.defaultDb = defaultDb;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDefaultDb() {
+        return defaultDb;
+    }
 }

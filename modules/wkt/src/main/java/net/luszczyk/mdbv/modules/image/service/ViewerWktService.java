@@ -12,9 +12,9 @@ public class ViewerWktService extends ViewerService {
 
 	@Override
 	public String getLink(final String fileName) {
-		return "<a rel=\"prettyPhoto[iframe]\" href='/web/content/" + fileName + "/map?iframe=true&default_width=600&default_height=500,'>View Geometry on Map</a>" +
+		return "<a rel=\"prettyPhoto[iframe]\" href='/web/content/" + fileName + "/map?iframe=true&width=1024&height=768'>View Geometry on Map</a>" +
                 "<br />" +
-                "<a rel=\"prettyPhoto[iframe]\" href='/web/content/" + fileName + "/wkt?iframe=true'>View Geometry on Blank Page</a>";
+                "<a rel=\"prettyPhoto[iframe]\" href='/web/content/" + fileName + "/wkt?iframe=true&width=1024&height=768'>View Geometry on Blank Page</a>";
 	}
 
     @Override

@@ -8,8 +8,7 @@
 </div>
 <div id="footer">
 	<p>
-		&copy; 2013 &minus; Multimedia Database Viewer &minus;
-		Design: Lukasz Luszczynski
+		&copy; Lukasz Luszczynski 2013
 	</p>
 </div>
 </div>

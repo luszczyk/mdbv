@@ -40,9 +40,10 @@ public class DatabaseConnectionHolderImpl implements DatabaseConnectionHolder {
 
         Class.forName(testDataBase.getDriverPackage());
         String url = "jdbc:" + testDataBase.getDriverName() + "://"
-                + testDataBase.getHost() + ":" + testDataBase.getPort().toString() + "/" + testDataBase.getDbName();
-        DriverManager.getConnection(url, testDataBase.getUser(),
-                testDataBase.getPass());
+                + testDataBase.getDataBaseDTO().getHost() + ":" + testDataBase.getDataBaseDTO().getPort().toString() + "/"
+                + testDataBase.getDataBaseDTO().getName();
+        DriverManager.getConnection(url, testDataBase.getDataBaseDTO().getUser(),
+                testDataBase.getDataBaseDTO().getPass());
     }
 
     @Override
@@ -72,9 +73,10 @@ public class DatabaseConnectionHolderImpl implements DatabaseConnectionHolder {
 
         Class.forName(dataBase.getDriverPackage());
         String url = "jdbc:" + dataBase.getDriverName() + "://"
-                + dataBase.getHost() + ":" + dataBase.getPort().toString() + "/" + dataBase.getDbName();
-        conn = DriverManager.getConnection(url, dataBase.getUser(),
-                dataBase.getPass());
+                + dataBase.getDataBaseDTO().getHost() + ":" + dataBase.getDataBaseDTO().getPort().toString() + "/"
+                + dataBase.getDataBaseDTO().getName();
+        conn = DriverManager.getConnection(url, dataBase.getDataBaseDTO().getUser(),
+                dataBase.getDataBaseDTO().getPass());
     }
 
     @Override

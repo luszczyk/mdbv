@@ -1,7 +1,5 @@
 package net.luszczyk.mdbv.web.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import net.luszczyk.mdbv.web.utill.WebUtills;
 
@@ -14,8 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class IndexController {
 
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
-	public ModelAndView handleIndex(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+	public ModelAndView handleIndex() throws Exception {
 
 		ModelAndView model = new ModelAndView("index");
 

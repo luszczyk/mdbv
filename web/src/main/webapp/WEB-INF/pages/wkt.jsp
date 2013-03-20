@@ -37,7 +37,9 @@
 </head>
 <body onload="init();">
 
-<div id="map" class="smallmap"></div>
+<div style="width: 100%; height: 100%;">
+    <div id="map" class="smallmap"></div>
+</div>
 
 
 </body>

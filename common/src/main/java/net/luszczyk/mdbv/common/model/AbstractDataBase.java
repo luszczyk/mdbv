@@ -41,30 +41,6 @@ public abstract class AbstractDataBase {
         }
     }
 
-    public String getName() {
-        return dataBaseDTO.getName();
-    }
-
-    public String getHost() {
-        return dataBaseDTO.getHost();
-    }
-
-    public String getUser() {
-        return dataBaseDTO.getUser();
-    }
-
-    public String getPass() {
-        return dataBaseDTO.getPass();
-    }
-
-    public Integer getPort() {
-        return dataBaseDTO.getPort();
-    }
-
-    public String getDbName() {
-        return dataBaseDTO.getName();
-    }
-
     public abstract String getDriverName();
 
     public abstract String getDriverPackage();

@@ -15,8 +15,19 @@
         }
         ;
 
-        function showAllSchemas(dbName) {
+        function markLink(link, context) {
+            var cl = 'active-link-' + context;
+            $('.' + cl).each(function (i, l) {
+                $(l).removeClass(cl);
+            });
+            $(link).parent().addClass(cl);
+        }
+        ;
+
+        function showAllSchemas(link, dbName) {
             clearTableList();
+            markLink(link, 'schema');
+
             $.ajax({
                 url:"/web/db/details/all-schemas/" + dbName,
                 type:"POST",
@@ -30,9 +41,11 @@
                         var tableElement = $('#db-schemas')
                         tableElement.empty()
                         $.each(res.data, function () {
-                            tableElement.append('<li><a href="#" onclick="showAllTables(\'' + this + '\')">' + this + ' >></a></li>')
+                            tableElement.append('<li><a href="#" onclick="showAllTables(this, \'' + this + '\')">' + this + '</a></li>')
+                            $(tableElement.parent()).addClass('vertical-line');
                         });
                         $('.schemaElements').css('display', 'block');
+                        $('#action-desc').text("Select schema");
                     } else {
                         $().toastmessage('showErrorToast', res.msg);
                     }
@@ -44,7 +57,8 @@
         }
         ;
 
-        function showAllTables(schema) {
+        function showAllTables(link, schema) {
+            markLink(link, 'table');
             $.ajax({
                 url:"/web/db/details/all-tables/" + schema,
                 type:"POST",
@@ -56,10 +70,16 @@
                     if (res.status == 0) {
                         var tableElement = $('#db-tables')
                         tableElement.empty()
-                        $.each(res.data, function () {
-                            tableElement.append('<li><a href="/web/query/index/' + this + '">' + this + ' <img alt="search" src="/web/resources/images/search.png"></a></li>')
+                        $.each(res.data.table, function () {
+                            if (res.data.schema) {
+                                tableElement.append('<li><a href="/web/query/index/' + res.data.schema + '/' + this + '">' + this + '</a></li>')
+                            } else {
+                                tableElement.append('<li><a href="/web/query/index/' + this + '">' + this + '</a></li>')
+                            }
+                            $(tableElement.parent()).addClass('vertical-line');
                         });
                         $('.tableElements').css('display', 'block');
+                        $('#action-desc').text("Select table");
                     } else {
                         $().toastmessage('showErrorToast', res.msg);
                     }
@@ -73,54 +93,40 @@
 
     </script>
 
-    <table>
 
-        <tr>
+    <h2 id="action-desc">Select database</h2>
 
-            <td><h2>Databases :</h2></td>
-            <c:if test="${dbHasSchemas}">
-                <td><h2 class="schemaElements" style="display: none;">Schemas :</h2></td>
-            </c:if>
-            <td><h2 class="tableElements" style="display: none;">Tables :</h2></td>
-        </tr>
+    <div class="col-wraper">
+        <div class="db-list inline" style="padding-left: 15px; padding-right: 5px; min-width: 200px;">
+            <ul>
+                <c:forEach items="${dbs}" var="d">
+                    <li>
+                        <div class="db-details">
+                            <c:if test="${dbHasSchemas}">
+                                <a href="#" onclick="return showAllSchemas(this, '${d}');">${d} </a>
+                            </c:if>
+                            <c:if test="${!dbHasSchemas}">
+                                <a href="#" onclick="return showAllTables(this, '${d}');">${d} </a>
+                            </c:if>
+                        </div>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+        <c:if test="${dbHasSchemas}">
+            <div style="display: none; min-width: 200px;" class="db-schema-panel schemaElements inline">
+                <ul id="db-schemas" class="db-schemas">
 
-        <tr style="font-size: 15px;">
-            <td>
-                <div class=db-list style="padding-left: 15px; padding-right: 5px;">
-                    <ul>
-                        <c:forEach items="${dbs}" var="d">
-                            <li>
-                                <div class="db-details">
-                                    <c:if test="${dbHasSchemas}">
-                                        <a href="#" onclick="return showAllSchemas('${d}');">${d} >> </a>
-                                    </c:if>
-                                    <c:if test="${!dbHasSchemas}">
-                                        <a href="#" onclick="return showAllTables('${d}');">${d} >> </a>
-                                    </c:if>
-                                </div>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </div>
-            </td>
-            <c:if test="${dbHasSchemas}">
-                <td>
-                    <div style="display: none;" class="db-schema-panel schemaElements">
-                        <ul id="db-schemas" class="db-schemas">
+                </ul>
+            </div>
+        </c:if>
+        <div style="display: none; min-width: 200px;" class="db-tables-panel tableElements inline">
+            <ul id="db-tables" class="db-tables">
 
-                        </ul>
-                    </div>
-                </td>
-            </c:if>
-            <td>
-                <div style="display: none;" class="db-tables-panel tableElements">
-                    <ul id="db-tables" class="db-tables">
+            </ul>
+        </div>
+        <div class="clearBoth"></div>
+    </div>
 
-                    </ul>
-                </div>
-            </td>
-        </tr>
-
-    </table>
 </div>
 <%@ include file="/WEB-INF/pages/template/buttom.jsp" %>

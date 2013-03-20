@@ -1,6 +1,32 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="/WEB-INF/pages/template/header.jsp"%>
 <div class="formBox">
+
+    <script type="text/javascript">
+        function setDbType() {
+
+            var v = $('#dbtype').val();
+            console.log(v);
+
+
+            $.ajax({
+                url:"/web/db/types/details/" + v,
+                type:"GET",
+                headers:{
+                    'Accept':'application/json',
+                    'Content-Type':'application/json'
+                },
+                success:function (res) {
+                    $('#dbport').val(res.port);
+                    $('#dbname').val(res.name);
+                },
+                error:function (e) {
+                    $().toastmessage('showErrorToast', e);
+                }
+            });
+        };
+    </script>
+
 	<br>
 	<div class="formContainer">
 		<form action="db/connect" method="post" id="form2">
@@ -9,8 +35,8 @@
                 <p class="first">
                     <label>Type:</label>
                     <br>
-                    <select id="dbtype" name="db.port">
-                        <option value="MYSQL">Mysql</option>
+                    <select id="dbtype" name="db.port" onchange="setDbType()">
+                        <option selected="selected" value="MYSQL">Mysql</option>
                         <option value="POSTGRES">Postgres</option>
                     </select>
                 </p>
@@ -20,12 +46,12 @@
 				</p>
 				<p>
 					<label>Port:</label> <input type="text" id="dbport" name="db.port"
-						class="field" value="3307" />
+						class="field" value="3306" />
 				</p>
-				<p>
+				<%--<p>
 					<label>Database:</label> <input type="text" id="dbname"
 						name="db.name" class="field" value="mdbvdb" />
-				</p>
+				</p>--%>
 				<p>
 					<label>User:</label> <input type="text" id="dbuser" name="db.user"
 						class="field" value="mdbv" />
@@ -34,6 +60,8 @@
 					<label>Pass:</label> <input type="password" id="dbpass"
 						name="db.pass" class="field" value="mdbvdupa" />
 				</p>
+                <input type="hidden" id="dbname"
+                       name="db.name" class="field" value="mysql" />
 				<p class="submit">
 					<button type="button" onclick="return dbConnect(this.form);">Connect</button>
 				</p>

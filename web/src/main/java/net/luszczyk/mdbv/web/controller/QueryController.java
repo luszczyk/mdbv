@@ -32,7 +32,7 @@ public class QueryController {
 
         ModelAndView moView = new ModelAndView("query");
         moView.addObject("table", new Table(null, null, null));
-        moView.addObject("select", "SELECT * FROM ...");
+        moView.addObject("select", " * FROM ...");
 
         return moView;
     }
@@ -41,7 +41,17 @@ public class QueryController {
     public ModelAndView indexWithQueryPrefix(@PathVariable String tab) {
 
         ModelAndView moView = new ModelAndView("query");
-        moView.addObject("select", "SELECT * FROM " + tab);
+        moView.addObject("select", " * FROM " + tab);
+        moView.addObject("table", new Table(null, null, null));
+
+        return moView;
+    }
+
+    @RequestMapping(value = "/index/{schema}/{tab}", method = RequestMethod.GET)
+    public ModelAndView indexWithQueryPrefixWithSchema(@PathVariable String schema, @PathVariable String tab) {
+
+        ModelAndView moView = new ModelAndView("query");
+        moView.addObject("select", " * FROM " +schema + "." + tab);
         moView.addObject("table", new Table(null, null, null));
 
         return moView;
@@ -53,7 +63,7 @@ public class QueryController {
     Message run(HttpServletRequest request, HttpServletResponse response,
                 HttpSession session, @RequestBody Map<String, String> queryMap) throws IOException {
 
-        String query = queryMap.get("query");
+        String query = "SELECT " + queryMap.get("query");
         if (!query.toUpperCase().trim().startsWith("SELECT")) {
              return new Message(500, "You can use only select query !");
         } else if (query.contains(";")) {

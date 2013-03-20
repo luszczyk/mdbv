@@ -1,4 +1,4 @@
-package net.luszczyk.mdbv.common;
+package net.luszczyk.mdbv.common.util;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,14 +15,17 @@ public class Person {
     private String best_movie;
     private String anthem;
     private String place_birth;
+    private String book;
 
-    public Person(String firstName, String lastName, String avatar, String best_movie, String anthem, String place_birth) {
+    public Person(String firstName, String lastName, String avatar, String best_movie, String anthem, String place_birth,
+    String book) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.avatar = avatar;
         this.best_movie = best_movie;
         this.anthem = anthem;
         this.place_birth = place_birth;
+        this.book = book;
     }
 
     public String getFirstName() {
@@ -71,5 +74,9 @@ public class Person {
 
     public void setPlace_birth(String place_birth) {
         this.place_birth = place_birth;
+    }
+
+    public String getBook() {
+        return book;
     }
 }

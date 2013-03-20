@@ -54,10 +54,11 @@
 </script>
 <div id="query">
 		<fieldset>
-			<p class="first submit">
-			<textarea name="query" style="height: 10px;" class="searchField clear" id="searchBox">${select}</textarea>
-			<button type="button" onclick="runQuery();"  style="height: 34px;">Query</button>
-			</p>
+			<div class="first submit">
+                <div style="float:left; padding: 10px 3px;" >SELECT </div>
+                <textarea name="query" style="height: 20px; margin: 4px 0 0;" class="searchField clear" id="searchBox">${select}</textarea>
+                <button type="button" onclick="runQuery();"  style="margin: 4px 4px 0 0; padding: 0 10px; height: 34px;">Go</button>
+			</div>
         </fieldset>
 </div>
 <div class="resultBox">
@@ -66,7 +67,7 @@
 		<thead>
 			<tr>
 				<c:forEach var="c" items="${table.columns}">
-					<th scope="col">${c.name} ${c.type}</th>
+					<th scope="col">${c.name} <br> ${c.type}</th>
 				</c:forEach>
 			</tr>
 		</thead>

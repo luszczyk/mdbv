@@ -1,5 +1,6 @@
 package net.luszczyk.mdbv.common;
 
+import net.luszczyk.mdbv.common.util.Person;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +27,7 @@ public class PostgresSaveTest {
 
     }
 
-    //@Before
+    @Before
     public void connect() {
 
         try {
@@ -84,32 +85,43 @@ public class PostgresSaveTest {
 
         List<Person> result = new ArrayList<Person>(20);
 
-        result.add(new Person("Jan", "Kowalski", "kowalski_avatar.jpeg", "kowalski_movie.ogv", "MazurekDabrowskiegoInstr.mp3", "POINT(19.920278 50.063729)"));
-        result.add(new Person("John", "Doe", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(-73.968887 40.771009)"));
-        result.add(new Person("Piotr", "Nowak", "nowak_avatar.jpeg", "nowak_movie.ogv", "MazurekDabrowskiegoInstr.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Grzegorz", "Nowak", "avatar.gif", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Piotr", "Kowalski", "avatar.png", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Arletta", "Szykuła", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Maria", "Kolasa", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Kazierz", "Wywrocki", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Ewelina", "Moskwa", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Marta", "Kolasa", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Henryk", "Czarny", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Robert", "Wronka", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Ryszard", "Latawiec", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Andrzej", "Czobot", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Roman", "Dacyna", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Anna", "Dziedzic", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Beata", "Nowak", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Roman", "Kaleta", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
-        result.add(new Person("Mateusz", "Zawadzki", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)"));
+
+        String book = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ac enim magna. Fusce id mi leo. Phasellus lobortis elementum eros, sed lobortis risus imperdiet scelerisque. Phasellus sed adipiscing libero. Aenean non ipsum justo. In euismod, orci et fermentum vehicula, neque sem imperdiet nisl, vel dapibus ipsum nunc id nisl. Donec aliquet mollis odio viverra porta. Etiam interdum sollicitudin dui et pharetra. Praesent posuere magna in mauris iaculis aliquam. Aenean dolor nisl, convallis vel ullamcorper vitae, elementum et arcu. Morbi lacus mauris, tristique et tristique nec, hendrerit vitae tortor. Sed semper lobortis nibh, eget tincidunt justo cursus eu. Vivamus et velit nisi. Nunc a posuere est. Cras pellentesque sapien a metus fermentum hendrerit pellentesque ipsum sagittis. Morbi eu tortor erat.\n" +
+                "\n" +
+                "Cras in purus non lectus vestibulum vestibulum eu ac dui. Phasellus ornare pretium magna sit amet sollicitudin. Fusce ac erat a sem auctor bibendum faucibus sed neque. Integer commodo vestibulum est eu facilisis. Fusce sodales ipsum ut mauris gravida nec cursus tortor bibendum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pellentesque viverra erat id tempus. Praesent pellentesque augue non justo lobortis non laoreet sapien luctus. Proin eu turpis vel felis mollis interdum. Aenean posuere consectetur orci, quis condimentum eros feugiat quis. Etiam mollis tortor vitae massa cursus a fermentum risus feugiat. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse aliquam augue eget nunc semper eget sagittis nibh facilisis. Nam vitae enim in nulla imperdiet rhoncus eu sed odio.\n" +
+                "\n" +
+                "Nulla justo justo, pharetra at egestas ut, consequat aliquet sem. Suspendisse dictum, nisi eu aliquet dictum, lectus orci pellentesque justo, eget tempus ante sem id enim. In tristique risus facilisis purus faucibus congue. Nunc tincidunt elit sed elit placerat sit amet dapibus magna interdum. Praesent lacinia scelerisque sapien, non pharetra mi malesuada sed. Morbi sodales dapibus orci. Aliquam posuere, tortor eu volutpat vehicula, velit ipsum dictum magna, a tincidunt dolor libero vitae orci. Proin quis massa neque, a posuere sem. Phasellus nisi ante, imperdiet eget imperdiet vel, consectetur ac quam. Vivamus scelerisque pharetra nisi, eu accumsan est aliquam quis. Vivamus eget laoreet nisl.\n" +
+                "\n" +
+                "Pellentesque laoreet varius arcu non blandit. Aenean a elit nibh. Sed ullamcorper congue porttitor. Nam vel nunc diam, sit amet tincidunt quam. Sed aliquam turpis in lacus varius consectetur pretium tortor tincidunt. Vivamus pharetra, felis vel varius faucibus, ante diam porttitor mauris, quis volutpat magna magna vel enim. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.\n" +
+                "\n" +
+                "Mauris malesuada urna a diam sollicitudin ac venenatis nunc auctor. Ut eu ipsum leo, ut commodo nisl. Vivamus egestas nunc a turpis volutpat molestie. Praesent hendrerit lacinia mauris, tempor volutpat ante placerat imperdiet. Curabitur nec augue sed odio convallis tempor. Donec et nunc lorem, id tristique orci. Sed vel rhoncus tellus. Vestibulum cursus scelerisque ullamcorper. Vestibulum venenatis suscipit nisi, nec ornare sem blandit a. Donec auctor diam non ante placerat laoreet. Praesent et purus sem. Integer dictum justo non mi tincidunt venenatis. Nullam magna dolor, varius ac scelerisque eget, tincidunt vitae erat. Etiam volutpat, tortor in convallis ornare, sapien nunc luctus leo, non bibendum elit nisl a felis. Aenean dapibus nulla eu felis consequat vel sagittis tortor aliquam. ";
+
+        result.add(new Person("Jan", "Kowalski", "kowalski_avatar.jpeg", "kowalski_movie.ogv", "MazurekDabrowskiegoInstr.mp3", "POINT(19.920278 50.063729)",book ));
+        result.add(new Person("John", "Doe", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(-73.968887 40.771009)",book ));
+        result.add(new Person("Piotr", "Nowak", "nowak_avatar.jpeg", "nowak_movie.ogv", "MazurekDabrowskiegoInstr.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Grzegorz", "Nowak", "avatar.gif", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Piotr", "Kowalski", "avatar.png", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Arletta", "Szykuła", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Maria", "Kolasa", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Kazierz", "Wywrocki", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Ewelina", "Moskwa", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Marta", "Kolasa", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Henryk", "Czarny", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Robert", "Wronka", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Ryszard", "Latawiec", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Andrzej", "Czobot", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Roman", "Dacyna", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Anna", "Dziedzic", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Beata", "Nowak", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Roman", "Kaleta", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
+        result.add(new Person("Mateusz", "Zawadzki", "doe_avatar.jpeg", "doe_movie.ogv", "usa_anthem.mp3", "POINT(23.55474 50.26663)",book ));
 
 
         return result;
     }
 
 
-    //@Test
+    @Test
     public void saveTestPersons() {
 
 
@@ -125,8 +137,8 @@ public class PostgresSaveTest {
                 String point = p.getPlace_birth();
 
                 PreparedStatement ps = conn
-                        .prepareStatement("INSERT INTO person (first_name, last_name, avatar, best_movie, anthem, place_birth) VALUES" +
-                                " (?, ?, ?, ?, ?, ST_Transform(GeomFromText(?, 4326), 900913))");
+                        .prepareStatement("INSERT INTO person (first_name, last_name, avatar, best_movie, anthem, place_birth, book) VALUES" +
+                                " (?, ?, ?, ?, ?, ST_Transform(GeomFromText(?, 4326), 900913), ?)");
 
                 ps.setString(1, p.getFirstName());
                 ps.setString(2, p.getLastName());
@@ -134,6 +146,7 @@ public class PostgresSaveTest {
                 ps.setLong(4, bestMovieOid);
                 ps.setLong(5, anthemOid);
                 ps.setString(6, point);
+                ps.setString(7, p.getBook());
 
                 ps.executeUpdate();
                 ps.close();
@@ -186,13 +199,14 @@ public class PostgresSaveTest {
                 obj.close();
 
                 PreparedStatement ps = conn
-                        .prepareStatement("INSERT INTO md (name,data,createdate,ext)VALUES (?, ?, ?, ?)");
+                        .prepareStatement("INSERT INTO md (name,data,createdate,ext, book)VALUES (?, ?, ?, ?, ?)");
 
                 ps.setString(1, file.getName());
                 ps.setLong(2, oid);
                 ps.setDate(3, new Date(file.lastModified()));
                 String[] ext = f.split("\\.");
                 ps.setString(4, ext[ext.length - 1]);
+                //ps.setString(5, book);
                 ps.executeUpdate();
                 ps.close();
                 fis.close();

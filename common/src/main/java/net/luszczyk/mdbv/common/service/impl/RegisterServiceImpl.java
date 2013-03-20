@@ -14,7 +14,9 @@ import java.util.Set;
 public class RegisterServiceImpl implements RegisterService {
 	
 	private static final Logger LOGGER = Logger.getLogger(RegisterServiceImpl.class);
-	
+
+    private Map<String, ViewerService> viewerMap = new HashMap<String, ViewerService>();
+
 	public RegisterServiceImpl() {
 		LOGGER.debug("RegisterService const " + this);
 	}
@@ -23,8 +25,6 @@ public class RegisterServiceImpl implements RegisterService {
     public void init() {
         LOGGER.debug("init...");
     }
-
-	Map<String, ViewerService> viewerMap = new HashMap<String, ViewerService>();
 
 	@Override
 	public Set<String> getTypeList() {

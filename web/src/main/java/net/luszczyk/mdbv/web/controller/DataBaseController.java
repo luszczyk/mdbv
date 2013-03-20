@@ -18,7 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/db")
@@ -28,6 +30,19 @@ public class DataBaseController {
 
     @Autowired
     private DatabaseConnectionHolder databaseConnectionHolder;
+
+    @RequestMapping(value = "/types/details/{name}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Map<String, Object> handleDBAvailableDetails(@PathVariable String name)
+            throws Exception {
+
+        AvailableDataBase availableDataBase = AvailableDataBase.valueOf(name);
+        Map<String, Object> map = new HashMap<String, Object>(2);
+        map.put("port", availableDataBase.getPort());
+        map.put("name", availableDataBase.getDefaultDb());
+        return map;
+    }
 
     @RequestMapping(value = "/test", method = RequestMethod.POST)
     public
@@ -39,7 +54,7 @@ public class DataBaseController {
         try {
             databaseConnectionHolder.test(dataBasePostgres);
             message.setStatus(0);
-            message.setMsg("Database " + dataBasePostgres.getDbName()
+            message.setMsg("Database " + dataBasePostgres.getDataBaseDTO().getName()
                     + " available.");
         } catch (Exception e) {
             message.setStatus(1);
@@ -135,7 +150,7 @@ public class DataBaseController {
             message.setData(schemas);
             session.setAttribute("db", dataBaseDTO);
             message.setStatus(0);
-            message.setMsg("Connected to " + dataBase.getDbName());
+            message.setMsg("Connected to " + dataBase.getDataBaseDTO().getName());
         } catch (DatabaseConnectionException e) {
             LOG.error("Error connecting with database");
             session.setAttribute("db", null);
@@ -152,16 +167,32 @@ public class DataBaseController {
 
         Assert.notNull(schema);
         Message message = new Message();
-        List<String> schemas = null;
+        List<String> tables = null;
         try {
-            schemas = databaseConnectionHolder.getAllTablesForSchema(schema);
+            tables = databaseConnectionHolder.getAllTablesForSchema(schema);
         } catch (DatabaseConnectionException e) {
             LOG.error("Error connecting with database");
             session.setAttribute("db", null);
             String contextPath = request.getContextPath();
             response.sendRedirect(response.encodeRedirectURL(contextPath + "/index") );
         }
-        message.setData(schemas);
+
+        Map<String, Object> tab = new HashMap<String, Object>();
+        tab.put("table", tables);
+        if(databaseConnectionHolder.getConnectionDetails().isDbSchemaAvailable()) {
+            tab.put("schema", schema);
+        } else {
+            DataBase dataBase = databaseConnectionHolder.getConnectionDetails();
+            DataBaseDTO dataBaseDTO = dataBase.getDataBaseDTO();
+            dataBaseDTO.setName(schema);
+            try {
+                databaseConnectionHolder.connect(dataBaseDTO);
+            } catch (Exception e) {
+                LOG.error("Error connecting with database");
+                response.sendRedirect("/web/index");
+            }
+        }
+        message.setData(tab);
         message.setStatus(0);
         return message;
     }

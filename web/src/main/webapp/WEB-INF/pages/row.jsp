@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/pages/template/header.jsp" %>
 
-<h3>Row Details</h3>
+<h2>Row Details</h2>
 
 <div class="resultBox">
 
@@ -11,11 +11,11 @@
 
                 <div class="field-desc">
                     <div class="desc-panel">
-                        <div class="field-label">Database Type:</div>
+                        <div class="field-label">Type</div>
                         <div class="field-val">${o.column.type}</div>
                     </div>
                     <div class="desc-panel">
-                        <div class="field-label">Database Column Name:</div>
+                        <div class="field-label">Name</div>
                         <div class="field-val">${o.column.name}</div>
                     </div>
                 </div>

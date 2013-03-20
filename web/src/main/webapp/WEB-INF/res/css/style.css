@@ -53,7 +53,6 @@ h1 {
 
 h2 {
     font: normal 1.6em Arial;
-    text-align: center;
     margin: 0 0 15px;
 }
 
@@ -83,7 +82,7 @@ p {
 #db-info {
     float: right;
     margin: 1px 0 0;
-    width: 550px;
+    width: 450px;
 }
 
 #search {
@@ -108,7 +107,7 @@ textarea.field {
 }
 
 textarea.searchField {
-    float: left;
+
     background: #808080;
     color: #ccc;
     padding: 4px;
@@ -132,17 +131,17 @@ textarea.button {
     margin: 5px 0 0;
 }
 
-#menu {
+.main-menu {
     padding: 0 0 8px;
     margin: 0 0 25px;
     height: 20px;
 }
 
-#menu li {
+.main-menu li {
     display: inline;
 }
 
-#menu li a {
+.main-menu li a {
     float: left;
     width: 88px;
     text-align: center;
@@ -154,7 +153,7 @@ textarea.button {
     background: url(/web/resources/images/menu.png) no-repeat center bottom;
 }
 
-#menu li a:hover, #menu li a.current {
+.main-menu li a:hover, .main-menu li a.current {
     color: #AF1515;
     background: url(/web/resources/images/menu_hover.gif) no-repeat center bottom;
 }
@@ -162,7 +161,7 @@ textarea.button {
 .btn {
     background: url("/web/resources/images/red_button.gif") repeat-x scroll 0 0 #AF1515;
     border: 1px solid #70AD2E;
-    color: #FFFFFF;
+    color: #ffffffF;
     cursor: pointer;
     float: right;
     height: 28px;
@@ -541,7 +540,7 @@ textarea.button {
 #form2 select {
     background: url("/web/resources/images/form_input.gif") repeat-x scroll 0 0 #282828;
     border: 1px solid #111111;
-    color: #FFFFFF;
+    color: #ffffffF;
     padding: 5px 3px;
     width: 279px;
 }
@@ -583,12 +582,11 @@ textarea.button {
 }
 
 #query textarea {
-    width: 770px;
+    width: 780px;
     border: 1px solid #111;
     background: #282828 url(/web/resources/images/form_input.gif) repeat-x;
     padding: 5px 3px;
     color: #fff;
-    float: left;
 }
 
 #query textarea {
@@ -610,37 +608,39 @@ textarea.button {
 
 .db_details div {
     color: #CCCCCC;
-    float: right;
+    float: left;
     font-size: 1.1em;
-    margin: 0 2px 0 0;
-    padding: 6px 5px 5px;
+    margin: 0 1px 0 0;
+    padding: 1px 1px 0px;
     text-align: center;
-    line-height: 28px;
+    line-height: 16px;
 }
 
 .db_details div span.label {
-    color: #FFFFF;
-    font-weight: bold;
+    color: #ffffff;
     padding-top: 10px;
     padding-right: 3px;
 }
 
 .db_details div span.info {
-    color: #FFFFF;
+    color: #ffffff;
     padding-top: 10px;
-    padding-right: 3px;
+    padding-right: 8px;
+    font-weight: bold;
 }
 
 .db-schemas div span {
-    color: #FFFFF;
+    color: #ffffff;
     padding-top: 10px;
     padding-left: 15px;
+    border-left: 0.5px solid #000000;
 }
 
 .db-tables div span {
-    color: #FFFFF;
+    color: #ffffff;
     padding-top: 10px;
     padding-left: 15px;
+    border-left: 0.5px solid #000000;
 }
 
 div.spinner {
@@ -698,7 +698,7 @@ div.spinner {
 
     width: 250px;
     min-height: 20px;
-    background-color: #FFFFFF;
+    background-color: #ffffffF;
     color: #000000;
 }
 
@@ -726,9 +726,8 @@ div.spinner {
 }
 
 .field-label {
-    min-width: 60px;
     padding-bottom: 1px;
-    font-weight: bold;
+    padding-right: 3px;
     float: left;
     display: inline;
 }
@@ -737,6 +736,7 @@ div.spinner {
     padding-bottom: 1px;
     padding-right: 4px;
     padding-left: 2px;
+    font-weight: bold;
     float: left;
     display: inline;
 }
@@ -761,3 +761,50 @@ div.spinner {
     min-height: 200px;
     text-align: center;
 }
+
+.vertical-line {
+    border-left: solid 1px #000000;
+}
+
+.active-link-schema {
+    background: url('/web/resources/images/arrow6.png') no-repeat right;
+}
+
+.active-link-schema a {
+    color: #808080;
+}
+
+.active-link-table {
+    background: url('/web/resources/images/arrow6.png') no-repeat right;
+}
+
+.active-link-table a {
+    color: #808080;
+}
+
+div.inline {
+    float: left;
+}
+
+.clearBoth {
+    clear: both;
+}
+
+.middle {
+    display: table-cell;
+    position: static;
+    vertical-align: middle;
+    text-align: center;
+    top: 50%;
+    width: 100%;
+}
+
+.inner {
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    position: relative;
+    text-align: left;
+    top: -50%;
+}
+
