@@ -22,10 +22,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -111,7 +108,7 @@ public class DataBasePostgresQueryExecutor implements DataBaseQueryExecutor {
 
         if ("oid".equals(c.getType())) {
             Long oid = rs.getLong(c.getId());
-            d = new Domain(table, c, oid.toString(), oid);
+            d = new Domain(table, c, oid.toString(), oid, null, null);
             fillDetails(d, conn, registerService);
         } else if ("geometry".equals(c.getType())) {
             WKBReader wkbReader = new WKBReader();
@@ -188,6 +185,8 @@ public class DataBasePostgresQueryExecutor implements DataBaseQueryExecutor {
             }
         }
 
+        domain.setStartBytes(Arrays.toString(Arrays.copyOf(buf, MAX_HEADER)));
+
         fillDetailsByType(type, domain, registerService);
     }
 
@@ -199,6 +198,7 @@ public class DataBasePostgresQueryExecutor implements DataBaseQueryExecutor {
             ViewerService viewerService = registerService.getViewerService(type);
             if (viewerService != null) {
                 domain.setLinkToView(viewerService.getLink(domain.getId().toString()));
+                domain.setIcon(viewerService.getIcon());
             } else {
                 LOGGER.debug("Don't know type: " + type);
             }

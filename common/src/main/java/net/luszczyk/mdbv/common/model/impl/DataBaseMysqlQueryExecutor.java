@@ -18,6 +18,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -86,7 +87,7 @@ public class DataBaseMysqlQueryExecutor implements DataBaseQueryExecutor {
         if ("MEDIUMBLOB".equals(c.getType().toUpperCase()) || "BLOB".equals(c.getType().toUpperCase())) {
 
             Blob blob = rs.getBlob(c.getId());
-            d = new Domain(table, c, blob.toString(), blob);
+            d = new Domain(table, c, blob.toString(), blob, null, null);
             fillDetails(d, conn, registerService);
         } else if ("GEOMETRY".equals(c.getType().toUpperCase())) {
             try {
@@ -206,6 +207,8 @@ public class DataBaseMysqlQueryExecutor implements DataBaseQueryExecutor {
             LOGGER.debug("MegicMatch didn't match the type !", e1);
         }
 
+        domain.setStartBytes(Arrays.toString(Arrays.copyOf(buf, MAX_HEADER)));
+
         fillDetailsByType(type, domain, registerService);
     }
 
@@ -217,6 +220,8 @@ public class DataBaseMysqlQueryExecutor implements DataBaseQueryExecutor {
             ViewerService viewerService = registerService.getViewerService(type);
             if (viewerService != null) {
                 domain.setLinkToView(viewerService.getLink(domain.getId().toString()));
+                domain.setIcon(viewerService.getIcon());
+
             } else {
                 LOGGER.debug("Don't know type: " + type);
             }

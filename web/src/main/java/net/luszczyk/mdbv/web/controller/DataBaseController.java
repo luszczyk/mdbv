@@ -122,7 +122,7 @@ public class DataBaseController {
             LOG.error("Error connecting with database");
             session.setAttribute("db", null);
             String contextPath = request.getContextPath();
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "/index") );
+            return new ModelAndView(response.encodeRedirectURL(contextPath + "/index"));
         }
         ModelAndView modelAndView = new ModelAndView("db/details");
         modelAndView.addObject("dbs", dbs);
@@ -155,7 +155,7 @@ public class DataBaseController {
             LOG.error("Error connecting with database");
             session.setAttribute("db", null);
             String contextPath = request.getContextPath();
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "/index") );
+            response.setHeader("location", response.encodeRedirectURL(contextPath + "/index"));
         }
 
         return message;

@@ -22,4 +22,9 @@ public class ViewerVideoService extends ViewerService {
                 "<source src='/web/content/domain/" + domainId + "/fileContent' type='video/ogg'>" +
                 "</video>";
     }
+
+    @Override
+    public String getIcon() {
+        return "<div style=\"width: 60px; height: 60px; background: url(/web/resources/images/files.gif) no-repeat -495px -560px;\"></div>";
+    }
 }

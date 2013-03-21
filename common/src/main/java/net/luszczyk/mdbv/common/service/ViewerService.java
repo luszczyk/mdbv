@@ -21,6 +21,7 @@ public abstract class ViewerService {
 	
 	public abstract String getLink(final String domainId);
     public abstract String getResourceView(final String domainId);
+    public abstract String getIcon();
 
     @PostConstruct
     public void registerNewType() {
@@ -29,5 +30,4 @@ public abstract class ViewerService {
             registerService.addTypeAndViewer(t, this);
         }
     }
-
 }

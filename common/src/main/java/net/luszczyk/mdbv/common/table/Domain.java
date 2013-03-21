@@ -10,29 +10,33 @@ public class Domain implements Serializable {
     private String mimeType;
     private String content;
     private String linkToView;
+    private String startBytes;
+    private String icon;
 
     private int id;
     private Long oid;
     private Blob blob;
 
     public Domain(Table table, Column column, String content) {
-        this(table, column, content, null, null);
+        this(table, column, content, null, null, null, null);
     }
 
-    public Domain(Table table, Column column, String content, Blob blob) {
-        this(table, column, content, null, blob);
+    public Domain(Table table, Column column, String content, Blob blob, String startBytes, String icon) {
+        this(table, column, content, null, blob, startBytes, icon);
     }
 
-    public Domain(Table table, Column column, String content, Long oid) {
-        this(table, column, content, oid, null);
+    public Domain(Table table, Column column, String content, Long oid, String startBytes, String icon) {
+        this(table, column, content, oid, null, startBytes, icon);
     }
 
-    public Domain(Table table, Column column, String content, Long oid, Blob blob) {
+    public Domain(Table table, Column column, String content, Long oid, Blob blob, String startBytes, String icon) {
         this.table = table;
         this.column = column;
         this.content = content;
         this.oid = oid;
         this.blob = blob;
+        this.startBytes = startBytes;
+        this.icon = icon;
         this.id = hashCode();
     }
 
@@ -102,6 +106,22 @@ public class Domain implements Serializable {
 
     public void setBlob(Blob blob) {
         this.blob = blob;
+    }
+
+    public String getStartBytes() {
+        return startBytes;
+    }
+
+    public void setStartBytes(String startBytes) {
+        this.startBytes = startBytes;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     @Override

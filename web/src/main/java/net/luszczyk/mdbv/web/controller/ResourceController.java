@@ -17,12 +17,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 @Controller
 @RequestMapping(value = "/content")
 public class ResourceController {
 
     private static final Logger LOG = Logger.getLogger(ResourceController.class);
+    private static final int BYTE_ARRAY_SIZE = 16;
 
     @Autowired
     private QueryService queryService;
@@ -30,32 +32,65 @@ public class ResourceController {
     @Autowired
     private RegisterService registerService;
 
+    private byte[] getContentBytes(Domain domain, Integer size) throws DatabaseConnectionException {
+
+        byte[] content = new byte[0];
+        try {
+            content = queryService.getContentByte(domain, size);
+        } catch (SQLException e) {
+            LOG.error("Error getting content bytes ", e);
+            return null;
+        }
+
+        return content;
+    }
+
+    @RequestMapping(value = "/domain/{domainId}/fileContentBytes", method = RequestMethod.GET)
+    public String getDocumentFileContentBytes(final HttpServletResponse response, HttpSession session, HttpServletRequest request,
+                                            @PathVariable("domainId") final String domainId) throws IOException, SQLException {
+
+        Domain domain = (Domain) session.getAttribute(domainId);
+
+        byte[] content = null;
+        try {
+            content = getContentBytes(domain, BYTE_ARRAY_SIZE);
+        } catch (DatabaseConnectionException e) {
+            LOG.error("Error connecting with database");
+            session.setAttribute("db", null);
+            String contextPath = request.getContextPath();
+            response.sendRedirect(response.encodeRedirectURL(contextPath + "/index"));
+            return "";
+        }
+
+        return Arrays.toString(content);
+    }
+
     @RequestMapping(value = "/domain/{domainId}/fileContent", method = RequestMethod.GET)
     public void getDocumentFileContent(final HttpServletResponse response, HttpSession session, HttpServletRequest request,
                                        @PathVariable("domainId") final String domainId) throws IOException, SQLException {
 
         Domain domain = (Domain) session.getAttribute(domainId);
 
-        byte[] content = new byte[0];
+        byte[] content = null;
         try {
-            content = queryService.getContentByte(domain, null);
+            content = getContentBytes(domain, null);
         } catch (DatabaseConnectionException e) {
             LOG.error("Error connecting with database");
             session.setAttribute("db", null);
             String contextPath = request.getContextPath();
             response.sendRedirect(response.encodeRedirectURL(contextPath + "/index"));
-        } catch (SQLException e) {
-            LOG.error("Error getting content bytes ", e);
-            throw e;
+            return;
         }
 
-        response.setContentType(domain.getMimeType());
-        response.setContentLength(content.length);
-        response.addHeader("Content-Disposition", "attachment; filename=\""
-                + domain.getContent() + '"');
+        if (content != null) {
+            response.setContentType(domain.getMimeType());
+            response.setContentLength(content.length);
+            response.addHeader("Content-Disposition", "attachment; filename=\""
+                    + domain.getContent() + '"');
 
-        response.getOutputStream().write(content);
-        response.getOutputStream().flush();
+            response.getOutputStream().write(content);
+            response.getOutputStream().flush();
+        }
     }
 
     @RequestMapping(value = "/{domainId}/wkt", method = RequestMethod.GET)
@@ -73,7 +108,7 @@ public class ResourceController {
 
     @RequestMapping(value = "/{domainId}/map", method = RequestMethod.GET)
     public ModelAndView viewMap(final HttpSession session,
-                                    @PathVariable("domainId") final String domainId) throws IOException {
+                                @PathVariable("domainId") final String domainId) throws IOException {
 
         ModelAndView model = new ModelAndView("map");
 

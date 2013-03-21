@@ -540,7 +540,7 @@ textarea.button {
 #form2 select {
     background: url("/web/resources/images/form_input.gif") repeat-x scroll 0 0 #282828;
     border: 1px solid #111111;
-    color: #ffffffF;
+    color: #ffffff;
     padding: 5px 3px;
     width: 279px;
 }
@@ -667,8 +667,8 @@ div.spinner {
     border: 1px solid #000000;
     background: #ffffff;
     margin-bottom: 10px;
-    padding-left: 5px;
-    width: 875px;
+    padding-left: 15px;
+    width: 865px;
 }
 
 .field-details .field-desc {
@@ -705,6 +705,7 @@ div.spinner {
 .field-multimedia-panel {
 
     padding-bottom: 5px;
+    padding-left: 50px;
     display: table;
     min-height: 20px;
 }

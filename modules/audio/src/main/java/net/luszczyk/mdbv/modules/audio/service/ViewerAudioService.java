@@ -25,4 +25,9 @@ public class ViewerAudioService extends ViewerService {
                 "</object>" +
                 "</div>";
     }
+
+    @Override
+    public String getIcon() {
+        return "<div style=\"width: 60px; height: 60px; background: url(/web/resources/images/files.gif) no-repeat -400px -470px;\"></div>";
+    }
 }
