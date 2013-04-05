@@ -4,6 +4,7 @@
 <script type="text/javascript">
 
     var init = function () {
+
         OpenLayers.ImgPath = "/web/resources/js/img/";
         OpenLayers.LibPath = "/web/resources/js/lib/";
         var baseLayer = new OpenLayers.Layer("Blank", {isBaseLayer:true});

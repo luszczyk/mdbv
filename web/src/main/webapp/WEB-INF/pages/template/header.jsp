@@ -17,19 +17,17 @@
                 </ul>
             </div>
             <div><span class="label">Host</span><span class="info"><c:out
-                    value='<%=((DataBaseDTO) session.getAttribute("db")).getHost()%>'/></span></div>
-            <div><span class="label">User</span><span class="info"><c:out
+                    value='<%=((DataBaseDTO) session.getAttribute("db")).getHost()%>'/></span>
+            <span class="label">User</span><span class="info"><c:out
                     value='<%=((DataBaseDTO) session.getAttribute("db")).getUser()%>'/></span></div>
-            <div><span class="label">Type</span><span class="info"><%=((DataBaseDTO) session.getAttribute("db")).getType()%></span></div>
-            <br>
-            <div><span class="label">Name</span><span class="info"><c:out
-                    value='<%=((DataBaseDTO) session.getAttribute("db")).getName()%>'/></span></div>
+            <div><span class="label">Server</span><span class="info"><%=((DataBaseDTO) session.getAttribute("db")).getType()%></span>
+            <span class="label">Name</span><span class="info"><c:out value='<%=((DataBaseDTO) session.getAttribute("db")).getName()%>'/></span></div>
         </div>
         <%
         } else {
         %>
         <div class="db_details">
-            <div>No connection database</div>
+            <div style="padding: 10px 90px;">No connection database</div>
         </div>
         <% } %>
     </div>

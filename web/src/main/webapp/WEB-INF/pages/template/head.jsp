@@ -18,6 +18,7 @@
           href="/web/resources/css/jquery-ui-1.8.22.custom.css"/>
     <link rel="stylesheet" type="text/css" media="screen"
           href="/web/resources/css/prettyPhoto.css"/>
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
     <script type="text/javascript" src="/web/resources/js/jquery.min.js"></script>
     <script type="text/javascript" src="/web/resources/js/jquery.prettyPhoto.js"></script>
     <script type="text/javascript"

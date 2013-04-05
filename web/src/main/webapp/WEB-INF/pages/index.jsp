@@ -54,11 +54,11 @@
 				</p>--%>
 				<p>
 					<label>User:</label> <input type="text" id="dbuser" name="db.user"
-						class="field" value="mdbv" />
+						class="field" value="" />
 				</p>
 				<p class="last">
 					<label>Pass:</label> <input type="password" id="dbpass"
-						name="db.pass" class="field" value="mdbvdupa" />
+						name="db.pass" class="field" value="" />
 				</p>
                 <input type="hidden" id="dbname"
                        name="db.name" class="field" value="mysql" />
