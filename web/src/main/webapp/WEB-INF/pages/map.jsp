@@ -2,79 +2,65 @@
 <%@ include file="/WEB-INF/pages/template/head.jsp" %>
 
 <script type="text/javascript">
-/*
-    var online = false;
 
-    var loadMaps = function () {
-        google.load("maps", "2", {"callback" : function () {
-            online = true;
-        }});
-    }*/
 
-    var init = function () {
-/*
-        if (online) {
-            console.log("online");
-        } else {
-            console.log("offline");
-        }*/
+    var map_request_in_process = false;
 
-        mapInit();
+    var mapInit = function() {
 
-        /*var type = navigator.network.connection.type;
+        if (!map_request_in_process) {
 
-         if (type != Connection.NONE) {
-         console.log(type);
-         mapInit();
-         } else {
-         alert("offline");
-         }*/
+            map_request_in_process = true;
+            $("#spinner").show();
+
+            OpenLayers.ImgPath = "/web/resources/js/img/";
+            OpenLayers.LibPath = "/web/resources/js/lib/";
+
+            var lat = 47.35387;
+            var lon = 8.43609;
+            var zoom = 18;
+
+            console.log("mapInit 1");
+
+            var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+            var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+            var position = new OpenLayers.LonLat(lon, lat).transform(fromProjection, toProjection);
+
+            console.log("mapInit 2");
+
+            var map = new OpenLayers.Map({
+                div: "map"
+            });
+
+            map.addLayer(new OpenLayers.Layer.OSM());
+
+            console.log("mapInit 3");
+            var vectors = new OpenLayers.Layer.Vector();
+            console.log("mapInit 4");
+
+            var wkt = new OpenLayers.Format.WKT();
+
+            var polygonFeature = wkt.read('<%=session.getAttribute("res")%>');
+            polygonFeature.geometry.transform(map.displayProjection, map.getProjectionObject());
+            vectors.addFeatures([polygonFeature]);
+            console.log("mapInit 4.1");
+
+
+            console.log("mapInit 5.1");
+            map.addLayer(vectors);
+
+            console.log("mapInit 6");
+            map.zoomToExtent(vectors.getDataExtent());
+            console.log("mapInit 6.1");
+
+            $("#spinner").hide();
+            map_request_in_process = false;
+        }
     };
-
-    var mapInit = function () {
-
-                OpenLayers.ImgPath = "/web/resources/js/img/";
-                OpenLayers.LibPath = "/web/resources/js/lib/";
-
-
-                var lat = 47.35387;
-                var lon = 8.43609;
-                var zoom = 18;
-
-                var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
-                var toProjection = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-                var position = new OpenLayers.LonLat(lon, lat).transform(fromProjection, toProjection);
-
-
-                var map = new OpenLayers.Map({
-                    div:"map"
-                });
-
-                map.addLayer(new OpenLayers.Layer.OSM());
-
-                var vectors = new OpenLayers.Layer.Vector('My Vectors');
-                map.addLayer(vectors);
-
-
-                var wkt = new OpenLayers.Format.WKT();
-
-                var polygonFeature = wkt.read("<%=session.getAttribute("res")%>");
-                polygonFeature.geometry.transform(map.displayProjection, map.getProjectionObject());
-                vectors.addFeatures([polygonFeature]);
-
-                map.zoomToExtent(vectors.getDataExtent());
-
-            }
-            ;
-
 </script>
-
-
 </head>
-<body onload="init();">
+<body onload="mapInit()">
 
-<div id="map" class="smallmap"></div>
-
-
+<div id="map" style="width: 100%; height: 100%"></div>
 </body>
 </html>

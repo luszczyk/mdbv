@@ -48,10 +48,10 @@
 					<label>Port:</label> <input type="text" id="dbport" name="db.port"
 						class="field" value="3306" />
 				</p>
-				<%--<p>
+				<p>
 					<label>Database:</label> <input type="text" id="dbname"
-						name="db.name" class="field" value="mdbvdb" />
-				</p>--%>
+						name="db.name" class="field" value="mysql" />
+				</p>
 				<p>
 					<label>User:</label> <input type="text" id="dbuser" name="db.user"
 						class="field" value="" />

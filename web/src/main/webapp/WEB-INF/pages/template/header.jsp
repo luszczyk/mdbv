@@ -12,7 +12,7 @@
         <div class="db_details">
 
             <div style="float: right;">
-                <ul class="main-menu">
+                <ul class="main-menu" style="padding: 0px 0 8px;">
                     <li><a class="menu_link" onclick="dbDisconnect();">Disconnect</a></li>
                 </ul>
             </div>
@@ -30,6 +30,9 @@
             <div style="padding: 10px 90px;">No connection database</div>
         </div>
         <% } %>
+    </div>
+    <div class="app-name">
+        <h2>MDBV</h2>
     </div>
     <ul class="main-menu">
         <li><a class="menu_link" href="/web/query/index">Query</a></li>

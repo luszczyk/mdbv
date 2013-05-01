@@ -94,6 +94,7 @@ public class DataBaseMysqlQueryExecutor implements DataBaseQueryExecutor {
                 Geometry geo = getGeometryFromInputStream(rs.getBinaryStream(c.getId()));
                 String geoText = geo.toText();
                 d = new Domain(table, c, geoText);
+                d.setStartBytes(geo.toText());
                 fillDetailsByWktParams(d, registerService);
             } catch (ParseException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

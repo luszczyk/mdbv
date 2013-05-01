@@ -82,7 +82,7 @@ p {
 #db-info {
     float: right;
     margin: 1px 0 0;
-    width: 450px;
+    width: 400px;
 }
 
 #search {
@@ -132,7 +132,7 @@ textarea.button {
 }
 
 .main-menu {
-    padding: 0 0 8px;
+    padding: 3px 0 8px;
     margin: 0 0 25px;
     height: 20px;
 }
@@ -807,5 +807,12 @@ div.inline {
     position: relative;
     text-align: left;
     top: -50%;
+}
+
+.app-name {
+    float: right;
+    width: 100px;
+    padding: 2px 15px;
+    font-size: 20px;
 }
 

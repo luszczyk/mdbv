@@ -85,7 +85,7 @@ public class QueryController {
         WebUtills.putFilesToSession(table, session);
 
 
-        request.getSession().setAttribute("select", query);
+        request.getSession().setAttribute("select", queryMap.get("query"));
         request.getSession().setAttribute("table", table);
 
         return new Message(200, "Query run success");

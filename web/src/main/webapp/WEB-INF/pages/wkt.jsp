@@ -2,47 +2,48 @@
 <%@ include file="/WEB-INF/pages/template/head.jsp" %>
 
 <script type="text/javascript">
+    var wkt_request_in_process = false;
 
-    var init = function () {
+    var wktInit = function() {
 
-        OpenLayers.ImgPath = "/web/resources/js/img/";
-        OpenLayers.LibPath = "/web/resources/js/lib/";
-        var baseLayer = new OpenLayers.Layer("Blank", {isBaseLayer:true});
+        if (!wkt_request_in_process) {
 
-        var map = new OpenLayers.Map({
-            div:"map",
-            maxExtent:new OpenLayers.Bounds(-7000000, -7000000, 7000000, 7000000),
-            layers:[
-                baseLayer
-            ]
-        });
+            $("#spinner").show();
+            wkt_request_in_process = true;
+            OpenLayers.ImgPath = "/web/resources/js/img/";
+            OpenLayers.LibPath = "/web/resources/js/lib/";
+            var baseLayer = new OpenLayers.Layer("Blank", {isBaseLayer:true});
 
-        var vectors = new OpenLayers.Layer.Vector('My Vectors');
-        map.addLayer(vectors);
+            var map = new OpenLayers.Map({
+                div:"wkt",
+                maxExtent:new OpenLayers.Bounds(-7000000, -7000000, 7000000, 7000000),
+                layers:[
+                    baseLayer
+                ]
+            });
 
+            var vectors = new OpenLayers.Layer.Vector('My Vectors');
+            map.addLayer(vectors);
 
-        var wkt = new OpenLayers.Format.WKT();
+            var wkt = new OpenLayers.Format.WKT();
 
-        var polygonFeature = wkt.read("<%=session.getAttribute("res")%>");
-        polygonFeature.geometry.transform(map.displayProjection, map.getProjectionObject());
-        vectors.addFeatures([polygonFeature]);
+            var polygonFeature = wkt.read('<%=session.getAttribute("res")%>');
+            polygonFeature.geometry.transform(map.displayProjection, map.getProjectionObject());
+            vectors.addFeatures([polygonFeature]);
 
-        map.zoomToExtent(vectors.getDataExtent());
+            map.zoomToExtent(vectors.getDataExtent());
+            wkt_request_in_process = false;
+            $("#spinner").hide();
+        } else {
+            console.log("Request processing ...")
+        }
 
     };
-
-
 </script>
-
-
 </head>
-<body onload="init();">
+<body onload="wktInit()">
 
-<div style="width: 100%; height: 100%;">
-    <div id="map" class="smallmap"></div>
-</div>
-
-
+    <div id="wkt" style="width: 100%; height: 100%"></div>
 </body>
 </html>
 
