@@ -21,4 +21,14 @@ public class IndexController {
 		return model;
 	}
 
+    @RequestMapping(value = "/about", method = RequestMethod.GET)
+    public ModelAndView handleAbout() throws Exception {
+
+        ModelAndView model = new ModelAndView("about");
+
+        model.addObject("h", WebUtills.generateHeaderMap("About"));
+
+        return model;
+    }
+
 }

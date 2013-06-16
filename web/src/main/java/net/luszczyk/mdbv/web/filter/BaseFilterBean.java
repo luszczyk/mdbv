@@ -25,6 +25,7 @@ public class BaseFilterBean extends OncePerRequestFilter {
         if (session.getAttribute("db") == null && !httpServletRequest.getRequestURL().toString().contains("/resources/")
                 && !httpServletRequest.getRequestURL().toString().contains("/types/")
                 && !httpServletRequest.getRequestURL().toString().endsWith(httpServletRequest.getContextPath() + "/index")
+                && !httpServletRequest.getRequestURL().toString().endsWith(httpServletRequest.getContextPath() + "/about")
                 && !httpServletRequest.getRequestURL().toString().endsWith(httpServletRequest.getContextPath() + "/db/connect.json")) {
             httpServletRequest.getRequestDispatcher("/index").forward(httpServletRequest, httpServletResponse);
             return;

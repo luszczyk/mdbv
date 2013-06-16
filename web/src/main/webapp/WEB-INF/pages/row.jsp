@@ -3,6 +3,8 @@
 
 <h2>Row Details</h2>
 
+<a href="/web/query/show/result"><div><img style="float: left;" src="/web/resources/images/arrow-93-32.png"/><div style="line-height: 32px; float: left;">Back to search results</div></div></a>
+
 <div class="resultBox">
 
     <div class="results">
